@@ -1,0 +1,616 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Writing Your First Application &mdash; hyperledger-fabricdocs master documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Chaincode Tutorials" href="chaincode.html" />
+    <link rel="prev" title="Building Your First Network" href="build_network.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+
+          
+            <a href="index.html" class="icon icon-home"> hyperledger-fabricdocs
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                master
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+<br>
+<a href="https://chat.hyperledger.org">Rocket Chat</a>  <a href="https://jenkins.hyperledger.org/">CI</a>
+<a href="http://stackoverflow.com/questions/tagged/hyperledger-fabric">StackOverflow</a>
+<br>
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+  <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a>
+  <br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="prereqs.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="samples.html">Hyperledger Fabric Samples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Key Concepts</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="blockchain.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="capabilities.html">Hyperledger Fabric Capabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fabric_model.html">Hyperledger Fabric Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usecases.html">Use Cases</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="build_network.html">Building Your First Network</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Writing Your First Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#getting-a-test-network">Getting a Test Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-applications-interact-with-the-network">How Applications Interact with the Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#querying-the-ledger">Querying the Ledger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updating-the-ledger">Updating the Ledger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="chaincode.html">Chaincode Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chaincode4ade.html">Chaincode for Developers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chaincode4noah.html">Chaincode for Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="videos.html">Videos</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Operations Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="msp.html">Membership Service Providers (MSP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configtx.html">Channel Configuration (configtx)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configtxgen.html">Channel Configuration (configtxgen)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configtxlator.html">Reconfiguring with configtxlator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="endorsement-policies.html">Endorsement policies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="error-handling.html">Error handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging-control.html">Logging Control</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Architecture</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="arch-deep-dive.html">Architecture Explained</a></li>
+<li class="toctree-l1"><a class="reference internal" href="txflow.html">Transaction Flow</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://hyperledger-fabric-ca.readthedocs.io/en/latest">Hyperledger Fabric CA's User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fabric-sdks.html">Hyperledger Fabric SDKs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kafka.html">Bringing up a Kafka-based Ordering Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="channels.html">Channels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ledger.html">Ledger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="readwrite.html">Read-Write set semantics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gossip.html">Gossip data dissemination protocol</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Troubleshooting and FAQs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Fabric-FAQ.html">Hyperledger Fabric FAQ</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Contributing</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributions Welcome!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MAINTAINERS.html">Maintainers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jira_navigation.html">Using Jira to understand current work items</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-setup/devenv.html">Setting up the development environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-setup/build.html">Building Hyperledger Fabric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-setup/build.html#building-outside-of-vagrant">Building outside of Vagrant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-setup/build.html#configuration">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev-setup/build.html#logging">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Gerrit/lf-account.html">Requesting a Linux Foundation Account</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Gerrit/gerrit.html">Working with Gerrit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Gerrit/changes.html">Submitting a Change to Gerrit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Gerrit/reviewing.html">Reviewing a Change</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Gerrit/best-practices.html">Gerrit Recommended Practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Style-guides/go-style.html">Coding guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Style-guides/go-style.html#generating-grpc-code">Generating gRPC code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Style-guides/go-style.html#adding-or-updating-go-packages">Adding or updating Go packages</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Appendix</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="questions.html">Still Have Questions?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="status.html">Status</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">hyperledger-fabricdocs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Writing Your First Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/write_first_app.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="writing-your-first-application">
+<h1>Writing Your First Application<a class="headerlink" href="#writing-your-first-application" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this document is to show the tasks and provide a baseline for writing
+your first application against a Hyperledger Fabric network.</p>
+<p>At the most basic level, applications on a blockchain network are what enable
+users to <strong>query</strong> a ledger (asking for specific records it contains), or to
+<strong>update</strong> it (adding records to it).</p>
+<p>Our application, composed in Javascript, leverages the Node.js SDK to interact
+with the network (where our ledger exists). This tutorial will guide you through
+the three steps involved in writing your first application.</p>
+<blockquote>
+<div><p><strong>1. Starting a test Hyperledger Fabric blockchain network.</strong> We need some basic components
+in our network in order to query and update the ledger.  These components –
+a peer node, ordering node and Certificate Authority – serve as the backbone of
+our network; we’ll also have a CLI container used for a few administrative commands.
+A single script will download and launch this test network.</p>
+<p><strong>2. Learning the parameters of the sample smart contract our app will use.</strong> Our
+smart contracts contain various functions that allow us to interact with the ledger
+in different ways.  For example, we can read data holistically or on a more granular
+level.</p>
+<p><strong>3. Developing the application to be able to query and update records.</strong>
+We provide two sample applications – one for querying the ledger and another for
+updating it. Our apps will use the SDK APIs to interact with the network and
+ultimately call these functions.</p>
+</div></blockquote>
+<p>After completing this tutorial, you should have a basic understanding of how
+an application, using the Hyperledger Fabric SDK for Node.js, is programmed
+in conjunction with a smart contract to interact with the ledger on a
+Hyperledger Fabric network.</p>
+<p>First, let’s launch our test network…</p>
+<div class="section" id="getting-a-test-network">
+<h2>Getting a Test Network<a class="headerlink" href="#getting-a-test-network" title="Permalink to this headline">¶</a></h2>
+<p>Visit the <a class="reference internal" href="prereqs.html"><span class="doc">Prerequisites</span></a> page and ensure you have the necessary dependencies installed
+on your machine.</p>
+<p>Now determine a working directory where you want to clone the fabric-samples repo. Issue
+the clone command and change into the <code class="docutils literal notranslate"><span class="pre">fabcar</span></code> subdirectory</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">hyperledger</span><span class="o">/</span><span class="n">fabric</span><span class="o">-</span><span class="n">samples</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">fabric</span><span class="o">-</span><span class="n">samples</span><span class="o">/</span><span class="n">fabcar</span>
+</pre></div>
+</div>
+<p>This subdirectory – <code class="docutils literal notranslate"><span class="pre">fabcar</span></code> – contains the scripts
+and application code to run the sample app.  Issue an <code class="docutils literal notranslate"><span class="pre">ls</span></code> from
+this directory.  You should see the following:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chaincode</span>    <span class="n">invoke</span><span class="o">.</span><span class="n">js</span>       <span class="n">network</span>         <span class="n">package</span><span class="o">.</span><span class="n">json</span>    <span class="n">query</span><span class="o">.</span><span class="n">js</span>        <span class="n">startFabric</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>Now use the <code class="docutils literal notranslate"><span class="pre">startFabric.sh</span></code> script to launch the network.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The following command downloads and extracts the Hyperledger Fabric
+Docker images, so it will take a few minutes to complete.</p>
+</div>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">startFabric</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>For the sake of brevity, we won’t delve into the details of what’s happening with
+this command.  Here’s a quick synopsis:</p>
+<ul class="simple">
+<li>launches a peer node, ordering node, Certificate Authority and CLI container</li>
+<li>creates a channel and joins the peer to the channel</li>
+<li>installs smart contract (i.e. chaincode) onto the peer’s file system and instantiates said chaincode on the channel; instantiate starts a chaincode container</li>
+<li>calls the <code class="docutils literal notranslate"><span class="pre">initLedger</span></code> function to populate the channel ledger with 10 unique cars</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These operations will typically be done by an organizational or peer admin.  The script uses the
+CLI to execute these commands, however there is support in the SDK as well.
+Refer to the <a class="reference external" href="https://github.com/hyperledger/fabric-sdk-node">Hyperledger Fabric Node SDK repo</a>
+for example scripts.</p>
+</div>
+<p>Issue a <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code> command to reveal the processes started by the <code class="docutils literal notranslate"><span class="pre">startFabric.sh</span></code> script.
+You can learn more about the details and mechanics of these operations in the
+<a class="reference internal" href="build_network.html"><span class="doc">Building Your First Network</span></a> section.  Here we’ll just focus on the application.  The following picture
+provides a simplistic representation of how the application interacts with the
+Hyperledger Fabric network.</p>
+<img alt="_images/AppConceptsOverview.png" src="_images/AppConceptsOverview.png" />
+<p>Alright, now that you’ve got a sample network and some code, let’s take a
+look at how the different pieces fit together.</p>
+</div>
+<div class="section" id="how-applications-interact-with-the-network">
+<h2>How Applications Interact with the Network<a class="headerlink" href="#how-applications-interact-with-the-network" title="Permalink to this headline">¶</a></h2>
+<p>Applications use <strong>APIs</strong> to invoke smart contracts (referred to as “chaincode”).
+These smart contracts are hosted in the network and identified by name and version.
+For example, our chaincode container is titled - <code class="docutils literal notranslate"><span class="pre">dev-peer0.org1.example.com-fabcar-1.0</span></code> - where
+the name is <code class="docutils literal notranslate"><span class="pre">fabcar</span></code>, the version is <code class="docutils literal notranslate"><span class="pre">1.0</span></code> and the peer it is running against is <code class="docutils literal notranslate"><span class="pre">dev-peer0.org1.example.com</span></code>.</p>
+<p>APIs are accessible with a software development kit (SDK). For purposes of this
+exercise, we’ll be using the <a class="reference external" href="https://fabric-sdk-node.github.io/">Hyperledger Fabric Node SDK</a> though there is also a Java SDK and
+CLI that can be used to develop applications.</p>
+</div>
+<div class="section" id="querying-the-ledger">
+<h2>Querying the Ledger<a class="headerlink" href="#querying-the-ledger" title="Permalink to this headline">¶</a></h2>
+<p>Queries are how you read data from the ledger. You can query for the value
+of a single key, multiple keys, or – if the ledger is written in a rich data storage
+format like JSON – perform complex searches against it (looking for all
+assets that contain certain keywords, for example).</p>
+<img alt="_images/QueryingtheLedger.png" src="_images/QueryingtheLedger.png" />
+<p>As we said earlier, our sample network has an active chaincode container and
+a ledger that has been primed with 10 different cars.  We also have some
+sample Javascript code - <code class="docutils literal notranslate"><span class="pre">query.js</span></code> - in the <code class="docutils literal notranslate"><span class="pre">fabcar</span></code> directory that
+can be used to query the ledger for details on the cars.</p>
+<p>Before we take a look at how that app works, we need to install the SDK node
+modules in order for our program to function.  From your <code class="docutils literal notranslate"><span class="pre">fabcar</span></code> directory,
+issue the following:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">npm</span> <span class="n">install</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You will issue all subsequent commands from the <code class="docutils literal notranslate"><span class="pre">fabcar</span></code> directory.</p>
+</div>
+<p>Now we can run our javascript programs.  First, let’s run our <code class="docutils literal notranslate"><span class="pre">query.js</span></code>
+program to return a listing of all the cars on the ledger.  A function that
+will query all the cars, <code class="docutils literal notranslate"><span class="pre">queryAllCars</span></code>, is pre-loaded in the app,
+so we can simply run the program as is:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">node</span> <span class="n">query</span><span class="o">.</span><span class="n">js</span>
+</pre></div>
+</div>
+<p>It should return something like this:</p>
+<div class="code json highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Query</span> <span class="n">result</span> <span class="n">count</span> <span class="o">=</span>  <span class="mi">1</span>
+<span class="n">Response</span> <span class="ow">is</span>  <span class="p">[{</span><span class="s2">&quot;Key&quot;</span><span class="p">:</span><span class="s2">&quot;CAR0&quot;</span><span class="p">,</span> <span class="s2">&quot;Record&quot;</span><span class="p">:{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Toyota&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;Prius&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Tomoko&quot;</span><span class="p">}},</span>
+<span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="p">:</span><span class="s2">&quot;CAR1&quot;</span><span class="p">,</span>   <span class="s2">&quot;Record&quot;</span><span class="p">:{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;red&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Ford&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;Mustang&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Brad&quot;</span><span class="p">}},</span>
+<span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="p">:</span><span class="s2">&quot;CAR2&quot;</span><span class="p">,</span> <span class="s2">&quot;Record&quot;</span><span class="p">:{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;green&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Hyundai&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;Tucson&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Jin Soo&quot;</span><span class="p">}},</span>
+<span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="p">:</span><span class="s2">&quot;CAR3&quot;</span><span class="p">,</span> <span class="s2">&quot;Record&quot;</span><span class="p">:{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;yellow&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Volkswagen&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;Passat&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Max&quot;</span><span class="p">}},</span>
+<span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="p">:</span><span class="s2">&quot;CAR4&quot;</span><span class="p">,</span> <span class="s2">&quot;Record&quot;</span><span class="p">:{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;black&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Tesla&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;S&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Adriana&quot;</span><span class="p">}},</span>
+<span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="p">:</span><span class="s2">&quot;CAR5&quot;</span><span class="p">,</span> <span class="s2">&quot;Record&quot;</span><span class="p">:{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Peugeot&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;205&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Michel&quot;</span><span class="p">}},</span>
+<span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="p">:</span><span class="s2">&quot;CAR6&quot;</span><span class="p">,</span> <span class="s2">&quot;Record&quot;</span><span class="p">:{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;white&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Chery&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;S22L&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Aarav&quot;</span><span class="p">}},</span>
+<span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="p">:</span><span class="s2">&quot;CAR7&quot;</span><span class="p">,</span> <span class="s2">&quot;Record&quot;</span><span class="p">:{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;violet&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Fiat&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;Punto&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Pari&quot;</span><span class="p">}},</span>
+<span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="p">:</span><span class="s2">&quot;CAR8&quot;</span><span class="p">,</span> <span class="s2">&quot;Record&quot;</span><span class="p">:{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;indigo&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Tata&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;Nano&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Valeria&quot;</span><span class="p">}},</span>
+<span class="p">{</span><span class="s2">&quot;Key&quot;</span><span class="p">:</span><span class="s2">&quot;CAR9&quot;</span><span class="p">,</span> <span class="s2">&quot;Record&quot;</span><span class="p">:{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;brown&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Holden&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;Barina&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Shotaro&quot;</span><span class="p">}}]</span>
+</pre></div>
+</div>
+<p>These are the 10 cars. A black Tesla Model S owned by Adriana, a red Ford Mustang
+owned by Brad, a violet Fiat Punto owned by someone named Pari, and so on. The ledger
+is key/value based and in our implementation the key is <code class="docutils literal notranslate"><span class="pre">CAR0</span></code> through <code class="docutils literal notranslate"><span class="pre">CAR9</span></code>.
+This will become particularly important in a moment.</p>
+<p>Now let’s see what it looks like under the hood (if you’ll forgive the pun).
+Use an editor (e.g. atom or visual studio) and open the <code class="docutils literal notranslate"><span class="pre">query.js</span></code> program.</p>
+<p>The inital section of the application defines certain variables such as chaincode ID, channel name
+and network endpoints:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="n">wallet_path</span> <span class="p">:</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">__dirname</span><span class="p">,</span> <span class="s1">&#39;./network/creds&#39;</span><span class="p">),</span>
+      <span class="n">user_id</span><span class="p">:</span> <span class="s1">&#39;PeerAdmin&#39;</span><span class="p">,</span>
+      <span class="n">channel_id</span><span class="p">:</span> <span class="s1">&#39;mychannel&#39;</span><span class="p">,</span>
+      <span class="n">chaincode_id</span><span class="p">:</span> <span class="s1">&#39;fabcar&#39;</span><span class="p">,</span>
+      <span class="n">network_url</span><span class="p">:</span> <span class="s1">&#39;grpc://localhost:7051&#39;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>This is the chunk where we construct our query:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">queryCar</span> <span class="o">-</span> <span class="n">requires</span> <span class="mi">1</span> <span class="n">argument</span><span class="p">,</span> <span class="n">ex</span><span class="p">:</span> <span class="n">args</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;CAR4&#39;</span><span class="p">],</span>
+<span class="o">//</span> <span class="n">queryAllCars</span> <span class="o">-</span> <span class="n">requires</span> <span class="n">no</span> <span class="n">arguments</span> <span class="p">,</span> <span class="n">ex</span><span class="p">:</span> <span class="n">args</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">],</span>
+<span class="n">const</span> <span class="n">request</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="n">chaincodeId</span><span class="p">:</span> <span class="n">options</span><span class="o">.</span><span class="n">chaincode_id</span><span class="p">,</span>
+   <span class="n">txId</span><span class="p">:</span> <span class="n">transaction_id</span><span class="p">,</span>
+   <span class="n">fcn</span><span class="p">:</span> <span class="s1">&#39;queryAllCars&#39;</span><span class="p">,</span>
+   <span class="n">args</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We define the <code class="docutils literal notranslate"><span class="pre">chaincode_id</span></code> variable as <code class="docutils literal notranslate"><span class="pre">fabcar</span></code> – allowing us to target this specific chaincode – and
+then call the <code class="docutils literal notranslate"><span class="pre">queryAllCars</span></code> function defined within that chaincode.</p>
+<p>When we issued the <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">query.js</span></code> command earlier, this specific function was
+called to query the ledger.  However, this isn’t the only function that we can pass.</p>
+<p>To take a look at the others, navigate to the <code class="docutils literal notranslate"><span class="pre">chaincode</span></code> subdirectory and open
+<code class="docutils literal notranslate"><span class="pre">fabcar.go</span></code> in your editor.  You’ll see that we have the following functions available
+to call - <code class="docutils literal notranslate"><span class="pre">initLedger</span></code>, <code class="docutils literal notranslate"><span class="pre">queryCar</span></code>, <code class="docutils literal notranslate"><span class="pre">queryAllCars</span></code>, <code class="docutils literal notranslate"><span class="pre">createCar</span></code> and <code class="docutils literal notranslate"><span class="pre">changeCarOwner</span></code>.
+Let’s take a closer look at the <code class="docutils literal notranslate"><span class="pre">queryAllCars</span></code> function to see how it interacts with the
+ledger.</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">func</span> <span class="p">(</span><span class="n">s</span> <span class="o">*</span><span class="n">SmartContract</span><span class="p">)</span> <span class="n">queryAllCars</span><span class="p">(</span><span class="n">APIstub</span> <span class="n">shim</span><span class="o">.</span><span class="n">ChaincodeStubInterface</span><span class="p">)</span> <span class="n">sc</span><span class="o">.</span><span class="n">Response</span> <span class="p">{</span>
+
+     <span class="n">startKey</span> <span class="p">:</span><span class="o">=</span> <span class="s2">&quot;CAR0&quot;</span>
+     <span class="n">endKey</span> <span class="p">:</span><span class="o">=</span> <span class="s2">&quot;CAR999&quot;</span>
+
+     <span class="n">resultsIterator</span><span class="p">,</span> <span class="n">err</span> <span class="p">:</span><span class="o">=</span> <span class="n">APIstub</span><span class="o">.</span><span class="n">GetStateByRange</span><span class="p">(</span><span class="n">startKey</span><span class="p">,</span> <span class="n">endKey</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The function uses the shim interface function <code class="docutils literal notranslate"><span class="pre">GetStateByRange</span></code> to return
+ledger data between the args of <code class="docutils literal notranslate"><span class="pre">startKey</span></code> and <code class="docutils literal notranslate"><span class="pre">endKey</span></code>.  Those keys are
+defined as <code class="docutils literal notranslate"><span class="pre">CAR0</span></code> and <code class="docutils literal notranslate"><span class="pre">CAR999</span></code> respectively.  Therefore, we could theoretically
+create 1,000 cars (assuming the keys are tagged properly) and a <code class="docutils literal notranslate"><span class="pre">queryAllCars</span></code> would
+reveal every one.</p>
+<p>Below is a representation of how an app would call different functions in chaincode.</p>
+<img alt="_images/RunningtheSample.png" src="_images/RunningtheSample.png" />
+<p>We can see our <code class="docutils literal notranslate"><span class="pre">queryAllCars</span></code> function up there, as well as one called <code class="docutils literal notranslate"><span class="pre">createCar</span></code> that
+will allow us to update the ledger and ultimately append a new block to the chain.
+But first, let’s do another query.</p>
+<p>Go back to the <code class="docutils literal notranslate"><span class="pre">query.js</span></code> program and edit the constructor request to query
+a specific car.  We’ll do this by changing the function from <code class="docutils literal notranslate"><span class="pre">queryAllCars</span></code>
+to <code class="docutils literal notranslate"><span class="pre">queryCar</span></code> and passing a specific “Key” to the args parameter.  Let’s use
+<code class="docutils literal notranslate"><span class="pre">CAR4</span></code> here.  So our edited <code class="docutils literal notranslate"><span class="pre">query.js</span></code> program should now contain the
+following:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">request</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="n">chaincodeId</span><span class="p">:</span> <span class="n">options</span><span class="o">.</span><span class="n">chaincode_id</span><span class="p">,</span>
+      <span class="n">txId</span><span class="p">:</span> <span class="n">transaction_id</span><span class="p">,</span>
+      <span class="n">fcn</span><span class="p">:</span> <span class="s1">&#39;queryCar&#39;</span><span class="p">,</span>
+      <span class="n">args</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;CAR4&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Save the program and navigate back to your <code class="docutils literal notranslate"><span class="pre">fabcar</span></code> directory.  Now run the
+program again:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">node</span> <span class="n">query</span><span class="o">.</span><span class="n">js</span>
+</pre></div>
+</div>
+<p>You should see the following:</p>
+<div class="code json highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;black&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Tesla&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;S&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Adriana&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>So we’ve gone from querying all cars to querying just one, Adriana’s black Tesla
+Model S.  Using the <code class="docutils literal notranslate"><span class="pre">queryCar</span></code> function, we can query against any key (e.g. <code class="docutils literal notranslate"><span class="pre">CAR0</span></code>) and
+get whatever make, model, color, and owner correspond to that car.</p>
+<p>Great.  Now you should be comfortable with the basic query functions in the chaincode,
+and the handful of parameters in the query program.  Time to update the ledger…</p>
+</div>
+<div class="section" id="updating-the-ledger">
+<h2>Updating the Ledger<a class="headerlink" href="#updating-the-ledger" title="Permalink to this headline">¶</a></h2>
+<p>Now that we’ve done a few ledger queries and added a bit of code, we’re ready to
+update the ledger. There are a lot of potential updates we could
+make, but let’s just create a new car for starters.</p>
+<p>Ledger updates start with an application generating a transaction proposal.
+Just like query, a request is constructed to identify the channel ID,
+function, and specific smart contract to target for the transaction. The program
+then calls the <code class="docutils literal notranslate"><span class="pre">channel.SendTransactionProposal</span></code> API to send the transaction proposal to the peer(s)
+for endorsement.</p>
+<p>The network (i.e. endorsing peer) returns a proposal response, which the application uses
+to build and sign a transaction request.  This request is sent to the ordering service by
+calling the <code class="docutils literal notranslate"><span class="pre">channel.sendTransaction</span></code> API.  The ordering service will bundle the transaction
+into a block and then “deliver” the block to all peers on a channel for validation.  (In our
+case we have only the single endorsing peer.)</p>
+<p>Finally the application uses the <code class="docutils literal notranslate"><span class="pre">eh.setPeerAddr</span></code> API to connect to the peer’s
+event listener port, and calls <code class="docutils literal notranslate"><span class="pre">eh.registerTxEvent</span></code> to register events associated
+with a specific transaction ID.  This API allows the application to know the fate of
+a transaction (i.e. successfully committed or unsuccessful).  Think of it as a notification mechanism.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We don’t go into depth here on a transaction’s lifecycle.  Consult the
+<a class="reference internal" href="txflow.html"><span class="doc">Transaction Flow</span></a> documentation for lower level details on how a transaction
+is ultimately committed to the ledger.</p>
+</div>
+<p>The goal with our initial invoke is to simply create a new asset (car in this case).  We
+have a separate javascript program - <code class="docutils literal notranslate"><span class="pre">invoke.js</span></code> - that we will use for these transactions.
+Just like query, use an editor to open the program and navigate to the codeblock where we
+construct our invocation:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">createCar</span> <span class="o">-</span> <span class="n">requires</span> <span class="mi">5</span> <span class="n">args</span><span class="p">,</span> <span class="n">ex</span><span class="p">:</span> <span class="n">args</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;CAR11&#39;</span><span class="p">,</span> <span class="s1">&#39;Honda&#39;</span><span class="p">,</span> <span class="s1">&#39;Accord&#39;</span><span class="p">,</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span> <span class="s1">&#39;Tom&#39;</span><span class="p">],</span>
+<span class="o">//</span> <span class="n">changeCarOwner</span> <span class="o">-</span> <span class="n">requires</span> <span class="mi">2</span> <span class="n">args</span> <span class="p">,</span> <span class="n">ex</span><span class="p">:</span> <span class="n">args</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;CAR10&#39;</span><span class="p">,</span> <span class="s1">&#39;Barry&#39;</span><span class="p">],</span>
+<span class="o">//</span> <span class="n">send</span> <span class="n">proposal</span> <span class="n">to</span> <span class="n">endorser</span>
+<span class="n">var</span> <span class="n">request</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">targets</span><span class="p">:</span> <span class="n">targets</span><span class="p">,</span>
+    <span class="n">chaincodeId</span><span class="p">:</span> <span class="n">options</span><span class="o">.</span><span class="n">chaincode_id</span><span class="p">,</span>
+    <span class="n">fcn</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+    <span class="n">args</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">],</span>
+    <span class="n">chainId</span><span class="p">:</span> <span class="n">options</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span>
+    <span class="n">txId</span><span class="p">:</span> <span class="n">tx_id</span>
+</pre></div>
+</div>
+<p>You’ll see that we can call one of two functions - <code class="docutils literal notranslate"><span class="pre">createCar</span></code> or <code class="docutils literal notranslate"><span class="pre">changeCarOwner</span></code>.
+Let’s create a red Chevy Volt and give it to an owner named Nick.  We’re up to <code class="docutils literal notranslate"><span class="pre">CAR9</span></code>
+on our ledger, so we’ll use <code class="docutils literal notranslate"><span class="pre">CAR10</span></code> as the identifying key here.  The updated codeblock
+should look like this:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">request</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">targets</span><span class="p">:</span> <span class="n">targets</span><span class="p">,</span>
+    <span class="n">chaincodeId</span><span class="p">:</span> <span class="n">options</span><span class="o">.</span><span class="n">chaincode_id</span><span class="p">,</span>
+    <span class="n">fcn</span><span class="p">:</span> <span class="s1">&#39;createCar&#39;</span><span class="p">,</span>
+    <span class="n">args</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;CAR10&#39;</span><span class="p">,</span> <span class="s1">&#39;Chevy&#39;</span><span class="p">,</span> <span class="s1">&#39;Volt&#39;</span><span class="p">,</span> <span class="s1">&#39;Red&#39;</span><span class="p">,</span> <span class="s1">&#39;Nick&#39;</span><span class="p">],</span>
+    <span class="n">chainId</span><span class="p">:</span> <span class="n">options</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span>
+    <span class="n">txId</span><span class="p">:</span> <span class="n">tx_id</span>
+</pre></div>
+</div>
+<p>Save it and run the program:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">node</span> <span class="n">invoke</span><span class="o">.</span><span class="n">js</span>
+</pre></div>
+</div>
+<p>There will be some output in the terminal about Proposal Response and Transaction ID.  However,
+all we’re concerned with is this message:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="n">transaction</span> <span class="n">has</span> <span class="n">been</span> <span class="n">committed</span> <span class="n">on</span> <span class="n">peer</span> <span class="n">localhost</span><span class="p">:</span><span class="mi">7053</span>
+</pre></div>
+</div>
+<p>The peer emits this event notification, and our application receives it thanks to our
+<code class="docutils literal notranslate"><span class="pre">eh.registerTxEvent</span></code> API.  So now if we go back to our <code class="docutils literal notranslate"><span class="pre">query.js</span></code> program and call
+the <code class="docutils literal notranslate"><span class="pre">queryCar</span></code> function against an arg of <code class="docutils literal notranslate"><span class="pre">CAR10</span></code>, we should see the following:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Response</span> <span class="ow">is</span>  <span class="p">{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;Red&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Chevy&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;Volt&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Nick&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Finally, let’s call our last function - <code class="docutils literal notranslate"><span class="pre">changeCarOwner</span></code>.  Nick is feeling generous and
+he wants to give his Chevy Volt to a man named Barry.  So, we simply edit <code class="docutils literal notranslate"><span class="pre">invoke.js</span></code>
+to reflect the following:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">request</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="n">targets</span><span class="p">:</span> <span class="n">targets</span><span class="p">,</span>
+   <span class="n">chaincodeId</span><span class="p">:</span> <span class="n">options</span><span class="o">.</span><span class="n">chaincode_id</span><span class="p">,</span>
+   <span class="n">fcn</span><span class="p">:</span> <span class="s1">&#39;changeCarOwner&#39;</span><span class="p">,</span>
+   <span class="n">args</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;CAR10&#39;</span><span class="p">,</span> <span class="s1">&#39;Barry&#39;</span><span class="p">],</span>
+   <span class="n">chainId</span><span class="p">:</span> <span class="n">options</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span>
+   <span class="n">txId</span><span class="p">:</span> <span class="n">tx_id</span>
+</pre></div>
+</div>
+<p>Execute the program again - <code class="docutils literal notranslate"><span class="pre">node</span> <span class="pre">invoke.js</span></code> - and then run the query app one final time.
+We are still querying against <code class="docutils literal notranslate"><span class="pre">CAR10</span></code>, so we should see:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Response</span> <span class="ow">is</span>  <span class="p">{</span><span class="s2">&quot;colour&quot;</span><span class="p">:</span><span class="s2">&quot;Red&quot;</span><span class="p">,</span><span class="s2">&quot;make&quot;</span><span class="p">:</span><span class="s2">&quot;Chevy&quot;</span><span class="p">,</span><span class="s2">&quot;model&quot;</span><span class="p">:</span><span class="s2">&quot;Volt&quot;</span><span class="p">,</span><span class="s2">&quot;owner&quot;</span><span class="p">:</span><span class="s2">&quot;Barry&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="https://github.com/hyperledger/fabric-sdk-node">Hyperledger Fabric Node SDK repo</a>
+is an excellent resource for deeper documentation and sample code.  You can also consult
+the Hyperledger Fabric community and component experts on <a class="reference external" href="https://chat.hyperledger.org/home">Hyperledger Rocket Chat</a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="chaincode.html" class="btn btn-neutral float-right" title="Chaincode Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="build_network.html" class="btn btn-neutral" title="Building Your First Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright Hyperledger 2017.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'master',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          
+          SphinxRtdTheme.Navigation.enableSticky();
+          
+      });
+  </script> 
+
+</body>
+</html>
