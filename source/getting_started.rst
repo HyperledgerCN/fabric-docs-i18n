@@ -1,4 +1,4 @@
-Getting Started
+入门指南
 ===============
 
 .. toctree::
@@ -7,54 +7,51 @@ Getting Started
    prereqs
    samples
 
-Install Prerequisites
+安装前提
 ^^^^^^^^^^^^^^^^^^^^^
 
-Before we begin, if you haven't already done so, you may wish to check that
-you have all the :doc:`prereqs` installed on the platform(s)
-on which you'll be developing blockchain applications and/or operating
-Hyperledger Fabric.
+在我们开始前，请您按照:doc:`prereqs`文档里的要求，准备您即将用于开发区块链应用以及（或者）
+运行Hyperledger Fabric的平台。
 
-Install Binaries and Docker Images
+
+安装二进制文件和Docker镜像
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-While we work on developing real installers for the Hyperledger Fabric
-binaries, we provide a script that will :ref:`binaries` to your system.
-The script also will download the Docker images to your local registry.
+在我们为Hyperledger Fabric二进制文件（Bineries）开发真实的安装包时，
+我们为您的系统提供了一个可以 :ref:`binaries` 的脚本。
+这个脚本也会把Docker镜像（Images）下载到您的本地注册表（Local Registry）。
 
-Hyperledger Fabric Samples
+
+Hyperledger Fabric 示例
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We offer a set of sample applications that you may wish to install these
-:doc:`samples` before starting with the tutorials as the tutorials leverage
-the sample code.
+我们在教程中提供了一组示例应用程序，您可以在开始教程前，安装这些:doc:`samples` 。
 
-API Documentation
+
+API 文档
 ^^^^^^^^^^^^^^^^^
 
-The API documentation for Hyperledger Fabric's Golang APIs can be found on
-the godoc site for `Fabric <http://godoc.org/github.com/hyperledger/fabric>`_.
-If you plan on doing any development using these APIs, you may want to
-bookmark those links now.
+Hyperledger Fabric 的 Golang API 文档存放在 godoc 网站中的
+ `Fabric <http://godoc.org/github.com/hyperledger/fabric>`_.
+如果您计划使用这些API做开发，可以即刻收藏这些链接。
+
 
 Hyperledger Fabric SDKs
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Hyperledger Fabric intends to offer a number of SDKs for a wide variety of
-programming languages. The first two delivered SDKs are the Node.js and Java
-SDKs. We hope to provide Python and Go SDKs soon after the 1.0.0 release.
+Hyperledger Fabric致力于为各种编程语言提供SDK，首先发布的两款SDK是面向 Node.js 和 Java，
+我们希望在1.0.0版本发布之后，尽快提供面向Python和Go的SDK。
 
-  * `Hyperledger Fabric Node SDK documentation <https://fabric-sdk-node.github.io/>`__.
-  * `Hyperledger Fabric Java SDK documentation <https://github.com/hyperledger/fabric-sdk-java>`__.
+  * `Hyperledger Fabric Node SDK 文档 <https://fabric-sdk-node.github.io/>`__.
+  * `Hyperledger Fabric Java SDK 文档 <https://github.com/hyperledger/fabric-sdk-java>`__.
+
 
 Hyperledger Fabric CA
 ^^^^^^^^^^^^^^^^^^^^^
 
-Hyperledger Fabric provides an optional
-`certificate authority service <http://hyperledger-fabric-ca.readthedocs.io/en/latest>`_
-that you may choose to use to generate the certificates and key material
-to configure and manage identity in your blockchain network. However, any CA
-that can generate ECDSA certificates may be used.
+Hyperledger Fabric 提供一个可选的`证书授权服务 <http://hyperledger-fabric-ca.readthedocs.io/en/latest>`_
+用于生成证书和密钥，以帮助您配置和管理区块链网络中的身份信息。但是，您也可以使用任何一个可以生成ECSDA证书的证书授权（CA）。
+
 
 .. Licensed under Creative Commons Attribution 4.0 International License
    https://creativecommons.org/licenses/by/4.0/
