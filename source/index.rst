@@ -1,28 +1,18 @@
-Welcome to Hyperledger Fabric
+欢迎来的Hyperledger Fabric
 =============================
 
-Hyperledger Fabric is a platform for distributed ledger solutions, underpinned
-by a modular architecture delivering high degrees of confidentiality, resiliency,
-flexibility and scalability.  It is designed to support pluggable implementations
-of different components, and accommodate the complexity and intricacies that exist
-across the economic ecosystem.
+Hyperledger Fabric 是一个提供分布式账本解决方案的平台，该平台由一个模块化架构支撑，具有高度的保密性、可伸缩性、灵活性和可扩展性。
+Hyperledger Fabric 的设计可以支持不同模块的可插拔实现，并且能够适应经济生态系统中错综复杂的场景。
 
-Hyperledger Fabric delivers a uniquely elastic and extensible architecture,
-distinguishing it from alternative blockchain solutions. Planning for the
-future of enterprise blockchain requires building on top of a fully-vetted,
-open source architecture; Hyperledger Fabric is your starting point.
+Hyperleger Fabric 提供一个独特的可伸缩、可扩展的架构，这使它显著区别于其他区块链解决方案。
+在为企业级区块链的未来做规划时，需要使其建立在一个具备完整审查机制、且开源的架构之上，Hyperledger Fabric 正是您的起点。
 
-It's recommended for first-time users to begin by going through the
-:doc:`getting_started` section in order to gain familiarity with the Hyperledger Fabric
-components and the basic transaction flow.  Once comfortable, continue
-exploring the library for demos, technical specifications, APIs, etc.
+我们建议初学者先阅读:doc:`getting_started`章节，熟悉Hyperledger Fabric的组成部分和基本交易流程。
+当您感觉可以继续的时候，再探索文库中的演示、技术说明、API等信息。
 
-.. note:: If you have questions not addressed by this documentation, or run into
-          issues with any of the tutorials, please visit the :doc:`questions`
-          page for some tips on where to find additional help.
+.. 注意:: 如果您有其他该文档未谈及的疑问，或者在任何一个教程中遇到问题，请您访问 :doc:`questions` 页面了解关于额外帮助的温馨提示。
 
-Before diving in, watch how Hyperledger Fabric is Building a Blockchain for
-Business:
+在您开始深入了解之前，请观看Hyperledger Fabric是如何为商业建立区块链。
 
 .. raw:: html
 
@@ -31,7 +21,7 @@ Business:
 
 .. toctree::
    :maxdepth: 1
-   :caption: Table of Contents
+   :caption: 目录
 
    index
    getting_started
