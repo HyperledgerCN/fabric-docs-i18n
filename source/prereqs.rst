@@ -7,7 +7,7 @@
 如果您还没有安装cURL工具，或者当您从文件中运行curl命令遇到错误提示时，请下载最新版本的`cURL
 <https://curl.haxx.se/download.html>`__ 工具。
 
-.. 注意:: 如果您使用的是Windows操作系统，请参照下文中关于 `Windows 附加条件`_ 的特定注解.
+.. note:: 如果您使用的是Windows操作系统，请参照下文中关于 `Windows 附加条件`_ 的特定注解.
 
 Docker 和 Docker Compose
 -------------------------
@@ -26,7 +26,7 @@ Docker 和 Docker Compose
 
   docker --version
 
-.. 注意:: 在为Mac或者Windows安装Docker或者Docker Toolbox时，也会安装Docker Compose。
+.. note:: 在为Mac或者Windows安装Docker或者Docker Toolbox时，也会安装Docker Compose。
          如果您已经安装了Docker，请务必检查是否同时安装了Docker Compose 1.14.0 或者更高版本。
          如果没有，我们建议您安装更新版本的Docker。
 
@@ -69,11 +69,11 @@ Node.js 运行环境和 NPM
 
 如果您打算使用Hyperledger Fabric的Node.js SDK为Hyperledger Fabric开发应用程序，您需要安装Node.js 8.9.x版本。
 
-.. 注意:: 暂时不支持Node.js 9.x 版本。
+.. note:: 暂时不支持Node.js 9.x 版本。
 
   - `Node.js <https://nodejs.org/en/download/>`__ - 8.9.x 或更高版本
 
-.. 注意:: 安装 Node.js 时同时需要安装 NPM, 但是，建议您先确认已经安装的NPM版本。您可以通过以下命令，升级 ``npm`` 工具：
+.. note:: 安装 Node.js 时同时需要安装 NPM, 但是，建议您先确认已经安装的NPM版本。您可以通过以下命令，升级 ``npm`` 工具：
 
 .. code:: bash
 
@@ -82,7 +82,7 @@ Node.js 运行环境和 NPM
 Python
 ^^^^^^
 
-.. 注意:: 以下内容仅面向 Ubuntu 16.04 的用户。
+.. note:: 以下内容仅面向 Ubuntu 16.04 的用户。
 
 默认情况下，Ubuntu 16.04 已经安装 Python 3.5.1 作为其 ``python3`` 的二进制版本。
 但是，Fabric Node.js SDK 需要迭代 Python 2.7 版本，用于成功运行 ``npm install``命令，
@@ -148,7 +148,7 @@ Windows 附加条件
 
 到此为止，您的环境应该已经准备好运行 :doc:`getting_started` 中的示例和教程。
 
-.. 注意:: 如果您有其他该文档未谈及的疑问，或者在任何一个教程中遇到问题，请您访问 :doc:`questions` 页面了解关于额外帮助的温馨提示。
+.. note:: 如果您有其他该文档未谈及的疑问，或者在任何一个教程中遇到问题，请您访问 :doc:`questions` 页面了解关于额外帮助的温馨提示。
 
 .. Licensed under Creative Commons Attribution 4.0 International License
    https://creativecommons.org/licenses/by/4.0/
