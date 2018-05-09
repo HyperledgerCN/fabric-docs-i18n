@@ -43,7 +43,7 @@ Go 编程语言
 
 Hyperledger Fabric 在很多组件中使用Go 1.9.x 版本的编程语言。
 
-.. 注意: 不支持使用Go 1.8.x 版本。
+.. note:: 不支持使用Go 1.8.x 版本。
 
   - `Go <https://golang.org/>`__ - 1.9.x 版本
 
