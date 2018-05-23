@@ -4,7 +4,7 @@
 .. toctree::
    :maxdepth: 1
 
-   架构解读
+   架构解读 <https://hyperledger-fabric.readthedocs.io/en/latest/arch-deep-dive.html>
    交易流程
    Hyperledger Fabric CA用户手册 <http://hyperledger-fabric-ca.readthedocs.io/en/latest>
    Hyperledger Fabric SDK
