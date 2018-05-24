@@ -30,7 +30,7 @@ fabric-ca-server命令允许您初始化和启动一个可能运行一个或多�
 
 More information on ``fabric-ca-server`` commands can be found `here <https://hyperledger-fabric-ca.readthedocs.io/en/release-1.1/servercli.html#fabric-ca-server-s-cli>`_.
 
-更多关于 ``fabric-ca-server`` 的命令 可以在 `这里 <https://hyperledger-fabric-ca.readthedocs.io/en/release-1.1/servercli.html#fabric-ca-server-s-cli>`_ 找到。
+更多关于 ``fabric-ca-server`` 的命令可以在 `这里 <https://hyperledger-fabric-ca.readthedocs.io/en/release-1.1/servercli.html#fabric-ca-server-s-cli>`_ 找到。
 
 .. Licensed under Creative Commons Attribution 4.0 International License
    https://creativecommons.org/licenses/by/4.0/
