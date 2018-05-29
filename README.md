@@ -1,70 +1,51 @@
+# 自述文件
 
-# Documentation README
+## 介绍
+本文档包含了 Fabric 文档如何建立、发布以及在修改文档前应注意的约定事项等信息。
 
-## Introduction
+本文档核心部分采用 [reStructuredText](http://docutils.sourceforge.net/rst.html) 
+编写，并可使用 [Sphinx](http://www.sphinx-doc.org/en/stable/) 转换至HTML格式。
+HTML文件发布在 http://hyperledger-fabric.readthedocs.io上。该站点使用了钩子程序，
+主仓库 `docs/source` 目录下的任何新内容都会触发一次对该文档新的构建与发布。
 
-This document contains information on how the Fabric documentation is
-built and published as well as a few conventions one should be aware of
-before making changes to the doc.
+## 约定事项
 
-The crux of the documentation is written in
-[reStructuredText](http://docutils.sourceforge.net/rst.html) which is
-converted to HTML using [Sphinx](http://www.sphinx-doc.org/en/stable/).
-The HTML is then published on http://hyperledger-fabric.readthedocs.io
-which has a hook so that any new content that goes into `docs/source`
-on the main repository will trigger a new build and publication of the
-doc.
+* 源文件为 RST 格式，保存在 `docs/source` 目录下。
+* 主入口点为 index.rst。要在目录中增加内容时只需用和其他主题一样的方式修改即可。
+  当你阅读后就会发现，该文件的自解释性非常好。
+* 尽可能多的使用相对链接。它的推荐语法为：  :doc:\`锚文本 &lt;相对路径&gt;\`
+<br/>不要把后缀 .rst 加到文件路径的最后
+* 对于非 RST 文件，例如纯文本、MD 或 YAML 文件等，将其链接到 github 上的文件，例如： https://github.com/hyperledger/fabric/blob/master/docs/README.md
 
-## Conventions
+注意：以上约定信息意味着我们需要依赖于 github 镜像仓库。
+当通过 RST 文件浏览时，相对链接无法在 github 上正常使用。
 
-* Source files are in RST format and found in the `docs/source` directory.
-* The main entry point is index.rst, so to add something into the Table
-  of Contents you would simply modify that file in the same manner as
-  all of the other topics. It's very self-explanatory once you look at
-  it.
-* Relative links should be used whenever possible. The preferred
-  syntax for this is: :doc:\`anchor text &lt;relativepath&gt;\`
-  <br/>Do not put the .rst suffix at the end of the filepath.
-* For non RST files, such as text files, MD or YAML files, link to the
-  file on github, like this one for instance:
-  https://github.com/hyperledger/fabric/blob/master/docs/README.md
+## 建立环境
 
-Notes: The above means we have a dependency on the github mirror
-repository. Relative links are unfortunately not working on github
-when browsing through a RST file.
+和修改生产版本一样，对文档的任何修改都需要通过构建文档方式来测试。
+你可以用两种方式来做：
+建立你自己的暂存库与发布站点或在你本机上构建文档。下文会对这两种方式进行介绍：
 
-## Setup
+### 建立你自己的暂存库与发布站点
 
-Making any changes to the documentation will require you to test your
-changes by building the doc in a way similar to how it is done for
-production. There are two possible setups you can use to do so:
-setting up your own staging repo and publication website, or building
-the docs on your machine. The following sections cover both options:
+根据以下步骤，你可以很容易的建立起自己的暂存库：
 
-### Setting up your own staging repo and publication website
+1. 创建 [github 上的 fabirc](https://github.com/hyperledger/fabric) 分支
+1. 在你自己分支上，在屏幕右上角进入 `settings`
+1. 点击 `Integration & services`
+1. 点击 `Add service` 下拉菜单,
+1. 向下滚动至 ReadTheDocs
+1. 然后，前往 http://readthedocs.org 注册一个账号。首批提示中有一个会提供与 github 的链接。选择这一项
+1. 点击导入一个项目
+1. 在选项中导航至你的分支（例如 yourgithubid/fabric）
+1. 系统会询问你这个项目的名字。可凭自己的直觉想一个。这个名字会出现在 URL 的开头，所以你可能会需要在该名字后增加 `-fabric` 以便于和你给其他项目创建的文档进行区分，例如： `yourgithubid-fabric.readthedocs.io/en/latest` 
 
-You can easily build your own staging repo following these steps:
+现在，只要当你在自己的分支上修改或增加文档内容，这个 URL 就会将这些内容自动更新！
 
-1. Fork [fabric on github](https://github.com/hyperledger/fabric)
-1. From your fork, go to `settings` in the upper right portion of the screen,
-1. click `Integration & services`,
-1. click `Add service` dropdown,
-1. and scroll down to ReadTheDocs.
-1. Next, go to http://readthedocs.org and sign up for an account. One of the first prompts will offer to link to github. Elect this then,
-1. click import a project,
-1. navigate through the options to your fork (e.g. yourgithubid/fabric),
-1. it will ask for a name for this project. Choose something
-intuitive. Your name will preface the URL and you may want to append `-fabric` to ensure that you can distinguish between this and other docs that you need to create for other projects. So for example:
-`yourgithubid-fabric.readthedocs.io/en/latest`
+### 在本机构建文档
 
-Now anytime you modify or add documentation content to your fork, this
-URL will automatically get updated with your changes!
-
-### Building the docs on your machine
-
-Here are the quick steps to achieve this on a local machine without
-depending on ReadTheDocs, starting from the main fabric
-directory. Note: you may need to adjust depending on your OS.
+以下是从 fabric 主目录开始、不依赖于 ReadTheDocs、在本机上构建文档的简单步骤。
+注意：你可能需要根据你的操作系统进行一些调整。
 
 ```
 sudo pip install Sphinx
@@ -73,12 +54,13 @@ cd fabric/docs # Be in this directory. Makefile sits there.
 make html
 ```
 
-This will generate all the html files in `docs/build/html` which you can
-then start browsing locally using your browser. Every time you make a
-change to the documentation you will of course need to rerun `make
-html`.
+以上步骤会在 `docs/build/html` 目录下生成所有的html文件。你可以用浏览器在本地浏览。
+当然，每次修改文档后你都需要重新执行 `make
+html` 。
 
-In addition, if you'd like, you may also run a local web server with the following commands (or equivalent depending on your OS):
+
+另外，如果你愿意，你也可以通过以下命令（或你操作系统的类似命令）在本地运行一个 web 服务器：
+
 
 ```
 sudo apt-get install apache2
@@ -86,7 +68,6 @@ cd build/html
 sudo cp -r * /var/www/html/
 ```
 
-You can then access the html files at `http://localhost/index.html`.
+然后你就可以通过 `http://localhost/index.html` 来访问这些 html 文件。
 
-<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-s
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />本文授权基于 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">知识共享 署名 4.0 国际协议</a>。
