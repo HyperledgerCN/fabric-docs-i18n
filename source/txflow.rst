@@ -76,13 +76,14 @@ made to the ledger at this point. The set of these values, along with the
 endorsing peer’s signature is passed back as a “proposal response” to the SDK
 which parses the payload for the application to consume.
 
+担保节点验证（1）交易提案是完整的，（2）在过去没有被提交过（重放攻击保护），（3）签名是有效的（使用MSP），并且（4）提交者（在本例中的客户A）得到正确的授权在通道中来执行提案（即，每一个担保节点保证提交者满足通道的“写”策略。担保节点以交易提案凭证为输入，基于当前状态的数据库执行来生成交易结果，输出包括反馈值、读取集合和写入集合。截止现在账本还未进行更新。这些值的集合，背书节点的签名以及是/否的担保声明一同作为“提案反馈”被传输回到SDK，SDK对应用消耗的载荷进行解析。
 
 *{The MSP is a peer component that allows them to verify
 transaction requests arriving from clients and to sign transaction results(endorsements).
 The Writing policy is defined at channel creation time, and determines
 which user is entitled to submit a transaction to that channel.}*
 
-担保节点使用MSP验证签名并确定请求者是否被合理授权进行提案的操作（使用通道ACL）。担保节点以交易提案凭证为输入，基于当前状态的数据库执行来生成交易结果，输出包括反馈值、读取集合和写入集合。截止现在账本还未进行更新。这些值的集合，背书节点的签名以及是/否的担保声明一同作为“提案反馈”被传输回到SDK，SDK对应用消耗的载荷进行解析。 {MSP是在节点上运行的一个本地流程，该流程允许节点验证客户的交易请求和签订交易结果（背书）。ACL（权限控制清单）在通道创建时定义，决定哪些节点和用户被授权进行指定操作。}
+{MSP是在节点组件允许节点验证客户的交易请求和签订交易结果（背书）。写策略在通道创建时定义，决定哪些用户有资格在通道中提交一个交易。}
 
 
 .. image:: images/step3.png
