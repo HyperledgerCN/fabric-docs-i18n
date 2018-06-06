@@ -1,24 +1,37 @@
-Hyperledger Fabric Model
+超级账本 Fabric 模型
 ========================
 
+本章节概述了 超级账本Fabric 的关键功能设计，这些关键的功能设计让超级账本Fabric成为一个全面并可定制的企业区块链解决方案。
 This section outlines the key design features woven into Hyperledger Fabric that
 fulfill its promise of a comprehensive, yet customizable, enterprise blockchain solution:
 
+* :ref:`资产` - 资产的定义能让任何拥有价值的事物通过网络进行交易。食品，古董车甚至货币期货也可以定义为资产。
 * :ref:`Assets` - Asset definitions enable the exchange of almost anything with
   monetary value over the network, from whole foods to antique cars to currency
   futures.
+
+* :ref:`链码` - 链码的执行和交易排序被隔离执行，以限制跨节点类型的信任和所需的验证级别，同时优化网络可扩展性和性能。
 * :ref:`Chaincode` - Chaincode execution is partitioned from transaction ordering,
   limiting the required levels of trust and verification across node types, and
   optimizing network scalability and performance.
+  
+* :ref:`账本特性` - 不可篡改的共享账本纪录了每个渠道加密后的交易历史。账本同时具备于SQL类似的查询功能，让审计和争议解决能有效进行。 
 * :ref:`Ledger-Features` - The immutable, shared ledger encodes the entire
   transaction history for each channel, and includes SQL-like query capability
   for efficient auditing and dispute resolution.
+
+  
+* :ref:`以渠道保障隐私` - 渠道的设计保护了多边交易的隐私和机密性，让竞争企业和受管制的行业在一个共同网络上交换资产。  
 * :ref:`Privacy-through-Channels` - Channels enable multi-lateral transactions
   with the high degrees of privacy and confidentiality required by competing
   businesses and regulated industries that exchange assets on a common network.
+  
+* :ref:`安全的成员服务` - 授权制的会员资格提供了一个可信任的区块链网络，参与者知道所有交易都可以被授权的监管机构和审核员检测和追踪。
 * :ref:`Security-Membership-Services` - Permissioned membership provides a
   trusted blockchain network, where participants know that all transactions can
   be detected and traced by authorized regulators and auditors.
+
+* :ref:`共识机制` - 对共识机制独特的处理方式让超级账本Fabric拥有企业所需要的灵活性和可扩展性。
 * :ref:`Consensus` - a unique approach to consensus enables the
   flexibility and scalability needed for the enterprise.
 
