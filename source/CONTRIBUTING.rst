@@ -3,6 +3,7 @@ Contributions Welcome!
 
 We welcome contributions to Hyperledger in many forms, and
 there's always plenty to do!
+欢迎以各种形式贡献超级账本社区，有很多事情期待大家参与。
 
 First things first, please review the Hyperledger `Code of
 Conduct <https://wiki.hyperledger.org/community/hyperledger-project-code-of-conduct>`__
