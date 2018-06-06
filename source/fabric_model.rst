@@ -7,32 +7,28 @@ This section outlines the key design features woven into Hyperledger Fabric that
 fulfill its promise of a comprehensive, yet customizable, enterprise blockchain solution:
 
 * :ref:`Assets` 资产 - 资产的定义能让任何拥有价值的事物通过网络进行交易。食品，古董车甚至货币期货也可以定义为资产。
+* :ref:`Chaincode` 链码 - 链码的执行和交易排序被隔离执行，以限制跨节点类型的信任和所需的验证级别，同时优化网络可扩展性和性能。
+* :ref:`Ledger-Features` 账本特性 - 不可篡改的共享账本纪录了每个渠道加密后的交易历史。账本同时具备于SQL类似的查询功能，让审计和争议解决能有效进行。
+* :ref:`Privacy-through-Channels` 以渠道保障隐私 - 渠道的设计保护了多边交易的隐私和机密性，让竞争企业和受管制的行业在一个共同网络上交换资产。 
+* :ref:`Security-Membership-Services` 安全的成员服务 - 授权制的会员资格提供了一个可信任的区块链网络，参与者知道所有交易都可以被授权的监管机构和审核员检测和追踪。
+* :ref:`Consensus` 共识机制 - 对共识机制独特的处理方式让超级账本Fabric拥有企业所需要的灵活性和可扩展性。
+
+
 * :ref:`Assets` - Asset definitions enable the exchange of almost anything with
   monetary value over the network, from whole foods to antique cars to currency
   futures.
-
-* :ref:`Chaincode` 链码 - 链码的执行和交易排序被隔离执行，以限制跨节点类型的信任和所需的验证级别，同时优化网络可扩展性和性能。
 * :ref:`Chaincode` - Chaincode execution is partitioned from transaction ordering,
   limiting the required levels of trust and verification across node types, and
   optimizing network scalability and performance.
-  
-* :ref:`Ledger-Features` 账本特性 - 不可篡改的共享账本纪录了每个渠道加密后的交易历史。账本同时具备于SQL类似的查询功能，让审计和争议解决能有效进行。 
 * :ref:`Ledger-Features` - The immutable, shared ledger encodes the entire
   transaction history for each channel, and includes SQL-like query capability
   for efficient auditing and dispute resolution.
-
-  
-* :ref:`Privacy-through-Channels` 以渠道保障隐私 - 渠道的设计保护了多边交易的隐私和机密性，让竞争企业和受管制的行业在一个共同网络上交换资产。  
 * :ref:`Privacy-through-Channels` - Channels enable multi-lateral transactions
   with the high degrees of privacy and confidentiality required by competing
   businesses and regulated industries that exchange assets on a common network.
-  
-* :ref:`Security-Membership-Services` 安全的成员服务 - 授权制的会员资格提供了一个可信任的区块链网络，参与者知道所有交易都可以被授权的监管机构和审核员检测和追踪。
 * :ref:`Security-Membership-Services` - Permissioned membership provides a
   trusted blockchain network, where participants know that all transactions can
   be detected and traced by authorized regulators and auditors.
-
-* :ref:`Consensus` 共识机制 - 对共识机制独特的处理方式让超级账本Fabric拥有企业所需要的灵活性和可扩展性。
 * :ref:`Consensus` - a unique approach to consensus enables the
   flexibility and scalability needed for the enterprise.
 
@@ -59,7 +55,10 @@ using the `Hyperledger Composer <https://github.com/hyperledger/composer>`__ too
 
 链码
 ---------
-链码是指包含了一项或多项资产定义，以及所有修改资产交易逻辑的软件。换句话说，链码代表了业务逻辑。 链码限制了被容许执行的读取和更改键值对/状态数据库信息的规则。 链码函数使用当前的状态数据库里的数据执行，并通过超级账本Fabric的交易协议启动。 链码执行后会产生一组键值对（写入集），这组键值对会被提交到网络并写入所有Peer节点的账本里。 
+链码是指包含了一项或多项资产定义，以及所有修改资产交易逻辑的软件。换句话说，链码代表了业务逻辑。 链码限制了被容许执行的读取和更改键值对/
+
+
+库信息的规则。 链码函数使用当前的stateDB里的数据执行，并通过超级账本Fabric的交易协议启动。 链码执行后会产生一组键值对（写入集），这组键值对会被提交到网络并写入所有Peer节点的账本里。 
 
 Chaincode is software defining an asset or assets, and the transaction instructions for
 modifying the asset(s).  In other words, it's the business logic.  Chaincode enforces the rules for reading
@@ -72,7 +71,7 @@ the ledger on all peers.
 
 账本特性
 ---------------
-Fabric账本是所有资产状态数据修改的纪录，账本上的数据是已排序并且防篡改的。状态数据修改是用户调用链码（交易）的直接结果。每个交易都会生成一个资产键值对，这个键值对会成为一个增加，修改或删除的纪录加到账本里。账本是以区块链（链）的数据结构，把排序并不可篡改的数据纪录到每个区块里，同时以状态数据库纪录fabric的当前数据状态。每一个渠道有一个独立账本，每个Peer节点都会为自己参与的渠道维护和备份该渠道的账本。
+Fabric账本是所有资产状态数据修改的纪录，账本上的数据是已排序并且防篡改的。状态数据修改是用户调用链码（交易）的直接结果。每个交易都会生成一个资产键值对，这个键值对会成为一个增加，修改或删除的纪录提交到账本里。账本是以区块链（链）的数据结构，把排序并不可篡改的数据纪录到每个区块里，同时以stateDB纪录fabric的当前数据状态。每一个渠道有一个独立账本，每个Peer节点都会为自己参与的渠道维护和备份该渠道的账本。
 
 The ledger is the sequenced, tamper-resistant record of all state transitions in the fabric.  State
 transitions are a result of chaincode invocations ('transactions') submitted by participating
@@ -84,13 +83,13 @@ blocks, as well as a state database to maintain current fabric state.  There is 
 channel. Each peer maintains a copy of the ledger for each channel of which they are a member.
 
 - 以主键值，键值区间和复合主键查询和更新账本
-- 以丰富查询语言执行只读查询（使用CouchDB作为状态数据库的情况下）
+- 以丰富查询语言执行只读查询（使用CouchDB作为stateDB的情况下）
 - 交易的内容包含所有链码已读取的键值对版本（读取集）和所有写入的键值对（写入集）
 - 交易包含所有背书节点的加密签名并以提交到排序服务（ordering service）
 - 交易被order节点排序，并由排序服务广播到对应渠道的Peer节点
 - Peer 节点根据背书政策验证交易，并执行背书政策
 - 在交易加入区块前，Peer 节点会教验状态数据版本是否在链码执行后有更新，确保交易结果的有效性。
-- 一旦交易成功验证并加入账本后，交易数据就不可篡改
+- 一旦交易成功验证并提交到账本后，交易数据就不可篡改
 - 每个渠道账本都包含一个设定区块，这个设定区块定义了政策，访问权限清单和其他相关信息
 - 渠道的成员服务（MSP）实例让每个渠道可以从不同的证书颁发机构获得加密算法的资料
 
@@ -163,11 +162,11 @@ Hyperledger Fabric.
 
 共识机制
 ---------
-在分布式账本技术的讨论中，共识机制最近已成为特定算法的同义词，然而共识不仅仅是简单地就交易顺序达成一致。超级账本 Fabric通过其在整个交易流程中的基本角色（从提案和背书，到排序，确认和发布更改）突出了这种对共识机制理解的差异。简而言之，超级账本Fabric里的共识机制定义为对区块里的交易组正确性的全面验证。
+在分布式账本技术的讨论中，共识机制最近已成为特定算法的同义词，然而共识不仅仅是简单地就交易顺序达成一致。超级账本 Fabric通过其在整个交易流程中的基本角色（从提案和背书，到排序，确认和提交）突出了这种对共识机制理解的差异。简而言之，超级账本Fabric里的共识机制定义为对区块里的交易组正确性的全面验证。
 
-当区块内交易顺序和结果通过政策标准检查时，这个区块的内的数据就能达成共识。这些检查发生在交易的生命周期中，包括使用背书政策来规定哪些特定成员必须认可那些指定的交易类别。这些交易检查还会使用链码以确保策略得到执行和维护。在发布修改之前，Peer节点将使用链码来确保有有效的背书，并且这些背书来源于适当的实体。此外，在包含交易的任何块被附加到账本之前，Peer 节点将进行版本检查，以确认账本的当前状态已获得共识并没有更新。此最终检查可防止双重支出操作以及可能危及数据完整性的其他威胁，并允许针对非静态变量执行功能。
+当区块内交易顺序和结果通过政策标准检查时，这个区块的内的数据就能达成共识。这些检查发生在交易的生命周期中，包括使用背书政策来规定哪些特定成员必须认可那些指定的交易类别。这些交易检查还会使用链码以确保策略得到执行和维护。在发布修改之前，Peer节点将使用链码来确保有有效的背书，并且这些背书来源于适当的实体。此外，在包含交易的任何块被提交到账本之前，Peer 节点将进行版本检查，以确认账本的当前状态已获得共识并没有更新。此最终检查可防止双重支出操作以及可能危及数据完整性的其他威胁，并允许针对非静态变量执行功能。
 
-除了背书操作，有效性和版本检查之外，交易流程中还进行大量的身份验证。访问权限控制列表在网络层上实施（由排序服务到渠道）。在交易流程中，交易建议在通过不同的架构组件时会被重复地签名和验证。总而言之，共识机制并不仅仅局限于一批交易的共识顺序，一个有效交易在Fabric机制中，通过提案到确认加入账本之间的持续核查过程后，共识是一个必然生成的副产品。
+除了背书操作，有效性和版本检查之外，交易流程中还进行大量的身份验证。访问权限控制列表在网络层上实施（由排序服务到渠道）。在交易流程中，交易建议在通过不同的架构组件时会被重复地签名和验证。总而言之，共识机制并不仅仅局限于一批交易的共识顺序，一个有效交易在Fabric机制中，通过提案到提交之间的持续核查过程后，共识是一个必然生成的副产品。
 
 请参考可视化的交易流程 :doc:`txflow`，以了解更多关于共识机制的内容。
 
