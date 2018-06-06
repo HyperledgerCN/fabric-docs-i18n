@@ -42,7 +42,7 @@ fulfill its promise of a comprehensive, yet customizable, enterprise blockchain 
 ------
 资产可以为有形（房地产和硬件）或无形资产（合同和知识产权）。 超级账本Fabric提供了使用链码交易修改资产的能力。资产在 超级账本Fabric中 以键值对集合的形式表达，资产的状态更改作为交易记录在对应的渠道账本里。资产可以用二进制和/或JSON格式表示和纪录。
 
-你可以通过`超级账本composer<https://github.com/hyperledger/composer>`这个工具，很容易地在超级账本Fabric里面定义和使用你的资产。
+你可以通过 `Hyperledger Composer <https://github.com/hyperledger/composer>`__ 这个工具，很容易地在超级账本Fabric里面定义和使用你的资产。
 
 Assets can range from the tangible (real estate and hardware) to the intangible
 (contracts and intellectual property).  Hyperledger Fabric provides the
@@ -94,7 +94,7 @@ channel. Each peer maintains a copy of the ledger for each channel of which they
 - 每个渠道账本都包含一个设定区块，这个设定区块定义了政策，访问权限清单和其他相关信息
 - 渠道的成员服务（MSP）实例让每个渠道可以从不同的证书颁发机构获得加密算法的资料
 
-想了解更多关于账本数据库，存储结构和查询功能的信息，请参考:doc:`ledger`文档。
+想了解更多关于账本数据库，存储结构和查询功能的信息，请参考 :doc:`ledger` 文档。
 
 - Query and update ledger using key-based lookups, range queries, and composite key queries
 - Read-only queries using a rich query language (if using CouchDB as state database)
@@ -117,7 +117,7 @@ See the :doc:`ledger` topic for a deeper dive on the databases, storage structur
 
 超级账本Fabric在每个渠道的基础上使用不可篡改的账本以及可以操纵和修改资产当前状态（即更新键值对）的链码。账本只存在于一个渠道范围内，它可以在整个网络中共享（假设每个参与者都在一个共同渠道上运营）或者可以将其私有化，只包含一组特定的参与者。在后一种情况下，这些参与者将创建一个单独的渠道，从而隔离这个渠道的交易和账本。为了缩小总体透明度和隐私之间的差距，链码只能安装在需要访问资产状态以执行读取和写入的Peer节点（换句话说，如果链接代码未安装在Peer节点上，它将无法正确地与账本连接）。为了进一步保护数据，链码可以在将交易发送到排序服务（ordering service）并将区块附加到分类账之前，使用常用的加密算法（如AES）对链码中的值进行加密（部分或全部）。一旦将加密数据写入分类帐，只能由拥有对应密钥的用户解密。
 
-更多关于链码加密的信息，请参考:doc:`chaincode4ade` 文档。
+更多关于链码加密的信息，请参考 :doc:`chaincode4ade` 文档。
 
 Hyperledger Fabric employs an immutable ledger on a per-channel basis, as well as
 chaincodes that can manipulate and modify the current state of assets (i.e. update
@@ -169,7 +169,7 @@ Hyperledger Fabric.
 
 除了背书操作，有效性和版本检查之外，交易流程中还进行大量的身份验证。访问权限控制列表在网络层上实施（由排序服务到渠道）。在交易流程中，交易建议在通过不同的架构组件时会被重复地签名和验证。总而言之，共识机制并不仅仅局限于一批交易的共识顺序，一个有效交易在Fabric机制中，通过提案到确认加入账本之间的持续核查过程后，共识是一个必然生成的副产品。
 
-请参考可视化的交易流程:doc:`txflow`，以了解更多关于共识机制的内容。
+请参考可视化的交易流程 :doc:`txflow`，以了解更多关于共识机制的内容。
 
 In distributed ledger technology, consensus has recently become synonymous with
 a specific algorithm, within a single function. However, consensus encompasses more
