@@ -10,7 +10,7 @@ prescribed interface. Chaincode runs in a secured Docker container isolated from
 the endorsing peer process. Chaincode initializes and manages ledger state
 through transactions submitted by applications.
 
-链码是一个程序,使用`Go <https://golang.org>`_, `node.js <https://nodejs.org>`_ 来编写,
+链码是一个程序,使用 `Go <https://golang.org>`_, `node.js <https://nodejs.org>`_ 来编写,
 后续将可使用其他的编程语言例如Java,来实现规定的接口。
 链码运行在一个安全的Docker容器中独立于背书节点。
 通过app提交交易链码可以初始化和管理ledger state(账本状态)。
