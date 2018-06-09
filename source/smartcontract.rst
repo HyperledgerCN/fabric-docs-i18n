@@ -21,6 +21,4 @@ modify world state.
 最终用户可以通过client-side app(客户端应用程序)调用链码与网络中的对等节点进行联通。
 Chaincode(链码)运行网络交易,如果验证通过,可以增加共享账本信息和修改world state(状态账本)。
 
-.. Licensed under Creative Commons Attribution 4.0 International License
-https://creativecommons.org/licenses/by/4.0/
 
