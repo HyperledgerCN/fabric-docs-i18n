@@ -1,7 +1,7 @@
-Chaincode Tutorials 链码教程
+Chaincode Tutorials
 ===================
 
-What is Chaincode? 什么是链码？
+What is Chaincode?
 ------------------
 
 Chaincode is a program, written in `Go <https://golang.org>`_, `node.js <https://nodejs.org>`_,
@@ -26,7 +26,7 @@ access its state.
 只能通过唯一的域内链码进行账本状态的添加, 不能直接通过其他链码访问。
 然而,在同一个网络里,可以给予适当的权限允许链码调用另一个链码访问它的账本状态。
 
-Two Personas 两种观点
+Two Personas
 ------------
 
 We offer two different perspectives on chaincode. One, from the perspective of
@@ -41,3 +41,6 @@ development of a chaincode application.
 解决方案标题为 :doc:`chaincode4ade` 。第二， :doc:`chaincode4noah` 面向区块链网络
 运营商 - 负责管理区块链网络，利用 Hyperledger Fabric API 进行安装、实例化、链码升级，
 但可能不参与链码应用程序的开发。
+
+.. Licensed under Creative Commons Attribution 4.0 International License
+https://creativecommons.org/licenses/by/4.0/
