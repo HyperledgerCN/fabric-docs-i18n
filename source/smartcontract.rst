@@ -1,10 +1,12 @@
-Chaincode
+Chaincode  链码
 =========
 
 [WIP]
 
 The widely-used term, smart contract, is referred to as "chaincode" in
 Hyperledger Fabric.
+
+人们常说的"智能合约"，在Hyperledger Fabric中被称为"chaincode"。
 
 Self-executing logic that encodes the rules for specific types of
 network transactions. Chaincode (currently written in Go) is
