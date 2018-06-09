@@ -1,4 +1,4 @@
-Chaincode Tutorials 链码指南
+Chaincode Tutorials 链码教程
 ===================
 
 What is Chaincode? 什么是链码？
