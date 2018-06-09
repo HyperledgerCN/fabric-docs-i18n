@@ -1,7 +1,7 @@
-Chaincode Tutorials
+Chaincode Tutorials 链码指南
 ===================
 
-What is Chaincode?
+What is Chaincode? 什么是链码?
 ------------------
 
 Chaincode is a program, written in `Go <https://golang.org>`_, `node.js <https://nodejs.org>`_,
@@ -26,7 +26,7 @@ access its state.
 只能通过唯一的域内链码进行账本状态的添加, 不能直接通过其他链码访问。
 然而,在同一个网络里,可以给予适当的权限允许链码调用另一个链码访问它的账本状态。
 
-Two Personas
+Two Personas 两个观点
 ------------
 
 We offer two different perspectives on chaincode. One, from the perspective of
