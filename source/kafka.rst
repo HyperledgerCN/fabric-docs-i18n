@@ -8,14 +8,14 @@
 
 This document assumes that the reader generally knows how to set up a Kafka cluster and a ZooKeeper ensemble. The purpose of this guide is to identify the steps you need to take so as to have a set of Hyperledger Fabric ordering service nodes (OSNs) use your Kafka cluster and provide an ordering service to your blockchain network.
 
-该文档假设读者已经基本了解如何去搭建Kafka集群和ZooKeeper集群。本文档的目的是确定您使用Kafka集群搭建一套Hyperledger Fabric排序服务节点集(OSNs)以及为你的区块链网络提供排序服务所需要采取的步骤。
+该文档假设读者已经基本了解如何去搭建Kafka集群和ZooKeeper集群。本文档的目的是跟您确认有关使用Kafka集群搭建一套为你的区块链网络提供排序服务的Hyperledger Fabric排序服务节点集(OSNs)所需要采取的步骤。。
 
 概览(Big picture)
 -----------
 
 Each channel maps to a separate single-partition topic in Kafka. When an OSN receives transactions via the ``Broadcast`` RPC, it checks to make sure that the broadcasting client has permissions to write on the channel, then relays (i.e. produces) those transactions to the appropriate partition in Kafka. This partition is also consumed by the OSN which groups the received transactions into blocks locally, persists them in its local ledger, and serves them to receiving clients via the ``Deliver`` RPC. For low-level details, refer to `the document that describes how we came to this design <https://docs.google.com/document/d/1vNMaM7XhOlu9tB_10dKnlrhy5d7b1u8lSY8a-kVjCO4/edit>`_ — Figure 8 is a schematic representation of the process described above.
 
-每一个通道(channel)在Kafka中被映射到一个单独的单分区(partition)类别(topic)。当排序节点通过RPC广播(Broadcast)接收到交易时，它会检查广播交易的客户端是否有权限去修改通道(channel)数据，然后反馈（即产生）这些交易到Kafka的适当分区(partition)中。该分区也被排序节点所消费(consume)(译者注：生产者消费者模型)，排序节点将接收到的交易分组写入到本地区块，将其保留在本地账本中，并通过Deliver RPC提供给需要接收的客户端。更多详细的信息，请参考the document that describes how we came to this design <https://docs.google.com/document/d/1vNMaM7XhOlu9tB_10dKnlrhy5d7b1u8lSY8a-kVjCO4/edit>_ -- 图8是上述过程的示意图。
+每一个通道(channel)在Kafka中被映射到一个单独的单分区(partition)类别(topic)。当排序节点接收到客户端通过RPC广播(Broadcast)出来的交易时，它会检查广播交易的客户端是否有权限去修改通道(channel)数据，然后反馈（即产生）这些交易到Kafka的适当分区(partition)中。该分区也被排序节点所消费(consume)(译者注：生产者消费者模型)，排序节点将接收到的交易在本地分组后打包进区块，将其持久化在本地账本中，并通过Deliver RPC提供给需要接收的客户端。更多详细的信息，请参考the document that describes how we came to this design <https://docs.google.com/document/d/1vNMaM7XhOlu9tB_10dKnlrhy5d7b1u8lSY8a-kVjCO4/edit>_ -- 图8是上述过程的示意图。
 
 步骤(Steps)
 -----
