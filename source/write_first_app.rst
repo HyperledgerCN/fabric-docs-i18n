@@ -242,8 +242,8 @@ create or load the identity objects for our various users.
 这个程序会执行一个证书签名请求（CSR），最后输出 eCert 和密钥文件到一个新创建的目录下 - ``hfc-key-store`` - 该目录位于项目的根目录下。
 随后，我们的应用在需要创建或者加载用户的身份标识对象时，会查看这个目录。
 
-Register and Enroll ``user1``
------------------------------
+Register and Enroll ``user1`` - 注册和登记 ``user1``
+--------------------------------------------------------
 
 With our newly generated admin eCert, we will now communicate with the CA server
 once more to register and enroll a new user.  This user - ``user1`` - will be
@@ -252,6 +252,11 @@ note here that it is the ``admin`` identity that is issuing the registration and
 enrollment calls for our new user (i.e. this user is acting in the role of a registrar).
 Send the register and enroll calls for ``user1``:
 
+使用我们新生成的管理员 eCert，我们可以再次和 CA 服务器进交互，注册和登记一个新用户。
+这个用户 - ``user1`` - 会被我们用于查询和更新账本。
+值得注意的是，只有 ``admin`` 身份可以执行对新用户的注册和登记请求（该用户扮演了一个登记员的角色）。
+发送 ``user1`` 的注册和登记请求：
+
 .. code:: bash
 
   node registerUser.js
@@ -259,6 +264,10 @@ Send the register and enroll calls for ``user1``:
 Similar to the admin enrollment, this program invokes a CSR and outputs the keys
 and eCert into the ``hfc-key-store`` subdirectory.  So now we have identity material for two
 separate users - ``admin`` & ``user1``.  Time to interact with the ledger...
+
+和登记管理员时类似，该程序执行了一个 CSR，输出密钥和 eCert 文件到 ``hfc-key-store`` 子目录下。
+现在我们有了两个用户的身份标识文件 - ``admin`` 和 ``user1``。
+现在到了和账本进行交互的时间了...
 
 Querying the Ledger
 -------------------
