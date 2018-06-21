@@ -120,17 +120,23 @@ this content for the first time, then you won't have this chaincode image on you
 
   docker rmi dev-peer0.org1.example.com-fabcar-1.0-5c906e402ed29f20260ae42283216aa75549c571e2e380f3615826365d8269ba
 
-Install the clients & launch the network
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Install the clients & launch the network - 安装连接客户端并启动网络
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note:: The following instructions require you to be in the ``fabcar`` subdirectory
           within your local clone of the ``fabric-samples`` repo.  Remain at the
           root of this subdirectory for the remainder of this tutorial.
 
+          下述指令需要你位于本地的 ``fabric-samples`` 仓库目录下的 ``fabcar`` 子目录下。
+          本教程随后部分也需要你始终保持在该子目录下。
+
 Run the following command to install the Fabric dependencies for the applications.
 We are concerned with ``fabric-ca-client`` which will allow our app(s) to communicate
 with the CA server and retrieve identity material, and with ``fabric-client`` which
 allows us to load the identity material and talk to the peers and ordering service.
+
+运行如下命令，安装应用所需要的 Fabric 相关依赖。
+我们通过使用 ``fabric-ca-client`` 和 CA 服务器进行交互获取身份标识文件，然后使用 ``fabric-client`` 加载这些身份标识文件，并与对等节点和排序服务进行交互。
 
 .. code:: bash
 
@@ -140,12 +146,18 @@ Launch your network using the ``startFabric.sh`` shell script.  This command
 will spin up our various Fabric entities and launch a smart contract container for
 chaincode written in Golang:
 
+使用 ``startFabric.sh`` 脚本启动你的网络。
+这个命令会启动多个 Fabric 实体，并且启动一个基于 Golang 编写的链码的智能合约容器。
+
 .. code:: bash
 
   ./startFabric.sh
 
 You also have the option of running this tutorial against chaincode written in
 `Node.js <https://fabric-shim.github.io/>`__.  If you'd like to pursue this route, issue the following command instead:
+
+你同样可以使用基于 `Node.js <https://fabric-shim.github.io/>`__ 编写的智能合约来运行本教程。
+如果你想这么做，使用如下的指令：
 
 .. code:: bash
 
@@ -156,8 +168,13 @@ You also have the option of running this tutorial against chaincode written in
           increased time is a result of the fabric-shim being installed as the
           chaincode image is being built.
 
+          注意完成 Node.js 链码场景的构建会消耗大约 90 秒甚至更长的时间。
+          脚本并没有被挂起，增加的时间是安装 fabric-shim 和编译链码镜像造成的。
+
 Alright, now that you’ve got a sample network and some code, let’s take a
 look at how the different pieces fit together.
+
+好的，现在你已经有了一个示例网络以及一些代码，让我们看看不同部分之间是如何相互适配的。
 
 How Applications Interact with the Network
 ------------------------------------------
