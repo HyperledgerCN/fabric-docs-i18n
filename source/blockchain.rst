@@ -1,248 +1,175 @@
-Introduction
-============
-Hyperledger Fabric is a platform for distributed ledger solutions underpinned
-by a modular architecture delivering high degrees of confidentiality,
-resiliency, flexibility and scalability. It is designed to support pluggable
-implementations of different components and accommodate the complexity and
-intricacies that exist across the economic ecosystem.
+简介
+====
+超级账本Fabric是一个提供分布式账本解决方案的平台，由模块化架构做支撑，具备高保密性、可伸缩性、
+灵活性和可扩展性。它被设计成支持不同组件的可拔插启用，并能适应在经济生态系统中错综复杂的各种场
+景。
 
-Hyperledger Fabric delivers a uniquely elastic and extensible architecture, distinguishing
-it from alternative blockchain solutions. Planning for the future of enterprise
-blockchain requires building on top of a fully vetted, open-source architecture;
-Hyperledger Fabric is your starting point.
+超级账本Fabric提供了一个独特的可伸缩、可扩展的架构，这是其与其他区块链解决方案的显著区别。规划
+企业区块链的未来需要建立在全面审核、开源架构之上，超级账本Fabric是你很好的一个起点。
 
-We recommended first-time users begin by going through the rest of the
-introduction below in order to gain familiarity with how blockchains work
-and with the specific features and components of Hyperledger Fabric.
+对于初学者，推荐首先阅读下文中的简介，以便熟悉区块链是如何工作的、具有的主要特点，以及超级账本
+Fabric中包含的组件。
 
-Once comfortable -- or if you're already familiar with blockchain and
-Hyperledger Fabric -- go to :doc:`getting_started` and from there explore the
-demos, technical specifications, APIs, etc.
+如果你愿意，或者已经熟悉区块链和超级账本Fabric，可直接阅读 :doc:`getting_started`，该文中包含相
+关示例、技术规格、APIs等。
 
-What is a Blockchain?
----------------------
-**A Distributed Ledger**
+区块链是什么？
+-------------
+**一个分布式账本**
 
-At the heart of a blockchain network is a distributed ledger that records all
-the transactions that take place on the network.
+区块链网络的核心是一个分布式账本，这个账本记录了网络中发生的所有交易信息。
 
-A blockchain ledger is often described as **decentralized** because it is replicated
-across many network participants, each of whom **collaborate** in its maintenance.
-We’ll see that decentralization and collaboration are powerful attributes that
-mirror the way businesses exchange goods and services in the real world.
+
+区块链账本通常被描述为 **去中心化** ，因为它在众多网络参与者中同步复制，每个参与者都参与 **协作**
+共同维护。接下来我们会看到，去中心化和协作，是现实世界中货物和服务商务贸易的显著特点。
 
 .. image:: images/basic_network.png
 
-In addition to being decentralized and collaborative, the information recorded
-to a blockchain is append-only, using cryptographic techniques that guarantee
-that once a transaction has been added
-to the ledger it cannot be modified. This property of immutability makes it
-simple to determine the provenance of information because participants can be
-sure information has not been changed after the fact. It’s why blockchains
-are sometimes described as **systems of proof**.
+除了“去中心化”与“协作”，区块链的另一个显著特点是信息在只能以“追加”的方式记录在区块链中，同时使
+用加密技术保障交易一旦被添加进账本中，就无法被篡改。区块链的这种不可篡改性，使得信息来源的确认，
+变得异常容易，因为参与者可以肯定，信息一旦写入区块链后，就不会被篡改。这也是为什么区块链有时被
+称为 **证明系统** 原因。
 
- **Smart Contracts**
+**智能合约**
 
-To support the consistent update of information – and to enable a whole host of
-ledger functions (transacting, querying, etc) – a blockchain network uses **smart
-contracts** to provide controlled access to the ledger.
+为了支持信息的持续更新，以及启用一整套账本函数（交易，查询等），区块链网络引入了 **智能合约** 
+来实现对账本的可控访问。
 
 .. image:: images/Smart_Contract.png
 
-Smart contracts are not only a key mechanism for encapsulating information
-and keeping it simple across the network, they can also be written to allow
-participants to execute certain aspects of transactions automatically.
+智能合约不仅拥有在全网中，打包信息并保持其简单的关键机制，更能允许参与者自动执行交易的特定环节。
 
-A smart contract can, for example, be written to stipulate the cost of shipping
-an item that changes depending on when it arrives. With the terms agreed to
-by both parties and written to the ledger, the appropriate funds change hands
-automatically when the item is received.
+例如，买卖双方可以定义一个智能合约，约定货物的到达时间和对应的费用。在双方方均同意的情况下，写
+入账本，当货物送达时，货款就会自动转账给卖方。
 
-**Consensus**
+**共识**
 
-The process of keeping the ledger transactions synchronized across the network –
-to ensure that ledgers only update when transactions are approved by the appropriate
-participants, and that when ledgers do update, they update with the
-same transactions in the same order – is called **consensus**.
+保持全网账本交易同步，账本只会在各交易方都确认后，才进行更新; 在更新账本时，各交易方更新同样位
+置的同一个交易，这个流程，叫做 **共识** 。
 
 .. image:: images/consensus.png
 
-We’ll learn a lot more about ledgers, smart contracts and consensus later. For
-now, it’s enough to think of a blockchain as a shared, replicated transaction
-system which is updated via smart contracts and kept consistently
-synchronized through a collaborative process called consensus.
+后面我们会详细介绍账本、智能合约和共识的相关内容。但目前为止，我们只需把区块链理解为一个共享的，
+通过智能合约更新的多副本交易系统，同时这个系统通过协作共识机制保证了网络中所有账本副本的同步。
 
-Why is a Blockchain useful?
+区块链为什么切实可行？
 ---------------------------
 
-**Today’s Systems of Record**
+**当前的记录系统**
 
-The transactional networks of today are little more than slightly updated
-versions of networks that have existed since business records have been kept.
-The members of a **Business Network** transact with each other, but they maintain
-separate records of their transactions. And the things they’re transacting –
-whether it’s Flemish tapestries in the 16th century or the securities of today
-– must have their provenance established each time they’re sold to ensure that
-the business selling an item possesses a chain of title verifying their
-ownership of it.
+自从商业数据记录网络系统诞生以来，直到今天的交易网络并没有发生太大的变化。在 **商业网络** 中的成
+员进行相互交易时，他们各自维护着自己独立的交易记录。同时，人们交易的物品——无论是16世纪佛兰德的挂
+毯，还是现代的有价证券——都仍然需要在每次卖出交易过程中提供来源信息，以确保卖方拥有所出售商品的所
+有权。
 
-What you’re left with is a business network that looks like this:
+当前的商业网络就像下图描述的一样：
 
 .. image:: images/current_network.png
 
-Modern technology has taken this process from stone tablets and paper folders
-to hard drives and cloud platforms, but the underlying structure is the same.
-Unified systems for managing the identity of network participants do not exist,
-establishing provenance is so laborious it takes days to clear securities
-transactions (the world volume of which is numbered in the many trillions of
-dollars), contracts must be signed and executed manually, and every database in
-the system contains unique information and therefore represents a single point
-of failure.
+随着科技的进步，上图中的交易流程不断演化发展，经历了从使用石碑、使用纸质账本、使用硬盘存储器直到
+使用云计算平台的不同阶段，但流程的底层架构并没有发生任何变化。并不存在一个可以统一管理网络参与者
+身份的系统，确认商品来源十分费劲，常常会耗费数天的时间明确证券的交易（包含数以万计美元的数量）。
+人们必须签订合约并手动执行，每一个系统中的数据库都包含着独立的信息并最终代表一个单点的错误。
 
-It’s impossible with today’s fractured approach to information and
-process sharing to build a system of record that spans a business network, even
-though the needs of visibility and trust are clear.
+以今天独立的信息孤岛和分享过程，来建立一个跨越商业网络的记录系统是不可能的，尽管可见性和信任的需
+求是明确的。
 
-**The Blockchain Difference**
+**区块链的不同点**
 
-What if instead of the rat’s nest of inefficiencies represented by the “modern”
-system of transactions, business networks had standard methods for establishing
-identity on the network, executing transactions, and storing data? What
-if establishing the provenance of an asset could be determined by looking
-through a list of transactions that, once written, cannot be changed, and can
-therefore be trusted?
+那我们为什么不用“现代”的交易系统来替代这种效率低下的网络？新的商业网络可以具有标准的方法建立身份
+信息，执行交易，并且存储数据。为什么不建立一个可信的交易链条记录？通过查询这个链条上的所有交易，
+来确定交易商品来源，并且这个链条上的信息一旦被写入，就无法被再次篡改。
 
-That business network would look more like this:
+以上描述的商业网络就如下图所示：
 
 .. image:: images/future_net.png
 
-This is a blockchain network. Every participant in it has their own replicated
-copy of the ledger. In addition to ledger information being shared, the processes
-which update the ledger are also shared. Unlike today’s systems, where a
-participant’s **private** programs are used to update their **private** ledgers,
-a blockchain system has **shared** programs to update **shared** ledgers.
+这就是区块链网络。在区块链网络中，每一个参与者都保有一份账本的副本。在区块链网络中，不仅仅是账本
+信息会被共享，更新账本的流程也是共享的。不同于目前的系统——参与者使用 **私有** 的程序对 **私有** 
+的账本进行更新，而区块链系统使用 **共享** 的程序对  **共享** 的账本进行更新。
 
-With the ability to coordinate their business network through a shared ledger,
-blockchain networks can reduce the time, cost, and risk associated with private information and
-processing while improving trust and visibility.
+通过使用共享账本协调整个商业网络，区块链网络能够减少时间、成本以及隐私信息泄露的风险，并且能使流
+程更加可信和透明。
 
-You now know what blockchain is and why it’s useful. There are a lot of other
-details that are important, but they all relate to these fundamental ideas of
-the sharing of information and processes.
+现在你已经明白了什么是区块链以及它的用途。同时还有许多其他的内容也非常重要，他们是信息与流程共享
+的基础知识。
 
-What is Hyperledger Fabric?
+超级账本Fabric是什么？
 ---------------------------
 
-The Linux Foundation founded Hyperledger in 2015 to advance
-cross-industry blockchain technologies. Rather than declaring a single
-blockchain standard, it encourages a collaborative approach to developing
-blockchain technologies via a community process, with intellectual property
-rights that encourage open development and the adoption of key standards over
-time.
+2015年，Linux基金会启动了超级账本项目，目标是发展跨行业的区块链技术。超级账本项目并不仅仅是定义一
+个单一的区块链标准，它更鼓励通过开源社区的力量协作开发区块链技术。
 
-Hyperledger Fabric is one of the blockchain projects within Hyperledger.
-Like other blockchain technologies, it has a ledger, uses smart contracts,
-and is a system by which participants manage their transactions.
+超级账本Fabric是超级账本中的一个区块链项目。与其他区块链技术类似，超级账本Fabric包含一个账本，使用
+智能合约并且是一个通过所有参与者管理交易的系统。
 
-Where Hyperledger Fabric breaks from some other blockchain systems is that
-it is **private** and **permissioned**. Rather than an open permissionless system
-that allows unknown identities to participate in the network (requiring protocols
-like Proof of Work to validate transactions and secure the network), the members
-of a Hyperledger Fabric network enroll through a **Membership Service Provider (MSP)**.
+超级账本Fabric与其他区块链系统最大的不同体现在 **私有** 和 **许可** 。与开放无需许可的网络系统允许
+未知身份的参与者加入网络不同（需要通过诸如工作量证明协议来保证交易有效并维护网络的安全），超级账本
+Fabric通过 ** 成员服务提供者(MSP)** 来登记所有的成员。
 
-Hyperledger Fabric also offers several pluggable options. Ledger data can be
-stored in multiple formats, consensus mechanisms can be switched in and out,
-and different MSPs are supported.
+超级账本Fabric也提供了多个可拔插选项。账本数据可被存储为多种格式，共识机制可被接入或者断开，同时支
+持多种不同的MSP。
 
-Hyperledger Fabric also offers the ability to create **channels**, allowing a group of
-participants to create a separate ledger of transactions. This is an especially
-important option for networks where some participants might be competitors and not
-want every transaction they make - a special price they're offering to some participants
-and not others, for example - known to every participant. If two
-participants form a channel, then those participants – and no others – have copies
-of the ledger for that channel.
+超级账本Fabric提供了建立 **通道** 的功能，这允许参与者为交易新建一个单独的账本。当网络中的一些参与
+者是竞争对手时，这个功能变得尤为重要。因为这些参与者并不希望所有的交易信息——比如提供给部分客户的特
+定价格信息——都对网络中所有参与者公开。只有在同一个通道中的参与者，才会拥有该通道中的账本，而其他不
+在此通道中的参与者则看不到这个账本。	
 
-**Shared Ledger**
+**共享账本**
 
-Hyperledger Fabric has a ledger subsystem comprising two components: the **world
-state** and the **transaction log**. Each participant has a copy of the ledger to
-every Hyperledger Fabric network they belong to.
+超级账本Fabric包含一个账本子系统，这个子系统包含两个组件： **世界状态(world state)** 和 **交易记录** 。
+超级账本Fabric网络中的每一个参与者都拥有一个账本的副本。
 
-The world state component describes the state of the ledger at a given point
-in time. It’s the database of the ledger. The transaction log component records
-all transactions which have resulted in the current value of the world state.
-It’s the update history for the world state. The ledger, then, is a combination
-of the world state database and the transaction log history.
+世界状态组件描述了账本在特定时间点的状态，它是账本的数据库。交易记录组件记录了产生世界状态当前值的所
+有交易，它是世界状态的更新历史。那么，账本则是世界状态数据库和交易历史记录的集合。
 
-The ledger has a replaceable data store for the world state. By default, this
-is a LevelDB key-value store database. The transaction log does not need to be
-pluggable. It simply records the before and after values of the ledger database
-being used by the blockchain network.
+账本的世界状态存储数据库是可更换的。默认配置下，是一个键-值存储数据库LevelDB。交易记录模块不需要被接
+入。只需要记录在区块链网络中账本数据库被使用时之前和之后的值就可以了。
 
-**Smart Contracts**
+**智能合约**
 
-Hyperledger Fabric smart contracts are written in **chaincode** and are invoked
-by an application external to the blockchain when that
-application needs to interact with the ledger. In most cases chaincode only
-interacts with the database component of the ledger, the world state (querying
-it, for example), and not the transaction log.
+超级账本Fabric智能合约被称为 **链码** ，当区块链外部的一个应用程序需要与账本交互时，就会调用 **链码** 。
+大多数情况下，链码只会与账本的数据库组件，世界状态（比如查询）做交互，而不会与交易记录做交互。
 
-Chaincode can be implemented in several programming languages. The currently
-supported chaincode language is `Go <https://golang.org/>`__ with support
-for Java and other languages coming in future releases.
+链码可通过多种不同编程语言实现。目前支持链码的语言是 `Go <https://golang.org/>`__ 、Java，更多的编程语
+言会在今后的版本中获得支持。
 
-**Privacy**
+**隐私**
 
-Depending on the needs of a network, participants in a Business-to-Business
-(B2B) network might be extremely sensitive about how much information they share.
-For other networks, privacy will not be a top concern.
+根据网络的需求，企业对企业（B2B）网络中的参与者会对信息共享的程度极为敏感。而其他网络，隐私并不是首要
+考虑的因素。
 
-Hyperledger Fabric supports networks where privacy (using channels) is a key
-operational requirement as well as networks that are comparatively open.
+超级账本Fabric支持构建隐私（使用通道）保护严格的网络，也支持构建相对开放的网络。
 
-**Consensus**
+**共识**
 
-Transactions must be written to the ledger in the order in which they occur,
-even though they might be between different sets of participants within the
-network. For this to happen, the order of transactions must be established
-and a method for rejecting bad transactions that have been inserted into the
-ledger in error (or maliciously) must be put into place.
+在网络中，交易必须按照产生顺序依次被写入账本中，哪怕来自完全不同单位的参与者。要实现这一目标，交易顺序
+必须被正确的建立，并且必须包含拒绝错误（或者恶意）插入账本中的无效交易的方法。
 
-This is a thoroughly researched area of computer science, and there are many
-ways to achieve it, each with different trade-offs. For example, PBFT (Practical
-Byzantine Fault Tolerance) can provide a mechanism for file replicas to
-communicate with each other to keep each copy consistent, even in the event
-of corruption. Alternatively, in Bitcoin, ordering happens through a process
-called mining where competing computers race to solve a cryptographic puzzle
-which defines the order that all processes subsequently build upon.
+这完全是计算机科学的研究领域，可以有多种方法实现上面提到的目标，这些方法各有优缺点。例如，PBFT (实用拜
+占庭容错)可以为文件副本提供一种机制来相互通信，即使是在发生腐败的情况下，也可以保证每个副本保持一致。
+另外，在比特币中，通过一种称为挖矿的行为进行排序。在挖矿过程中，竞争的计算机竞相解决一个密码难题，这个
+谜题定义了所有后续的构建顺序。
 
-Hyperledger Fabric has been designed to allow network starters to choose a
-consensus mechanism that best represents the relationships that exist between
-participants. As with privacy, there is a spectrum of needs; from networks
-that are highly structured in their relationships to those that are more
-peer-to-peer.
+超级账本Fabric被设计为允许网络构建者依据业务需求来选择采用的共识机制。好比考虑隐私性，就会有一连串的需
+求，高度结构化的网络，或是更加点对点的网络。
 
-We’ll learn more about the Hyperledger Fabric consensus mechanisms, which
-currently include SOLO, Kafka, and will soon extend to SBFT (Simplified
-Byzantine Fault Tolerance), in another document.
+更多的超级账本Fabric共识机制会在另一份文档中详细描述，这些共识机制目前包含SOLO，Kafka以及后续会添加的
+SBFT (简化拜占庭容错)。
 
-Where can I learn more?
+更多的学习资源？
 -----------------------
 
 :doc:`getting_started`
 
-We provide a number of tutorials where you’ll be introduced to most of the
-key components within a blockchain network, learn more about how they
-interact with each other, and then you’ll actually get the code and run
-some simple transactions against a running blockchain network. We also provide
-tutorials for those of you thinking of operating a blockchain network using
-Hyperledger Fabric.
+在快速入门中，我们提供了一些区块链网络核心组件介绍的教程。通过这些教程，你可以更进一步的学习到这些组件
+的运行机制，同时你也可以获取完整的代码并直接在一个区块链网络中运行一些简单的交易。同时，我们也提供了一
+些面向超级账本Fabric区块链网络维护人员的教程。
 
 :doc:`fabric_model`
 
-A deeper look at the components and concepts brought up in this introduction as
-well as a few others and describes how they work together in a sample
-transaction flow.
+在超级账本Fabric模型中，会对在这篇简介中提到的组件和概念进行了深入讲解，也包含一些其他未提到的内容，并
+通过一个交易流程示例描述了他们的工作机制。
 
 .. Licensed under Creative Commons Attribution 4.0 International License
    https://creativecommons.org/licenses/by/4.0/
