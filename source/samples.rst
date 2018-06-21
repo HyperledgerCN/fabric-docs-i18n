@@ -1,7 +1,7 @@
 Hyperledger Fabric 示例
 ==========================
 
-.. 注意:: 如果您运行在 **Windows** 操作系统上，接下来的终端命令行，可以使用 Docker Quickstart Terminal，
+.. note:: 如果您运行在 **Windows** 操作系统上，接下来的终端命令行，可以使用 Docker Quickstart Terminal，
           如果您之前没有安装，请访问 :doc:`prereqs` 页面。
 
           如果您在 Windows 7 或者 macOS 操作系统上使用 Docker Toolbox，
@@ -21,7 +21,7 @@ Hyperledger Fabric 示例
   cd fabric-samples
   git checkout {TAG}　
 
-.. 注意:: 为了确保示例和您接下来将要下载的 Fabric 二进制文件版本兼容，请检查与您 Fabric 版本匹配的示例 ``{TAG}``，比如, v1.1.0。
+.. note:: 为了确保示例和您接下来将要下载的 Fabric 二进制文件版本兼容，请检查与您 Fabric 版本匹配的示例 ``{TAG}``，比如, v1.1.0。
           使用命令 "git tag" 可以查看所有 Fabric 示例标签的列表。
 
 .. _binaries:
@@ -38,12 +38,12 @@ Hyperledger Fabric 示例
 
   curl -sSL https://goo.gl/6wtTN5 | bash -s 1.1.0
 
-.. 注意:: 如果您在运行上述 curl 命令时遇到错误，您的 curl 版本可能太旧，不能处理重定向或者不能支持该环境。
+.. note:: 如果您在运行上述 curl 命令时遇到错误，您的 curl 版本可能太旧，不能处理重定向或者不能支持该环境。
 
 	  请访问 :doc:`prereqs` 页面获取关于最新 curl 版本和正确环境的更多信息。或者，您可以用以下长地址了解其他信息:
 	  https://github.com/hyperledger/fabric/blob/master/scripts/bootstrap.sh
 
-.. 注意:: 对于任何一个已发布版本的 Hyperledger Fabric，您都可以使用以上命令，只需把 '1.1.0' 替换成您需要安装版本的标识符。
+.. note:: 对于任何一个已发布版本的 Hyperledger Fabric，您都可以使用以上命令，只需把 '1.1.0' 替换成您需要安装版本的标识符。
 
 通过上述命令，下载和执行一个bash脚本，该脚本可以下载和提取，所有您需要用于设置网络的特定平台的二进制文件，并把他们放入您之前创建的克隆仓库中，
 其中，包括四个特定平台的二进制文件：
@@ -71,9 +71,9 @@ Hyperledger Fabric 示例
 看看每一个镜像的名字，这些都将是组成我们的 Hyperledger Fabric 网络的组件。同时，您会发现您有两个同一镜像ID的实例 -
 一个标记为 "x86_64-1.x.x"，另一个标记为 "latest".
 
-.. 注意:: 在不同的架构上，x86_64 会被用于标识您所用架构的字符串替换。
+.. note:: 在不同的架构上，x86_64 会被用于标识您所用架构的字符串替换。
 
-.. 注意:: 如果您有其他该文档未谈及的疑问，或者在任何一个教程中遇到问题，请您访问 :doc:`questions` 页面了解关于额外帮助的温馨提示。
+.. note:: 如果您有其他该文档未谈及的疑问，或者在任何一个教程中遇到问题，请您访问 :doc:`questions` 页面了解关于额外帮助的温馨提示。
 
 .. Licensed under Creative Commons Attribution 4.0 International License
    https://creativecommons.org/licenses/by/4.0/
