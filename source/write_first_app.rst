@@ -176,18 +176,23 @@ look at how the different pieces fit together.
 
 好的，现在你已经有了一个示例网络以及一些代码，让我们看看不同部分之间是如何相互适配的。
 
-How Applications Interact with the Network
-------------------------------------------
+How Applications Interact with the Network - 应用是如何和网络进行交互的
+------------------------------------------------------------------------------
 
 For a more in-depth look at the components in our ``fabcar`` network (and how
 they're deployed) as well as how applications interact with those components
 on more of a granular level, see :doc:`understand_fabcar_network`.
+
+如果想深入了解 ``fabcar`` 网络的每一个组件（包括他们是如何部署的），以及应用是如何与这些组件之间进行交互的，请参考 :doc:`understand_fabcar_network` 文档。
 
 Developers more interested in seeing what applications **do** -- as well as
 looking at the code itself to see how an application is constructed -- should
 continue. For now, the most important thing to know is that applications use
 a software development kit (SDK) to access the **APIs** that permit queries and
 updates to the ledger.
+
+希望了解应用是如何构建以及运行的开发者，请继续阅读本文档。
+到目前为止最需要明确的事情是，应用使用了一个软件开发套件（SDK）来访问 **APIs**，实现对账本的查询和更新。
 
 Enrolling the Admin User
 ------------------------
