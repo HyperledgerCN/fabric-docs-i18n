@@ -1,9 +1,12 @@
-Writing Your First Application
-==============================
+Writing Your First Application - 编写你的第一个应用
+=======================================================
 
 .. note:: If you're not yet familiar with the fundamental architecture of a
           Fabric network, you may want to visit the :doc:`blockchain` and
           :doc:`build_network` documentation prior to continuing.
+
+          如果你对 Fabric 网络的基本架构还不了解，请在开始阅读本文之前，先阅读 :doc:`blockchain` 和
+          :doc:`build_network` 文档。
 
 In this section we'll be looking at a handful of sample programs to see how Fabric
 apps work. These apps (and the smart contract they use) -- collectively known as
@@ -12,11 +15,19 @@ will show the process for interacting with a Certificate Authority and generatin
 enrollment certificates, after which we will leverage these generated identities
 (user objects) to query and update a ledger.
 
+在本节中，我们会通过一些示例程序了解到 Fabric 应用是如何工作的。
+这些应用（包括它们利用的智能合约，即 ``fabcar``）提供了一个对 Fabric 功能的全方面的演示。
+特别的，我们会展示与证书认证服务交互并生成登记证书的过程，随后我们利用这些生成的身份标识文件（用户侧）来查询和更新账本。
+
 We’ll go through three principle steps:
+
+我们会展示如下三个主要过程：
 
   **1. Setting up a development environment.** Our application needs a network to
   interact with, so we'll download one stripped down to just the components we need
   for registration/enrollment, queries and updates:
+
+  **1. 构建一个开发环境。** 我们的应用需要和一个网络进行交互，所以我们需要下载一个经过裁剪的网络，以刚好满足我们注册、登记、查询和更新的要求：
 
   .. image:: images/AppConceptsOverview.png
 
@@ -25,35 +36,54 @@ We’ll go through three principle steps:
   in different ways. We’ll go in and inspect that smart contract to learn about the
   functions our applications will be using.
 
+  **2. 了解我们应用所使用的示例智能合约的参数。** 我们的智能合约包含多个函数，使得我们可以和账本进行多种交互。
+  我们会仔细阅读智能合约，深入了解我们应用所使用到的函数。
+
   **3. Developing the applications to be able to query and update assets on the ledger.**
   We'll get into the app code itself (our apps have been written in Javascript) and
   manually manipulate the variables to run different kinds of queries and updates.
+
+  **3. 开发一个可以查询和更新账本的应用。** 我们会阅读应用代码本身（我们的应用是基于 Javascript 编写的），手动的修改变量，实现不同的查询和更新操作。
 
 After completing this tutorial you should have a basic understanding of how
 an application is programmed in conjunction with a smart contract to interact
 with the ledger (i.e. the peer) on a Fabric network.
 
-Setting up your Dev Environment
--------------------------------
+完成本教程后，你会对如下过程有个基本了解：如何编写应用和智能合约，实现和 Fabric 网络的账本（例如对等节点）进行交互。
+
+Setting up your Dev Environment - 构建一个开发环境
+-----------------------------------------------------
 
 First thing, let's download the Fabric images and the accompanying artifacts for the network
 and applications...
 
+首先，需要下载 Fabric 镜像以及网络和应用的相关文件...
+
 Visit the :doc:`prereqs` page and ensure you have the necessary dependencies
 installed on your machine.
+
+访问 :doc:`prereqs` 页面，确保你已经安装了所有必要的依赖。
 
 Next, visit the :doc:`samples` page and follow the provided instructions.  Return to
 this tutorial once you have cloned the ``fabric-samples`` repository, and downloaded
 the latest stable Fabric images and available utilities.
 
+下一步，访问 :doc:`samples` 页面并按照所提供的说明进行操作。
+一旦完成克隆 ``fabric-samples`` 仓库后，返回本教程，随后下载最新的稳定版 Fabric 镜像以及可用的工具。
+
 At this point everything should be installed.  Navigate to the ``fabcar`` subdirectory
 within your ``fabric-samples`` repository and take a look at what's inside:
+
+至此，所有需要的依赖应该已经都安装好。
+进入 ``fabric-samples`` 仓库的 ``fabcar`` 子目录，查看里面有哪些文件：
 
 .. code:: bash
 
   cd fabric-samples/fabcar  && ls
 
 You should see the following:
+
+你会看到如下输出：
 
 .. code:: bash
 
@@ -62,11 +92,16 @@ You should see the following:
 Before starting we also need to do a little housekeeping.  Run the following command to
 kill any stale or active containers:
 
+在开始之前，我们需要进行一些清理工作。
+运行下述命令，关闭所有的容器：
+
 .. code:: bash
 
   docker rm -f $(docker ps -aq)
 
 Clear any cached networks:
+
+清空已缓存的网络：
 
 .. code:: bash
 
@@ -77,6 +112,9 @@ Clear any cached networks:
 And lastly if you've already run through this tutorial, you'll also want to delete the
 underlying chaincode image for the ``fabcar`` smart contract.  If you're a user going through
 this content for the first time, then you won't have this chaincode image on your system:
+
+最后，如果你之前已经运行过本教程的内容，需要删除 ``fabcar`` 智能合约对应的链码镜像。
+如果你是第一次阅读和运行本教程的内容，你的机器上不会有这些链码镜像。
 
 .. code:: bash
 
