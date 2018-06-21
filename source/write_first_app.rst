@@ -194,20 +194,27 @@ updates to the ledger.
 希望了解应用是如何构建以及运行的开发者，请继续阅读本文档。
 到目前为止最需要明确的事情是，应用使用了一个软件开发套件（SDK）来访问 **APIs**，实现对账本的查询和更新。
 
-Enrolling the Admin User
-------------------------
+Enrolling the Admin User - 登记管理员用户
+---------------------------------------------
 
 .. note:: The following two sections involve communication with the Certificate
           Authority.  You may find it useful to stream the CA logs when running
           the upcoming programs.
 
+          随后的两个小节包含了与认证授权管理（CA）的交互。
+          你会发现在随后的程序中，查看 CA 的日志是非常有帮助。
+
 To stream your CA logs, split your terminal or open a new shell and issue the following:
+
+为了查看你的 CA 日志，将终端分屏或者打开一个新的终端并输入如下命令：
 
 .. code:: bash
 
   docker logs -f ca.example.com
 
 Now hop back to your terminal with the ``fabcar`` content...
+
+现在，回到你的包含 ``fabcar`` 内容的终端...
 
 When we launched our network, an admin user - ``admin`` - was registered with our
 Certificate Authority.  Now we need to send an enroll call to the CA server and
@@ -217,6 +224,12 @@ need this cert in order to form a user object for the admin.  We will then use t
 object to subsequently register and enroll a new user.  Send the admin enroll call to the CA
 server:
 
+当我们启动我们的网络是，一个管理员用户 - ``admin`` - 被注册到我们的认证授权管理中。
+现在我们需要发送一个登记请求到 CA 服务器，并且获取该用户登记证书（eCert）。
+这里我们并不会深入讨论登记的细节，但是注意 SDK 以及基于我们应用的扩展都需要这个证书来构建一个管理员用户。
+随后，我们会使用这个管理员来注册和登记新的用户。
+发送管理员登记请求到 CA 服务器：
+
 .. code:: bash
 
   node enrollAdmin.js
@@ -225,6 +238,9 @@ This program will invoke a certificate signing request (CSR) and ultimately outp
 an eCert and key material into a newly created folder - ``hfc-key-store`` - at the
 root of this project.  Our apps will then look to this location when they need to
 create or load the identity objects for our various users.
+
+这个程序会执行一个证书签名请求（CSR），最后输出 eCert 和密钥文件到一个新创建的目录下 - ``hfc-key-store`` - 该目录位于项目的根目录下。
+随后，我们的应用在需要创建或者加载用户的身份标识对象时，会查看这个目录。
 
 Register and Enroll ``user1``
 -----------------------------
