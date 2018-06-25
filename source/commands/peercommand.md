@@ -1,13 +1,18 @@
 # peer command
+# peer 命令
 
 ## Description
+## 描述
 
  The `peer` command has five different subcommands, each of which allows
  administrators to perform a specific set of tasks related to a peer.  For
  example, you can use the `peer channel` subcommand to join a peer to a channel,
  or the `peer  chaincode` command to deploy a smart contract chaincode to a
  peer.
-
+ `peer` 命令有五个子命令，每一个都可以让管理员执行与peer节点相关的特定任务集。例如，
+ 你可以使用 `peer channel` 子命令来把peer加入channel，或者使用`peer  chaincode`
+ 命令在peer节点上部署智能合约chaincode。
+ 
 ## Syntax
 
 The `peer` command has five different subcommands within it:
