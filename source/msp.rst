@@ -106,6 +106,8 @@ can also be used to generate the keys and certificates needed to configure an MS
 
 MSP setup on the peer & orderer side
 ------------------------------------
+peer&orderer侧 MSP 的设置
+-------------------------
 
 To set up a local MSP (for either a peer or an orderer), the administrator
 should create a folder (e.g. ``$MY_PATH/mspconfig``) that contains six subfolders
@@ -129,6 +131,18 @@ and a file:
 9. (optional) a folder ``tlsintermediatecerts`` to include PEM files each
    corresponding to an intermediate TLS CA's certificate
 
+要想（为peer节点或orderer节点）建立本地MSP，管理员应创建一个文件夹（如$MY_PATH/mspconfig）并在其下包含6个子文件夹与一个文件：
+
+1. 文件夹admincerts包含如下PEM文件：每个PEM文件对应于一个管理员证书
+2. 文件夹cacerts包含如下PEM文件：每个PEM文件对应于一个根CA的证书
+3. (可选)文件夹intermediatecerts包含如下PEM文件：每个PEM文件对应于一个中间CA的证书
+4. (可选）文件config.yaml包含相关OU的信息；后者作为<Certificate,OrganizationalUnitIdentifier>（一个被称为OrganizationalUnitIdentifiers的yaml数组的项）的一部分被定义；其中Certificate表示通往（根或中间）CA的证书的相对路径，这些CA用于为组织成员发证（如./cacerts/cacert.pem）；OrganizationalUnitIdentifier表示预期会出现在X.509证书中的实际字符串（如“COP”）
+5. (可选）文件夹crls包含相关CRL
+6. 文件夹keystore包含一个PEM文件及节点的签名密钥；我们必须强调：现阶段还不支持RSA密钥
+7. 文件夹signcerts包含一个PEM文件及节点的X.509证书
+8. (可选）文件夹tlscacerts包含如下PEM文件：每个PEM文件对应于一个根TLS根CA的证书
+9. (可选）文件夹tlsintermediatecerts包含如下PEM文件：每个PEM文件对应于一个中间TLS CA的证书
+
 In the configuration file of the node (core.yaml file for the peer, and
 orderer.yaml for the orderer), one needs to specify the path to the
 mspconfig folder, and the MSP Identifier of the node's MSP. The path to the
@@ -142,10 +156,14 @@ ORDERER_GENERAL_LOCALMSPID). Notice that for the orderer setup, one needs to
 generate, and provide to the orderer the genesis block of the system channel.
 The MSP configuration needs of this block are detailed in the next section.
 
+在节点的配置文件中（对peer节点而言配置文件是core.yaml文件，对orderer节点而言则是orderer.yaml文件），我们需要指定到mspconfig文件夹的路径，以及节点的MSP的MSP标识符。到mspconfig文件夹的路径预期是一个对FABRIC_CFG_PATH的相对路径，且会作为参数 ``mspConfigPath`` 和 ``LocalMSPDir`` 的值分别提供给peer节点和orderer节点。节点的MSP的MSP标识符则会作为参数 ``localMspId`` 和 ``LocalMSPID`` 的值分别提供给peer节点和orderer节点。运行环境可以通过为peer使用CORE前缀（例如CORE_PEER_LOCALMSPID）及为orderer使用ORDERER前缀（例如 ORDERER_GENERAL_LOCALMSPID）对以上变量进行覆写。注意：对于orderer的设置，我们需要生成并为orderer提供系统channel的创世区块。MSP配置对该区块的需求详见后面的章节。
+
 *Reconfiguration* of a "local" MSP is only possible manually, and requires that
 the peer or orderer process is restarted. In subsequent releases we aim to
 offer online/dynamic reconfiguration (i.e. without requiring to stop the node
 by using a node managed system chaincode).
+
+对“本地”的MSP进行 *重新配置* 只能手动进行，且该过程需要重启peer节点和orderer节点。在随后的版本中我们计划提供在线/动态的重新配置的功能（通过使用一个由节点管理的系统chaincode，使得我们不必停止node）。
 
 Organizational Units
 --------------------
