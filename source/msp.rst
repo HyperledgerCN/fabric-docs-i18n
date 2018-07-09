@@ -23,11 +23,16 @@ concerning its use.
 MSP Configuration
 -----------------
 
+MSP配置
+-------
+
 To setup an instance of the MSP, its configuration needs to be specified
 locally at each peer and orderer (to enable peer, and orderer signing),
 and on the channels to enable peer, orderer, client identity validation, and
 respective signature verification (authentication) by and for all channel
 members.
+
+要想初始化一个MSP实例，每一个peer节点和orderer节点都需要在本地指定其配置，并在channel上启用peer节点、orderer节点及client的身份的验证与各自的签名验证。注意channel上的全体成员均参与此过程。
 
 Firstly, for each MSP a name needs to be specified in order to reference that MSP
 in the network (e.g. ``msp1``, ``org2``, and ``org3.divA``). This is the name under
@@ -36,6 +41,8 @@ organization division is to be referenced in a channel. This is also referred
 to as the *MSP Identifier* or *MSP ID*. MSP Identifiers are required to be unique per MSP
 instance. For example, shall two MSP instances with the same identifier be
 detected at the system channel genesis, orderer setup will fail.
+
+首先，为了在网络中引用MSP，每个MSP都需要一个特定的名字（例如msp1、org2、org3.divA）。在一个channel中，当MSP的成员管理规则表示一个团体，组织或组织分工时，该名称会被引用。这又被成为 *MSP标识符* 或 *MSP ID*。对于每个MSP实例，MSP标识符都必须独一无二。举个例子：系统channel创建时如果检测到两个MSP有相同的标识符，那么orderer节点的启动将以失败告终。
 
 In the case of default implementation of MSP, a set of parameters need to be
 specified to allow for identity (certificate) validation and signature
@@ -67,6 +74,17 @@ verification. These parameters are deduced by
   certified by exactly one of the certificates in the TLS root of trust;
   intermediate CAs are optional parameters.
 
+在MSP的默认情况下，身份（证书）验证与签名验证需要指定一组参数。这些参数推导自
+`RFC5280 <http://www.ietf.org/rfc/rfc5280.txt>`_，具体包括：
+
+- 一个自签名的证书列表（满足X.509标准）以构成 *信任源*
+- 一个用于表示该MSP验证过的中间CA的X.509的证书列表，用于证书的校验。这些证书应该被信任源的一个证书所认证；中间的CA则是可选参数
+- 一个具有可验证路径的X.509证书列表（该路径通往信任源的一个证书），以表示该MSP的管理员。这些证书的所有者对MSP配置的更改要求都是经过授权的（例如根CA，中间CA）
+- 一个组织单元列表，该MSP的合法成员应该将其包含进他们的X.509证书。这是一个可选的配置参数，举个例子：当多个组织使用相同信任源、中间CA以及组织为他们的成员保留了一个OU区的时候，会配置此参数
+- 一个证书吊销列表（CRLs）的清单，清单的每一项对应于一个已登记的（中间的或根）MSP证书颁发机构（CA），这是一个可选的参数
+- 一个自签名的证书列表（满足X.509标准）以构成 *TLS信任源* ，服务于TLS证书
+- 一个表示该provider关注的中间TLS CA的X.509证书列表。这些证书应该被TLS信任源的一个证书所认证；中间的CA则是可选参数
+
 *Valid*  identities for this MSP instance are required to satisfy the following conditions:
 
 - They are in the form of X.509 certificates with a verifiable certificate path to
@@ -75,8 +93,16 @@ verification. These parameters are deduced by
 - And they *list* one or more of the Organizational Units of the MSP configuration
   in the ``OU`` field of their X.509 certificate structure.
 
+对于该MSP实例，*有效的* 身份应符合以下条件：
+
+- 它们应符合X.509证书标准，且具有一条可验证的路径（该路径通往信任源的一个证书）
+- 它们没有包含在任何CRL中
+- 它们 *列出* 了一个或多个MSP配置的组织单元（列出的位置是它们X.509证书结构的OU区内）。
+
 For more information on the validity of identities in the current MSP implementation,
 we refer the reader to :doc:`msp-identity-validity-rules`.
+
+关于当前MSP实现过程中身份验证的更多信息，我们隆重推荐各位读者阅读:doc:`msp-identity-validity-rules`.
 
 In addition to verification related parameters, for the MSP to enable
 the node on which it is instantiated to sign or authenticate, one needs to
@@ -87,9 +113,16 @@ specify:
 - The node's X.509 certificate, that is a valid identity under the
   verification parameters of this MSP.
 
+除了验证相关参数外，为了使MSP可以对已实例化的节点进行签名或认证，需要指定：
+
+- 用于节点签名的签名密钥（目前只支持ECDSA密钥）
+- 节点的X.509证书，对MSP验证参数机制而言是一个有效的身份
+
 It is important to note that MSP identities never expire; they can only be revoked
 by adding them to the appropriate CRLs. Additionally, there is currently no
 support for enforcing revocation of TLS certificates.
+
+值得注意的是，MSP身份永远不会过期；它们只能通过添加到合适的CRL上来被撤销。此外，现阶段不支持吊销TLS证书。
 
 How to generate MSP certificates and their signing keys?
 --------------------------------------------------------
