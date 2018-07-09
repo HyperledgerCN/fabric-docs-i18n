@@ -1,10 +1,17 @@
 Membership Service Providers (MSP)
 ==================================
 
+成员服务提供者 （MSP）
+==================================
+
 The document serves to provide details on the setup and best practices for MSPs.
+
+本文提供MSP的设置细节，致力于打造MSP的最佳实践。
 
 Membership Service Provider (MSP) is a component that aims to offer an
 abstraction of a membership operation architecture.
+
+成员服务提供者（MSP）是一个提供抽象化成员操作框架的组件。
 
 In particular, MSP abstracts away all cryptographic mechanisms and protocols
 behind issuing and validating certificates, and user authentication. An
@@ -12,13 +19,19 @@ MSP may define their own notion of identity, and the rules by which those
 identities are governed (identity validation) and authenticated (signature
 generation and verification).
 
+特别地，MSP将颁发与校验证书，以及用户认证背后的所有密码学机制与协议都抽象了出来。一个MSP可以自己定义身份，以及身份的管理（身份验证）与认证（生成与验证签名）规则。
+
 A Hyperledger Fabric blockchain network can be governed by one or more MSPs.
 This provides modularity of membership operations, and interoperability
 across different membership standards and architectures.
 
+一个Hyperledger Fabric区块链网络可以被一个或多个MSP管理。这提供了模块化的成员操作，以及兼容不同成员标准与架构的互操作性。
+
 In the rest of this document we elaborate on the setup of the MSP
 implementation supported by Hyperledger Fabric, and discuss best practices
 concerning its use.
+
+接下来我们将详细说明在Hyperledger Fabric支持下的MSP的实现步骤，并讨论其使用方面的最佳实践方式。
 
 MSP Configuration
 -----------------
