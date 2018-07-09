@@ -94,15 +94,25 @@ support for enforcing revocation of TLS certificates.
 How to generate MSP certificates and their signing keys?
 --------------------------------------------------------
 
+如何生成MSP证书及其签名密钥？
+--------------------------
+
 To generate X.509 certificates to feed its MSP configuration, the application
 can use `Openssl <https://www.openssl.org/>`_. We emphasise that in Hyperledger
 Fabric there is no support for certificates including RSA keys.
 
+要想生成X.509证书以满足MSP配置，应用程序可以使用 `Openssl <https://www.openssl.org/>`_ 。我们必须强调：在Hyperledger Fabric中，不支持包括RSA密钥在内的证书。
+
 Alternatively one can use ``cryptogen`` tool, whose operation is explained in
 :doc:`getting_started`.
 
+另一个选择是使用 ``cryptogen`` 工具，其操作方法详见
+:doc:`getting_started` 。
+
 `Hyperledger Fabric CA <http://hyperledger-fabric-ca.readthedocs.io/en/latest/>`_
 can also be used to generate the keys and certificates needed to configure an MSP.
+
+`Hyperledger Fabric CA <http://hyperledger-fabric-ca.readthedocs.io/en/latest/>`_ 也可用于生成配置MSP所需的密钥及证书。
 
 MSP setup on the peer & orderer side
 ------------------------------------
