@@ -269,7 +269,7 @@ separate users - ``admin`` & ``user1``.  Time to interact with the ledger...
 现在我们有了两个用户的身份标识文件 - ``admin`` 和 ``user1``。
 现在到了和账本进行交互的时间了...
 
-Querying the Ledger
+Querying the Ledger - 查询账本
 -------------------
 
 Queries are how you read data from the ledger. This data is stored as a series
@@ -278,7 +278,11 @@ keys, or -- if the ledger is written in a rich data storage format like JSON --
 perform complex searches against it (looking for all assets that contain
 certain keywords, for example).
 
+查询操作实际上就是如果从账本读取数据。这些数据是以键/值对的形式存储的，我们可以查询一个键或者多个键对应的值，或者如果账本是以JSON等富数据存储格式写入的，我们可以进行复杂的查询（比如，可以查询所有包含有特定关键词的资产）。
+
 This is a representation of how a query works:
+
+下面的图展示了查询操作是如果工作的：
 
 .. image:: images/QueryingtheLedger.png
 
@@ -286,6 +290,8 @@ First, let's run our ``query.js`` program to return a listing of all the cars on
 the ledger.  We will use our second identity - ``user1`` - as the signing entity
 for this application.  The following line in our program specifies ``user1`` as
 the signer:
+
+首先，我们运行``query.js``返回账本记录的所有汽车的列表。我们会使用我们的第二个身份 - ``user1``作为这个应用的签名实体。程序中下面这行指定``user1``作为签名者：
 
 .. code:: bash
 
@@ -297,11 +303,17 @@ With the user object defined, we can now proceed with reading from the ledger.
 A function that will query all the cars, ``queryAllCars``, is
 pre-loaded in the app, so we can simply run the program as is:
 
+回想``user1``的注册信息，我们已经放置在``hfc-key-store``子目录，所以我们仅需要告诉我们的应用从这个子目录获取身份信息。
+根据定义的用户对象，我们可以继续读取账本数据。
+应用中一个函数``queryAllCars``用来查询所有的汽车，所以我们仅需要启动这个应用程序：
+
 .. code:: bash
 
   node query.js
 
 It should return something like this:
+
+它应该返回如下的一下信息：
 
 .. code:: json
 
@@ -323,13 +335,20 @@ owned by Brad, a violet Fiat Punto owned by Pari, and so on. The ledger is
 key/value based and in our implementation the key is ``CAR0`` through ``CAR9``.
 This will become particularly important in a moment.
 
+这里有10辆车。一辆黑色的特斯拉Model S，拥有者是Adriana。一辆福特野马属于Brad，一辆Pari的菲亚特Punto（朋多）等等。这个账本是键/值对集合，在我们的实现中键是``CAR0`` through ``CAR9``。这些信息在有些时刻将会特别重要。
+
+
 Let's take a closer look at this program.  Use an editor (e.g. atom or visual studio)
 and open ``query.js``.
+
+让我们来仔细看看这个程序。用一个编辑器（比如atom或者visual studio）来打开 ``query.js``。
 
 The initial section of the application defines certain variables such as
 channel name, cert store location and network endpoints. In our sample app, these
 variables have been baked-in, but in a real app these variables would have to
 be specified by the app dev.
+
+在程序开头定义了一些变量如通道名称、证书存储位置和网络端点。在我们的示例，这些变量已经定义好了，但是在真实的应用中这些变量需要我们在开发过程中指定。
 
 .. code:: bash
 
@@ -343,6 +362,8 @@ be specified by the app dev.
   var tx_id = null;
 
 This is the chunk where we construct our query:
+
+这是我们构造查询的代码片段：
 
 .. code:: bash
 
@@ -358,18 +379,28 @@ This is the chunk where we construct our query:
 When the application ran, it invoked the ``fabcar`` chaincode on the peer, ran the
 ``queryAllCars`` function within it, and passed no arguments to it.
 
+当程序运行的时候，它会调用节点上的``fabcar``链码上的``queryAllCars``方法，没有传递其他参数。
+
 To take a look at the available functions within our smart contract, navigate
 to the ``chaincode/fabcar/go`` subdirectory at the root of ``fabric-samples`` and open
 ``fabcar.go`` in your editor.
 
+来看一下智能合约中的方法，访问根目录下``fabric-samples``的子目录``chaincode/fabcar/go``，用编辑器打开``fabcar.go``文件。
+
 .. note:: These same functions are defined within the Node.js version of the
           ``fabcar`` chaincode.
+	  
+.. note:: 同样的方法在Node.js版本的``fabcar``链码中也定义了。
 
 You'll see that we have the following functions available to call: ``initLedger``,
 ``queryCar``, ``queryAllCars``, ``createCar``, and ``changeCarOwner``.
 
+你会看到我们有下面一些方法可供调用：``initLedger``, ``queryCar``, ``queryAllCars``, ``createCar``, 和 ``changeCarOwner``。
+
 Let's take a closer look at the ``queryAllCars`` function to see how it
 interacts with the ledger.
+
+我们仔细看一下``queryAllCars``方法是如何与账本交互的。
 
 .. code:: bash
 
@@ -384,10 +415,14 @@ This defines the range of ``queryAllCars``. Every car between ``CAR0`` and
 ``CAR999`` -- 1,000 cars in all, assuming every key has been tagged properly
 -- will be returned by the query.
 
+这里定义了``queryAllCars``方法的范围，所有在``CAR0``和``CAR999``之间的1000辆汽车。假定每一个键都有对应的值，而且会返回给查询操作。
+
 Below is a representation of how an app would call different functions in
 chaincode.  Each function must be coded against an available API in the chaincode
 shim interface, which in turn allows the smart contract container to properly
 interface with the peer ledger.
+
+下图展示的是一个应用如何调用链码中不同的方法。每一个方法必须实现链码的shim接口，这样智能合约容器才能跟节点的账本进行交互。
 
 .. image:: images/RunningtheSample.png
 
@@ -395,9 +430,13 @@ We can see our ``queryAllCars`` function, as well as one called ``createCar``,
 that will allow us to update the ledger and ultimately append a new block to
 the chain in a moment.
 
+我们看到``queryAllCars``方法和``createCar``方法可以让我们来更新账本，最后可以添加一个新的区块到我们的链上。
+
 But first, go back to the ``query.js`` program and edit the constructor request
 to query ``CAR4``. We do this by changing the function in ``query.js`` from
 ``queryAllCars`` to ``queryCar`` and passing ``CAR4`` as the specific key.
+
+但是首先，回到``query.js``，编辑request来查询``CAR4``。我们通过改变``query.js``中的``queryAllCars`` 为 ``queryCar``，并且传递参数``CAR4``
 
 The ``query.js`` program should now look like this:
 
