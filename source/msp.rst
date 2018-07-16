@@ -149,10 +149,14 @@ by using a node managed system chaincode).
 
 Organizational Units
 --------------------
+组织单元
+--------
 
 In order to configure the list of Organizational Units that valid members of this MSP should
 include in their X.509 certificate, the ``config.yaml`` file
 needs to specify the organizational unit identifiers. Here is an example:
+
+为了能配置一系列的组织单元，MSP有效成员应该包含它们的X.509 认证， ``config.yaml`` 文件需要指明组织单元的标识。下面是例子：
 
 ::
 
@@ -167,6 +171,11 @@ An MSP identity is valid if it carries at least one of these organizational unit
 The ``Certificate`` field refers to the CA or intermediate CA certificate path
 under which identities, having that specific OU, should be validated.
 The path is relative to the MSP root folder and cannot be empty.
+
+上面的例子声明了两个组织单元标识： **commercial** 和 **administrators**。
+一个MSP实体如果承载了其中至少一个组织单元标识，它就是有效的。
+指向识别码下的CA或者中间CA认证路径的 ``Certificate`` 字段，如果包含指定的OU，则是有效的。
+路径是相对于MSP根目录不能为空。
 
 Identity Classification
 -----------------------
@@ -194,7 +203,8 @@ Then, client (peer) identifiers are defined by setting the following properties
 for the ``NodeOUs.ClientOUIdentifier`` (``NodeOUs.PeerOUIdentifier``) key:
  a. ``OrganizationalUnitIdentifier``: Set this to the value that matches the OU that
  the x509 certificate of a client (peer) should contain.
- b. ``Certificate``: Set this to the CA or intermediate CA under which client (peer) identities
+ b. ``Certificate``: Set this to the CA or 
+ CA under which client (peer) identities
  should be validated. The field is relative to the MSP root folder. It can be empty, meaning
  that the identity's x509 certificate can be validated under any CA defined in the MSP configuration.
 
