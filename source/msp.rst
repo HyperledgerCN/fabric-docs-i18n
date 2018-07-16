@@ -220,6 +220,8 @@ needs to be enabled before identify classification can be used.
 
 Channel MSP setup
 -----------------
+Channel MSP 的设置
+-----------------
 
 At the genesis of the system, verification parameters of all the MSPs that
 appear in the network need to be specified, and included in the system
@@ -231,6 +233,8 @@ and allows them to authenticate channel creation requests. Orderers would
 reject the system genesis block, if the latter includes two MSPs with the same
 identifier, and consequently the bootstrapping of the network would fail.
 
+在系统起始阶段，我们需要指定在网络中出现的所有MSP的验证参数，且这些参数需要在系统channel的创世区块中指定。前文我们提到，MSP的验证参数包括MSP标识符、信任源证书、中间CA和管理员的证书，以及OU说明和CLR。系统的创世区块会在orderer节点设置阶段被提供给它们，且允许它们批准创建channel的请求。如果创世区块包含两个有相同标识符的MSP，那么orderer节点将拒绝系统创世区块，导致网络引导程序执行失败。
+
 For application channels, the verification components of only the MSPs that
 govern a channel need to reside in the channel's genesis block. We emphasise
 that it is **the responsibility of the application** to ensure that correct
@@ -238,16 +242,22 @@ MSP configuration information is included in the genesis blocks (or the
 most recent configuration block) of a channel prior to instructing one or
 more of their peers to join the channel.
 
+对于应用程序channel，创世区块中需要包含管理channel的那部分MSP的验证组件。我们在此强调，**应用程序要肩负以下责任** ：在令一个或多个peer节点加入到channel中之前，确保channel的创世区块（或最新的配置区块）包含正确的MSP配置信息。
+
 When bootstrapping a channel with the help of the configtxgen tool, one can
 configure the channel MSPs by including the verification parameters of MSP
 in the mspconfig folder, and setting that path in the relevant section in
 ``configtx.yaml``.
+
+在configtxgen工具的帮助下引导架设channel时，我们这样来配置channel MSP：将MSP的验证参数加入mspconfig文件夹，并将该路径加入到 ``configtx.yaml`` 文件的相关部分。
 
 *Reconfiguration* of an MSP on the channel, including announcements of the
 certificate revocation lists associated to the CAs of that MSP is achieved
 through the creation of a ``config_update`` object by the owner of one of the
 administrator certificates of the MSP. The client application managed by the
 admin would then announce this update to the channels in which this MSP appears.
+
+要想对channel中MSP的 *重新配置* ，包括发布与MSP的CA相关的证书吊销列表，需要通过MSP管理员证书的所有者创建config_update对象来实现。由管理员管理的客户端应用将向该MSP所在的各个channel发布更新。
 
 Best Practices
 --------------
