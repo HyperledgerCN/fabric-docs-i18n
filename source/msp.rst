@@ -336,14 +336,24 @@ admin would then announce this update to the channels in which this MSP appears.
 Best Practices
 --------------
 
+最佳实践
+-------
+
 In this section we elaborate on best practices for MSP
 configuration in commonly met scenarios.
 
+在本节，我们将详述一般情况下MSP配置的最佳实践。
+
+
 **1) Mapping between organizations/corporations and MSPs**
+
+**1）为组织与MSP建立映射**
 
 We recommend that there is a one-to-one mapping between organizations and MSPs.
 If a different mapping type of mapping is chosen, the following needs to be to
 considered:
+
+我们建议组织和MSP之间建立一对一映射。如果选择其他类型的映射，那么需要注意以下几点：
 
 - **One organization employing various MSPs.** This corresponds to the
   case of an organization including a variety of divisions each represented
@@ -361,10 +371,17 @@ considered:
   This is a limitation of the granularity of MSP definition, and/or of the peer’s
   configuration.
 
+- **一个组织对应多个MSP。** 这对应于下面这种情况：（无论出于独立管理的原因还是私人原因）一个组织有各种各样的部门，每个部门以其MSP为代表。在这种情况下，一个peer节点只能被单个MSP拥有，且不会识别相同组织内标识在其他MSP的节点。这就是说，peer节点可以与相同子分支下的一系列其他peer节点共享组织数据，而不是所有构成组织的节点。
+- **多个组织对应一个MSP。** 这对应于下面这种情况：一个由相似成员结构所管理的组织联盟。这时，peer节点可以与相同MSP下的其他节点互发组织范围的数据，节点是否属于同一组织并不重要。这对于MSP的定义及peer节点的配置是个限制。
+
 **2) One organization has different divisions (say organizational units), to**
 **which it wants to grant access to different channels.**
 
+**2) 一个组织有多个分支（称为组织单元），各个分支连接到组织想要获取访问权限的不同channel.**
+
 Two ways to handle this:
+
+有两个方法进行处理：
 
 - **Define one MSP to accommodate membership for all organization’s members**.
   Configuration of that MSP would consist of a list of root CAs,
@@ -385,14 +402,23 @@ Two ways to handle this:
   approach.  One could also define one MSP for each division by leveraging an OU
   extension of the MSP configuration.
 
+- **定义一个MSP来容纳所有组织的全部成员。** MSP的配置包含一个根CA、中间CA和管理员证书的列表；成员身份会包含一个组织单元（OU）的所属关系。接下来可以定义用于获取特定OU成员的策略，这些策略可以建立channel的读写策略或者chaincode的背书策略。这种方法的局限是gossip peer节点会本地MSP下的其他peer节点当做相同组织内的成员，并与之分享组织范围内的数据。
+- **定义一个MSP来表示每个分支。** 这需要为每个分支引入一组根CA证书、中间CA证书和管理员证书，这样每条通往MSP的路径都不会重叠。这意味着，每个子分支的不同中间CA都会被利用起来。这样做的缺点是要管理多个MSP，不过这避免了前面方法出现的问题。我们也可以利用MSP配置的OU扩展来为每个分支定义一个MSP。
+
 **3) Separating clients from peers of the same organization.**
+
+**3) 将客户从相同组织的peer节点中分离.**
 
 In many cases it is required that the “type” of an identity is retrievable
 from the identity itself (e.g. it may be needed that endorsements are
 guaranteed to have derived by peers, and not clients or nodes acting solely
 as orderers).
 
+多数情况下，一个身份的“类型”被要求能够从身份本身获取（可能当背书要保证：背书节点由peers充当，而非客户端或者仅充当orders的节点时，需要该特性支持）。
+
 There is limited support for such requirements.
+
+下面是对这些要求的有限支持。
 
 One way to allow for this separation is to to create a separate intermediate
 CA for each node type - one for clients and one for peers/orderers; and
@@ -403,6 +429,8 @@ refers to the peers. This would ultimately result in the organization
 being mapped to two MSP instances, and would have certain consequences
 on the way peers and clients interact.
 
+一种支持这种分离的方法是为每个节点类型创建一个分离的中间CA：一个为客户，一个为peer节点或orderer节点；并配置两个不同的MSP：一个为客户，一个为peer节点或orderer节点。该组织要访问的channel需要同时包含两个MSP，不过背书策略将只用到服务peer节点的MSP。这最终导致组织与两个MSP实例建立映射，并对peer节点与客户间的交流产生特定影响。
+
 Gossip would not be drastically impacted as all peers of the same organization
 would still belong to one MSP. Peers can restrict the execution of certain
 system chaincodes to local MSP based policies. For
@@ -412,6 +440,8 @@ should be sitting at the origin of that request). We can go around this
 inconsistency if we accept that the only clients to be members of a
 peer/orderer MSP would be the administrators of that MSP.
 
+由于所以同一组织的peer节点仍属于相同的MSP，所以通讯不会受到严重影响。peer节点可以把特定系统chaincode的执行控制在本地MSP的策略范围内。例如：只有请求被本地MSP的管理员签署（其只能是一个客户），peer节点才会执行“joinChannel”的请求（终端用户应该处于该请求的起点）。如果我们接受这样一个前提：只有客户成为MSP peer节点或orderer节点的一员，才能成员MSP的管理员，那么我们就可以绕过这个矛盾。
+
 Another point to be considered with this approach is that peers
 authorize event registration requests based on membership of request
 originator within their local MSP. Clearly, since the originator of the
@@ -419,20 +449,31 @@ request is a client, the request originator is always doomed to belong
 to a different MSP than the requested peer and the peer would reject the
 request.
 
+该方法还要注意，peer节点授权事件登记的请求，是基于本地MSP内请求的发起成员。简而言之，由于请求的发起者是一个客户，故请求发起者必定隶属于和被请求的peer节点不同的MSP，这会导致peer节点拒绝该请求。
+
 **4) Admin and CA certificates.**
+
+**4) 管理员和CA的证书.**
 
 It is important to set MSP admin certificates to be different than any of the
 certificates considered by the MSP for ``root of trust``, or intermediate CAs.
 This is a common (security) practice to separate the duties of management of
 membership components from the issuing of new certificates, and/or validation of existing ones.
 
+将MSP管理员证书设置得与任何MSP，或中间CA处理的其他证书都不同是很重要的。这是一种常见的安全做法，即将成员管理的责任从发行新证书与验证已有证书中拆分出来。
+
 **5) Blacklisting an intermediate CA.**
+
+**5) 将中间CA加入黑名单.**
 
 As mentioned in previous sections, reconfiguration of an MSP is achieved by
 reconfiguration mechanisms (manual reconfiguration for the local MSP instances,
 and via properly constructed ``config_update`` messages for MSP instances of a channel).
 Clearly, there are two ways to ensure an intermediate CA considered in an MSP is no longer
 considered for that MSP's identity validation:
+
+就像上文所述，重新配置MSP是通过一种重配置机制完成的（手动重新配置本地MSP实例，并通过channel合理构建发送给MSP实例的config_update消息）。显然，我们有两种方法保证一个中间CA被MSP身份验证机制彻底忽视：
+
 
 1. Reconfigure the MSP to no longer include the certificate of that
    intermediate CA in the list of trusted intermediate CA certs. For the
@@ -441,16 +482,25 @@ considered for that MSP's identity validation:
 2. Reconfigure the MSP to include a CRL produced by the root of trust
    which denounces the mentioned intermediate CA's certificate.
 
+1. 重新配置MSP并使它的信任中间CA证书列表不再包含该中间CA的证书。对于本地重新配置的MSP，这意味着该CA的证书从intermediatecerts文件夹中被删除了。
+2. 重新配置MSP并使它包含由信任源产生的CRL，该CRL会通知MSP废止中间CA证书的使用。
+
 In the current MSP implementation we only support method (1) as it is simpler
 and does not require blacklisting the no longer considered intermediate CA.
 
+在目前的MSP实现中，我们只支持上述的第一个方法，因为它更加简单，且并不需要把早就不用考虑的中间CA列入黑名单。
+
 **6) CAs and TLS CAs**
+
+**6) CA 和 TLS CA**
 
 MSP identities' root CAs and MSP TLS certificates' root CAs (and relative intermediate CAs)
 need to be declared in different folders. This is to avoid confusion between
 different classes of certificates. It is not forbidden to reuse the same
 CAs for both MSP identities and TLS certificates but best practices suggest
 to avoid this in production.
+
+MSP 身份的根CA及MSP TLS证书的根CA（以及相关的中间CA）需要在不同的文件夹中声明。这是为了避免混淆不同等级的证书。且MSP身份与TLS证书都允许重用相同的CA，不过我们建议最好在实际中避免这样做。
 
 .. Licensed under Creative Commons Attribution 4.0 International License
    https://creativecommons.org/licenses/by/4.0/
