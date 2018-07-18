@@ -1,7 +1,7 @@
-Chaincode for Developers
+Chaincode for Developers 面向开发人员的链码指南
 ========================
 
-What is Chaincode?
+What is Chaincode? 什么是链码？
 ------------------
 
 Chaincode is a program, written in `Go <https://golang.org>`_, `node.js <https://nodejs.org>`_,
@@ -9,6 +9,12 @@ that implements a prescribed interface. Eventually, other programming languages 
 will be supported. Chaincode runs in a secured Docker container isolated from
 the endorsing peer process. Chaincode initializes and manages the ledger state
 through transactions submitted by applications.
+
+链码是一个程序,使用 `Go <https://golang.org>`_, `node.js <https://nodejs.org>`_ 来实现规定的接口,
+后续也将会支持其他的编程语言例如Java。
+链码运行在一个安全的Docker容器中独立于背书节点。
+通过app提交交易,
+链码可以初始化和管理ledger state(账本状态)。
 
 A chaincode typically handles business logic agreed to by members of the
 network, so it similar to a "smart contract". A chaincode can be invoked to update or query 
@@ -18,9 +24,18 @@ Note that, if the called chaincode is on a different channel from the calling ch
 only read query is allowed. That is, the called chaincode on a different channel is only a `Query`,
 which does not participate in state validation checks in subsequent commit phase.
 
+链码通常处理网络中的成员认可的业务逻辑,所以它可以被视为一种”智能合约”。
+在交易提案中可以通过调用链码的方式来更新或者查询账本。
+给定链码相应的权限，该链码可以调用另一个链码来访问其账本状态，不论被调用的链码是否在同一个通道中。
+请注意，如果被调用的链码和调用链码不在同一个通道内，那该调用处理里只有读操作是有效的。
+这意味着，调用不同通道上的链码仅仅只是”查询”操作，在后续的验证阶段并不会将这部分调用加入世界状态有效性检查中。
+
 In the following sections, we will explore chaincode through the eyes of an
 application developer. We'll present a simple chaincode sample application
 and walk through the purpose of each method in the Chaincode Shim API.
+
+在后续的章节中，我们将会从开发者的视角去探索链码。
+我们将会介绍一个简单的链码例子，并逐一解释链码Shim API中的每个方法。
 
 Chaincode API
 -------------
