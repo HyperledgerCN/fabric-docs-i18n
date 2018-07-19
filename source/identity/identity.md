@@ -49,12 +49,12 @@ of a blockchain network**.
 
 Let's drill into these concepts in a little more detail.
 
-## What are PKIs?
+## What are PKIs? 什么是PKI？
 
 **A public key infrastructure (PKI) is a collection of internet technologies that provides
 secure communications in a network.** It's PKI that puts the **S** in **HTTPS** -- and if
 you're reading this documentation on a web browser, you're probably using a PKI to make
-sure it comes from a verified source.
+sure it comes from a verified source. 公钥基础设施（PKI）是一套提供安全网络通讯的国际技术。HTTPS里的S就用到PKI，你在浏览器中看到的这个文档，可能就是在用PKI确保它的来源是经过验证的。
 
 ![PKI](./identity.diagram.7.png)
 
@@ -63,23 +63,23 @@ Authorities who issue digital certificates to parties (e.g., users of a service,
 provider), who then use them to authenticate themselves in the messages they exchange
 with their environment. A CA's Certificate Revocation List (CRL) constitutes a reference
 for the certificates that are no longer valid. Revocation of a certificate can happen fora number of reasons. For example, a certificate may be revoked because the cryptographic
-private material associated to the certificate has been exposed.
+private material associated to the certificate has been exposed.公钥基础设施的构成要素。PKI是由认证机构组成，它发行数字证书给相关方（例如服务用户，服务提供者），从而用该证书在他们与周围交换信息时认证他们自己。 CA证书废除列表（CRL）由不再有效的证书的索引组成。废除证书有多种原因，例如关联了证书的加密材料到期了从而该证书被废除。
 
 Although a blockchain network is more than a communications network, it relies on the
 PKI standard to ensure secure communication between various network participants, and to
 ensure that messages posted on the blockchain are properly authenticated.
 It's therefore really important to understand the basics of PKI and then why MSPs are
-so important.
+so important.区块链网络不仅仅是一个通讯网络，它还依赖PKI标准来确保在各种网络参与方的通讯安全，以及确保发送到区块链的消息是经过恰当认证的。因此，理解PKI很重要从而明白为什么MSP那么重要。
 
-There are four key elements to PKI:
+There are four key elements to PKI: PKI有四个关键元素：
 
- * **Digital Certificates**
- * **Public and Private Keys**
- * **Certificate Authorities**
- * **Certificate Revocation Lists**
+ * **Digital Certificates**  数字证书
+ * **Public and Private Keys**  公钥和私钥
+ * **Certificate Authorities** 证书认证机构
+ * **Certificate Revocation Lists**  证书废除列表
 
 Let's quickly describe these PKI basics, and if you want to know more details,
-[Wikipedia](https://en.wikipedia.org/wiki/Public_key_infrastructure) is a good place to start.
+[Wikipedia](https://en.wikipedia.org/wiki/Public_key_infrastructure) is a good place to start. 我们概要描述了PKI基础，如果你想知道更多细节，可以参考Wikipedia。
 
 ## Digital Certificates
 
