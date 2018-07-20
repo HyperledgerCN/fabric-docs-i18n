@@ -1,6 +1,6 @@
 # Identity
 
-## What is an Identity?
+## What is an Identity? 什么是身份？
 
 The different actors in a blockchain network include peers, orderers, client applications,
 administrators and more. Each of these actors has an identity that is encapsulated in an
@@ -12,7 +12,7 @@ more flexible because they can include a wide range of an actor's identity prope
 When we talk about principals, we're thinking about the actors in the system --
 specifically the actor's identity properties which determine their permissions. These
 properties are typically the actor's organization, organizational unit, role or even the
-actor's specific identity.
+actor's specific identity. 在区块链网络中有不同的参与者，包括节点，排序者，客户端，管理员等。每个参与者都有一个封装成X.509的数字证书的身份。这些身份非常重要因为它们决定了这些参与者所拥有的在区块链网络中的精确的资源权限。 Hyperledger Fabric 使用参与者的一些身份属性来决定其权限，并赋予其一个特定的名称：principal，它非常像用户ID或组ID，但更灵活因为它们可以包含广泛的参与者的身份属性。当我们说起principal，我们就会想到系统里的参与者，特别是决定其权限的身份属性。这些属性通常指参与者的组织，组织单位，角色甚至参与者的特殊身份。
 
 Most importantly, **an identity** must be **verifiable** (a real
 identity, in other words), and for this reason it must come from an
@@ -22,7 +22,7 @@ an MSP is a component that represents the membership rules of an organization,
 and as such, it that defines the rules that govern a valid identity
 of a member of this organization. The default MSP implementation in Fabric
 uses X.509 certificates as identities, adopting a traditional Public
-Key Infrastructure (PKI) hierarchical model.
+Key Infrastructure (PKI) hierarchical model. 最重要的是身份必须是可验证的（即真实的身份）。由于这个原因，它必须被体系中的机构信任。在Hyperledger Fabric中会员服务提供者（MSP）就是干这个的。更特殊的是，MSP是一个组件，它代表了一个组织的会员规则，它定义了管理这个组织会员合法身份的规则。MSP的实施默认用X.509证书作为身份识别，采用了传统的公钥基础设施（PKI）体系模型。
 
 
 ## A Simple Scenario to Explain The Use of an Identity
