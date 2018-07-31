@@ -253,6 +253,8 @@ The path is relative to the MSP root folder and cannot be empty.
 
 Identity Classification
 -----------------------
+身份分类
+-------
 
 The default MSP implementation allows to further classify identities into clients and peers, based on the OUs
 of their x509 certificates.
@@ -260,6 +262,11 @@ An identity should be classified as a **client** if it submits transactions, que
 An identity should be classified as a **peer** if it endorses or commits transactions.
 In order to define clients and peers of a given MSP, the ``config.yaml`` file
 needs to be set appropriately. Here is an example:
+
+默认的MSP实现允许进一步进行身份分类为用户和节点，基于他们的x509认证的组织单位。
+一个身份可以被分类成用户**client**如果它提交交易，查询节点等。
+一个身份可以被分类成节点**peer**如果它进行背书或者确认交易。
+为了对给定的MSP定义用户和节点，``config.yaml`` 文件需要正确的设置。下面是一个例子：
 
 ::
 
@@ -282,6 +289,11 @@ for the ``NodeOUs.ClientOUIdentifier`` (``NodeOUs.PeerOUIdentifier``) key:
  should be validated. The field is relative to the MSP root folder. It can be empty, meaning
  that the identity's x509 certificate can be validated under any CA defined in the MSP configuration.
 
+
+如上所示，``NodeOUs.Enable`` 设置成 ``true``，来允许身份分类。接下来，通过为``NodeOUs.ClientOUIdentifier`` (``NodeOUs.PeerOUIdentifier``)键来设置以下的属性来对用户（节点）身份进行定义：
+ a. ``OrganizationalUnitIdentifier``: 设置为与用户（节点）的x509认证包含的OU相匹配的值
+ b. ``Certificate``: 设置为CA或者用户（节点）身份下有效的CA。这个相对于MSP根目录的相对路径。可以为空，表示该身份的x509证书在MSP配置中定义的任何CA下都是有效的。
+
 When the classification is enabled, MSP administrators need
 to be clients of that MSP, meaning that their x509 certificates need to carry
 the OU that identifies the clients.
@@ -289,8 +301,12 @@ Notice also that, an identity can be either a client or a peer.
 The two classifications are mutually exclusive. If an identity is neither a client nor a peer,
 the validation will fail.
 
+当启用了分类，MSP管理员需要是MSP的客户，表示他们的x509证书需要携带OU识别客户。
+
 Finally, notice that for upgraded environments the 1.1 channel capability
 needs to be enabled before identify classification can be used.
+
+最后，需要注意在升级的环境中，1.1通道功能需要先启动，之后再启动身份分类。
 
 Channel MSP setup
 -----------------
