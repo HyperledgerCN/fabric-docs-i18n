@@ -45,12 +45,15 @@ the one demonstrated here will usually be the responsibility of an organization 
           工具(如 ``cryptogen``，``configtxgen``）放在了PATH变量指定的路径下，你可以相应地修改命令
           而不使用全量路径。
 
-Setup the Environment
-~~~~~~~~~~~~~~~~~~~~~
+Setup the Environment -- 环境构建
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We will be operating from the root of the ``first-network`` subdirectory within
 your local clone of ``fabric-samples``. Change into that directory now. You will
 also want to open a few extra terminals for ease of use.
+
+我们后续的操作都在 ``fabric-samples`` 项目本地副本的 ``first-network`` 子目录下进行。现在切换
+到该目录下。你同时需要打个几个额外的终端，以便于于操作。
 
 First, use the ``byfn.sh`` script to tidy up. This command will kill any active
 or stale docker containers and remove previously generated artifacts. It is by no
@@ -59,17 +62,25 @@ configuration update tasks. However, for the sake of this tutorial, we want to o
 from a known initial state. Therefore let's run the following command to clean up any
 previous environments:
 
+首先，使用 ``byfn.sh`` 脚本清理环境。这个命令会清除运行、终止状态的容器，并且移除之前构建
+的部件等。移除Fabric网络并非执行通道配置升级的必要步骤。但是为了便于这个指南的书写，
+我们希望从一个已知的初始状态开始，因此让我们运行以下命令来清理之前的环境：
+
 .. code:: bash
 
   ./byfn.sh -m down
 
 Now generate the default BYFN artifacts:
 
+现在生成默认的BYFN部件：
+
 .. code:: bash
 
   ./byfn.sh -m generate
 
 And launch the network making use of the scripted execution within the CLI container:
+
+然后通过执行CLI容器内的脚本来构建网络：
 
 .. code:: bash
 
@@ -79,10 +90,16 @@ Now that you have a clean version of BYFN running on your machine, you have two
 different paths you can pursue. First, we offer a fully commented script that will
 carry out a config transaction update to bring Org3 into the network.
 
+现在你的机器上运行着一个干净的BYFN版本，你有两种不同的方式可选。第一种，我们提供了一
+个通过实施配置交易更新来将Org3添加到网络中的全量注释的脚本。
+
 Also, we will show a "manual" version of the same process, showing each step
 and explaining what it accomplishes (since we show you how to bring down your
 network before this manual process, you could also run the script and then look at
 each step).
+
+我们也提供同样过程的手动版本，演示并说明每一个步骤的作用（因为我们刚演示了在继续手动
+操作前如何移除你的网络，你可以先运行那个脚本，然后再来看每个步骤）。
 
 Bring Org3 into the Channel with the Script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
