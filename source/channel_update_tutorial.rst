@@ -1017,8 +1017,8 @@ update of this chaincode's world state.
 
 我们能看到 ``Query Result: 80`` 的响应，准确反映了链码的世界状态的更新。
 
-Conclusion
-~~~~~~~~~~
+Conclusion -- 总结
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The channel configuration update process is indeed quite involved, but there is a
 logical method to the various steps. The endgame is to form a delta transaction object
@@ -1026,8 +1026,14 @@ represented in protobuf binary format and then acquire the requisite number of a
 signatures such that the channel configuration update transaction fulfills the channel's
 modification policy.
 
+通道配置的更新过程是非常复杂的，但是仍然有一个诸多步骤对应的逻辑方法。终局就是为了构
+建一个用protobuf二进制表达的差异化的交易对象，然后获取必要数量的管理员签名来满足通道
+的修改策略。
+
 The ``configtxlator`` and ``jq`` tools, along with the ever-growing ``peer channel``
 commands, provide us with the functionality to accomplish this task.
+
+``configtxlator`` 和 ``jq`` 工具，和不断使用的 ``peer channel`` 命令，为我们提供了完成这个任务的基本功能。
 
 .. Licensed under Creative Commons Attribution 4.0 International License
    https://creativecommons.org/licenses/by/4.0/
