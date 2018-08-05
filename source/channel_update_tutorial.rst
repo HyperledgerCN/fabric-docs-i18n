@@ -153,15 +153,20 @@ show you each command for making a channel update and what it does.
 对于想要详细了解该过程的人，文档的剩余部分会为你展示通道升级的每个命令，以及命令的作
 用。
 
-Bring Org3 into the Channel Manually
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Bring Org3 into the Channel Manually -- 向通道手动添加Org3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. note:: The manual steps outlined below assume that the ``CORE_LOGGING_LEVEL``
           in the ``cli`` and `Org3cli`` containers is set to ``DEBUG``.
 
+          下面的步骤均假设 ``CORE_LOGGING_LEVEL`` 变量在 ``cli`` 和 ``Org3cli`` 容器中设置为 ``DEBUG``。
+
           For the ``cli`` container, you can set this by modifying the
           ``docker-compose-cli.yaml`` file in the ``first-network`` directory.
           e.g.
+
+          你可以通过修改 ``first-network`` 目录下的 ``docker-compose-cli.yaml`` 文件来配置 ``cli`` 容器。
+          例：
 
           .. code::
 
@@ -180,6 +185,9 @@ Bring Org3 into the Channel Manually
           ``docker-compose-org3.yaml`` file in the ``first-network`` directory.
           e.g.
 
+          你可以通过修改 ``first-network`` 目录下的 ``docker-compose-org3.yaml`` 文件来配置 ``Org3cli`` 容
+          器。例：
+
           .. code::
 
             Org3cli:
@@ -196,6 +204,8 @@ Bring Org3 into the Channel Manually
 If you've used the ``eyfn.sh`` script, you'll need to bring your network down.
 This can be done by issuing:
 
+如果你已经使用了 ``eyfn.sh`` 脚本，你需要先移除你的网络。通过如下所示命令来完成：
+
 .. code:: bash
 
   ./eyfn.sh down
@@ -205,11 +215,17 @@ done to add Org3.
 
 When the network is down, bring it back up again.
 
+这会移除网络，删除所有的容器，并且撤销我们添加Org3的操作。
+
+当网络移除后，再次将它建立起来。
+
 .. code:: bash
 
   ./byfn.sh -m generate
 
 Then:
+
+然后：
 
 .. code:: bash
 
@@ -218,8 +234,12 @@ Then:
 This will bring your network back to the same state it was in before you executed
 the ``eyfn.sh`` script.
 
+这会将你的网络恢复到你执行 ``eyfn.sh`` 脚本之前的状态。
+
 Now we're ready to add Org3 manually. As a first step, we'll need to generate Org3's
 crypto material.
+
+现在我们可以手动添加Org3。第一步，我们需要生成Org3的加密材料。
 
 Generate the Org3 Crypto Material
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
