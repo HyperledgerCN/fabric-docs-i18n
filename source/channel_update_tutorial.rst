@@ -439,14 +439,18 @@ As a result, we have the following configuration sequence:
   * block 1: Org1 anchor peer update
   * block 2: Org2 anchor peer update
 
-Convert the Configuration to JSON and Trim It Down
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Convert the Configuration to JSON and Trim It Down -- 转换配置到JSON格式并裁剪
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now we will make use of the ``configtxlator`` tool to decode this channel
 configuration block into JSON format (which can be read and modified by humans).
 We also must strip away all of the headers, metadata, creator signatures, and
 so on that are irrelevant to the change we want to make. We accomplish this by
 means of the ``jq`` tool:
+
+现在我们是用 ``configtxlator`` 的工具将这个通道配置转换为JSON格式（以便友好地被阅读和修
+改）。我们也必须裁剪所有的头部，元数据，创建者签名等这些和我们即将做的无关的内容。我
+们通过 ``jq`` 这个工具来实现：
 
 .. code:: bash
 
@@ -456,10 +460,17 @@ This leaves us with a trimmed down JSON object -- ``config.json``, located in
 the ``fabric-samples`` folder inside ``first-network`` -- which
 will serve as the baseline for our config update.
 
+我们得到一个裁剪后的JSON对象 -- ``config.json`` ，放置在 ``fabric-samples`` 下的 ``first-network``
+文件夹下 -- ``first-network`` 是我们配置更新的基准工作目录。
+
 Take a moment to open this file inside your text editor of choice (or in your
 browser). Even after you're done with this tutorial, it will be worth studying it
 as it reveals the underlying configuration structure and the other kind of channel
 updates that can be made. We discuss them in more detail in :doc:`config_update`.
+
+花一些时间用你的text编辑器（或者你的浏览器）打开这个文件。即使你已经完成了这个指南，
+也值得研究下它，因为它揭示了底层配置结构，和能做的其它类型的通道更新升级。我们将在
+:doc:`config_update` 更详细地讨论。
 
 Add the Org3 Crypto Material
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
