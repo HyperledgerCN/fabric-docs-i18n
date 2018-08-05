@@ -472,17 +472,25 @@ updates that can be made. We discuss them in more detail in :doc:`config_update`
 也值得研究下它，因为它揭示了底层配置结构，和能做的其它类型的通道更新升级。我们将在
 :doc:`config_update` 更详细地讨论。
 
-Add the Org3 Crypto Material
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Add the Org3 Crypto Material --  添加Org3加密材料
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. note:: The steps you've taken up to this point will be nearly identical no matter
           what kind of config update you're trying to make. We've chosen to add an
           org with this tutorial because it's one of the most complex channel
           configuration updates you can attempt.
 
+          目前到这里你做的步骤和其他任何类型的配置升级所需步骤几乎是一致的。我们之所以选择添
+          加一个org这样的指南，是因为这是能做的配置升级里最复杂的一个。
+
 We'll use the ``jq`` tool once more to append the Org3 configuration definition
 -- ``org3.json`` -- to the channel's application groups field, and name the output
 -- ``modified_config.json``.
+
+
+我们将再次使用 ``jq`` 工具去扩展Org3的配置定义
+-- ``org3.json`` -- 对应到通道的应用组属性，同时定义输出文件是
+-- ``modified_config.json``
 
 .. code:: bash
 
@@ -493,7 +501,14 @@ and ``modified_config.json``. The initial file contains only Org1 and Org2 mater
 whereas "modified" file contains all three Orgs. At this point it's simply
 a matter of re-encoding these two JSON files and calculating the delta.
 
+现在，我们在CLI容器有两个重要的JSON文件 -- ``config.json`` 和 ``modified_config.json``。初始
+的文件包含Org1和Org2的材料，而"modified"文件包含了总共三个Orgs。现在只需要将这两个
+JSON文件重新编码并计算出差异部分。
+
+
 First, translate ``config.json`` back into a protobuf called ``config.pb``:
+
+首先，将 ``config.json`` 文件倒回到protobuf格式，命名为 ``config.pb`` ：
 
 .. code:: bash
 
@@ -501,12 +516,17 @@ First, translate ``config.json`` back into a protobuf called ``config.pb``:
 
 Next, encode ``modified_config.json`` to ``modified_config.pb``:
 
+下一步，将 ``modified_config.json`` 编码成 ``modified_config.pb``:
+
 .. code:: bash
 
   configtxlator proto_encode --input modified_config.json --type common.Config --output modified_config.pb
 
 Now use ``configtxlator`` to calculate the delta between these two config
 protobufs. This command will output a new protobuf binary named ``org3_update.pb``:
+
+现在使用 ``configtxlator`` 去计算两个protobuf配置的差异。这条命令会输出一个新的protobuf二
+进制文件，命名为 ``org3_update.pb`` 。
 
 .. code:: bash
 
@@ -518,8 +538,15 @@ MSP material and modification policy information for Org1 and Org2 because this
 data is already present within the channel's genesis block. As such, we only need
 the delta between the two configurations.
 
+这个新的proto文件 -- ``org3_update.pb`` -- 包含了Org3定义和指向Org1和Org2材料的更高级别的指
+针。我们可以抛弃Org1和Org2相关的MSP材料和修改策略信息，因为这些数据已经存在于通道
+的初始区块。因此，我们只需要两个配置的差异部分。
+
 Before submitting the channel update, we need to perform a few final steps. First,
 let's decode this object into editable JSON format and call it ``org3_update.json``:
+
+在我们提交通道更新前，我们最后做几个操作。首先，我们将这个对象解码成可编辑的JSON格
+式，并命名为 ``org3_update.json`` 。
 
 .. code:: bash
 
@@ -529,6 +556,9 @@ Now, we have a decoded update file -- ``org3_update.json`` -- that we need to wr
 in an envelope message. This step will give us back the header field that we stripped away
 earlier. We'll name this file ``org3_update_in_envelope.json``:
 
+现在，我们有了一个解码后的更新文件 -- ``org3_update.json`` -- 我们需要用信封消息来包装它。这
+个步骤要把之前裁剪掉的头部信息还原回来。我们将命名这个新文件为 ``org3_update_in_envelope.json``。
+
 .. code:: bash
 
   echo '{"payload":{"header":{"channel_header":{"channel_id":"mychannel", "type":2}},"data":{"config_update":'$(cat org3_update.json)'}}}' | jq . > org3_update_in_envelope.json
@@ -537,6 +567,10 @@ Using our properly formed JSON -- ``org3_update_in_envelope.json`` -- we will
 leverage the ``configtxlator`` tool one last time and convert it into the
 fully fledged protobuf format that Fabric requires. We'll name our final update
 object ``org3_update_in_envelope.pb``:
+
+使用我们格式化好的JSON -- ``org3_update_in_envelope.json`` -- 我们最后一次使用 ``configtxlator``
+工具将他转换为fabric需要的完整独立的protobuf格式。我们将最后的更新对象命名为 ``org3_update_in_envelope.pb``。
+
 
 .. code:: bash
 
