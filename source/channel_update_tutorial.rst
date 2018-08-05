@@ -373,12 +373,15 @@ Check to make sure the variables have been properly set:
           如果因为什么原因需要重启CLI容器，你会需要重新设置 ``ORDERER_CA`` 和 ``CHANNEL_NAME`` 这两个
           环境变量。jq安装会持久化，你不需要再次安装它。
 
-Fetch the Configuration
-~~~~~~~~~~~~~~~~~~~~~~~
+Fetch the Configuration 获取配置
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now we have a CLI container with our two key environment variables -- ``ORDERER_CA``
 and ``CHANNEL_NAME`` exported.  Let's go fetch the most recent config block for the
 channel -- ``mychannel``.
+
+现在我们有了一个设置了 ``ORDERER_CA`` 和 ``CHANNEL_NAME`` 环境变量的CLI容器。让我们获取通道 ``mychannel``
+的最近的配置区块。
 
 The reason why we have to pull the latest version of the config is because channel
 config elements are versioned.. Versioning is important for several reasons. It prevents
@@ -387,6 +390,11 @@ with old CRLs would represent a security risk). Also it helps ensure concurrency
 want to remove an Org from your channel, for example, after a new Org has been added,
 versioning will help prevent you from removing both Orgs, instead of just the Org you want
 to remove).
+
+我们必须拉取最新版本配置的原因是通道配置元素是版本化的。版本管理由于一些原因显得很重
+要。它可以防止通道配置更新被重复或者重放攻击（例如，回退到带有旧的CRLs的通道配置将会
+产生安全风险）。同时它保证了并行性（例如如果你想从你的通道中添加新的Org后移除一个
+Org，版本管理可以帮助你移除想移除的那个Org，防止移除两个Orgs）。
 
 .. code:: bash
 
@@ -397,8 +405,15 @@ This command saves the binary protobuf channel configuration block to
 However, following a convention which identifies both the type of object being
 represented and its encoding (protobuf or JSON) is recommended.
 
+这个命令将通道配置区块以二进制protobuf形式保存在 ``config_block.pb``。注意文件的名字和扩
+展名可以任意指定。然而，我们建议之后根据区块存储对象的类型和编码格式（protobuf或
+JSON）进行转换。
+
 When you issued the ``peer channel fetch`` command, there was a decent amount of
 output in the terminal. The last line in the logs is of interest:
+
+当你执行 ``peer channel fetch`` 命令后，在终端上会有相当数量的打印输出。日志的最后一行比较
+有意思：
 
 .. code:: bash
 
@@ -411,7 +426,14 @@ in this case is the third block. This is because the BYFN script defined anchor
 peers for our two organizations -- ``Org1`` and ``Org2`` -- in two separate channel update
 transactions.
 
+这是告诉我们最近的 ``mychannel`` 的配置区块实际上是区块2，**非** 初始区块。 ``peer channel fetch config``
+命令默认返回目标通道最新的配置区块，在这个例子里是第三个区
+块。这是因为BYFN脚本分别在两个不同通道更新交易中为两个组织-- ``Org1`` 和 ``Org2`` 定义了锚节
+点。
+
 As a result, we have the following configuration sequence:
+
+那么，我们有如下的配置块序列：
 
   * block 0: genesis block
   * block 1: Org1 anchor peer update
