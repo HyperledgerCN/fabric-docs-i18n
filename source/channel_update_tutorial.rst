@@ -776,15 +776,22 @@ election:
           这个配置。
 
 
-Join Org3 to the Channel
-~~~~~~~~~~~~~~~~~~~~~~~~
+Join Org3 to the Channel -- 向通道添加Org3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 At this point, the channel configuration has been updated to include our new
 organization -- ``Org3`` -- meaning that peers attached to it can now join ``mychannel``.
 
+此时，通道的配置已经更新并包含了我们新的组织 -- ``Org3`` -- 意味者这个组织下的peer节点可以加入
+到 ``mychannel``。
+
 First, let's launch the containers for the Org3 peers and an Org3-specific CLI.
 
+首先，让我们部署Org3 peer节点容器和Org3-specific CLI容器。
+
 Open a new terminal and from ``first-network`` kick off the Org3 docker compose:
+
+打开一个以 ``first-network`` 为工作目录的新的终端，开始Org3 docker compose的部署：
 
 .. code:: bash
 
@@ -795,6 +802,9 @@ so the two peers and the CLI container will be able to resolve with the existing
 peers and ordering node. With the three new containers now running, exec into
 the Org3-specific CLI container:
 
+这个新的compose文件配置为桥接我们的初始网络，因此两个peer容器和CLI容器可以融入到已经
+存在的peer和排序节点中。当三个容器运行后，进入Org3-specific CLI容器：
+
 .. code:: bash
 
   docker exec -it Org3cli bash
@@ -802,11 +812,15 @@ the Org3-specific CLI container:
 Just as we did with the initial CLI container, export the two key environment
 variables: ``ORDERER_CA`` and ``CHANNEL_NAME``:
 
+和我们之前在初始CLI容器一样，export两个关键环境变量： ``ORDERER_CA`` 和 ``CHANNEL_NAME``：
+
 .. code:: bash
 
   export ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem && export CHANNEL_NAME=mychannel
 
 Check to make sure the variables have been properly set:
+
+检查确保环境变量已经合理设置：
 
 .. code:: bash
 
@@ -818,10 +832,19 @@ attached to this call as a result of our successful channel update. If Org3
 has not been successfully appended to the channel config, the ordering
 service should reject this request.
 
+现在，我们向排序服务发送一个请求 ``mychannel`` 的初始区块的请求。如果通道更新成功执行，排
+序服务会成功校验这个请求中Org3的签名。如果Org3没有成功地添加到通道配置中，排序服务会
+拒绝这个请求。
+
+
 .. note:: Again, you may find it useful to stream the ordering node's logs
           to reveal the sign/verify logic and policy checks.
 
+          再次，你会发现打印排序节点的日志流可以帮助揭示签名/校验以及策略校验的逻辑。
+
 Use the ``peer channel fetch`` command to retrieve this block:
+
+使用 ``peer channel fatch`` 命令来检索这个区块：
 
 .. code:: bash
 
@@ -833,7 +856,13 @@ the channel's ledger (i.e. the genesis block). If we simply passed the
 updated config with Org3 defined. However, we can't begin our ledger with a
 downstream block -- we must start with block 0.
 
+注意，我们传递了 ``0`` 去索引我们在这个通道账本上想要的区块（例如，初始区块）。如果我们
+简单地执行 ``peer channel fetch config`` 命令，我们将会收到区块5 -- 那个带有Org3定义的更新
+后的配置。然而，我们的账本不能从一个下游的区块开始 -- 我们必须从区块0开始。
+
 Issue the ``peer channel join`` command and pass in the genesis block -- ``mychannel.block``:
+
+执行 ``peer channel join`` 命令并指定初始区块 -- ``mychannel.block``:
 
 .. code:: bash
 
@@ -841,6 +870,8 @@ Issue the ``peer channel join`` command and pass in the genesis block -- ``mycha
 
 If you want to join the second peer for Org3, export the ``TLS`` and ``ADDRESS`` variables
 and reissue the ``peer channel join command``:
+
+如果你想将第二个peer节点加入到Org3中，export ``TLS`` 和 ``ADDRESS`` 变量，再重新执行 ``peer channel join command``
 
 .. code:: bash
 
