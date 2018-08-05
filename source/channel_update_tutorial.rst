@@ -241,11 +241,13 @@ crypto material.
 
 现在我们可以手动添加Org3。第一步，我们需要生成Org3的加密材料。
 
-Generate the Org3 Crypto Material
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Generate the Org3 Crypto Material -- 生成Org3加密材料
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In another terminal, change into the ``org3-artifacts`` subdirectory from
 ``first-network``.
+
+在另一个终端，切换到 ``first-network`` 的子目录 ``org3-artifacts`` 中。
 
 .. code:: bash
 
@@ -253,6 +255,9 @@ In another terminal, change into the ``org3-artifacts`` subdirectory from
 
 There are two ``yaml`` files of interest here: ``org3-crypto.yaml`` and ``configtx.yaml``.
 First, generate the crypto material for Org3:
+
+这里需要关注两个 ``yaml`` 文件：``org3-crypto.yaml`` 和 ``configtx.yaml``。首先，生成Org3的加密
+材料：
 
 .. code:: bash
 
@@ -264,9 +269,16 @@ CA as well as two peers bound to this new Org. As with the BYFN implementation,
 this crypto material is put into a newly generated ``crypto-config`` folder
 within the present working directory (in our case, ``org3-artifacts``).
 
+该命令读取我们新的加密 ``yaml`` 文件 -- ``org3-crypto.yaml`` -- 然后调用 ``cryptogen`` 来为Org3 CA
+和其他两个绑定到这个组织的peers生成秘钥和证书。如同BYFN实现，加密材料放到最近生成的 ``crypto-config``
+文件夹下，均在当前工作路径下（在我们例子中是 ``org3-artifacts``）。
+
 Now use the ``configtxgen`` utility to print out the Org3-specific configuration
 material in JSON. We will preface the command by telling the tool to look in the
 current directory for the ``configtx.yaml`` file that it needs to ingest.
+
+现在使用 ``configtxgen`` 工具打印出Org3对应的配置材料，用JSON格式展示。我们将在执行命令
+前，告诉这个工具去获取当前目录的 ``configtx.yaml`` 文件。
 
 .. code:: bash
 
@@ -279,16 +291,26 @@ presented in base 64 format: the admin user certificate (which will be needed to
 the admin of Org3 later on), a CA root cert, and a TLS root cert. In an upcoming step we
 will append this JSON file to the channel configuration.
 
+上面的命令会创建一个JSON文件 -- ``org3.json`` -- 并把文件输出到 ``first-network`` 的 ``channel-artifacts``
+子目录下。这个文件包含了Org3的策略定义，还有base 64编码的重要的证
+书：管理员用户证书（之后作为Org3的管理员角色），一个根证书，一个TLS根证书。之后的步
+骤我们会用这个JSON文件去扩展通道配置。
+
 Our final piece of housekeeping is to port the Orderer Org's MSP material into
 the Org3 ``crypto-config`` directory. In particular, we are concerned with the
 Orderer's TLS root cert, which will allow for secure communication between
 Org3 entities and the network's ordering node.
+
+我们最后的例行工作是拷贝排序Org的MSP材料到Org3的 ``crypto-config`` 目录下。我们尤其关注
+排序服务的TLS根证书，它可以用于Org3的通信实体和网络的排序节点间的安全通信。
 
 .. code:: bash
 
   cd ../ && cp -r crypto-config/ordererOrganizations org3-artifacts/crypto-config/
 
 Now we're ready to update the channel configuration...
+
+现在我们准备开始升级通道配置。
 
 Prepare the CLI Environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
