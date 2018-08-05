@@ -576,8 +576,8 @@ object ``org3_update_in_envelope.pb``:
 
   configtxlator proto_encode --input org3_update_in_envelope.json --type common.Envelope --output org3_update_in_envelope.pb
 
-Sign and Submit the Config Update
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sign and Submit the Config Update --  签名并提交配置更新
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Almost done!
 
@@ -590,9 +590,20 @@ Org1 and Org2 -- and the majority of two is two, we need both of them to sign. W
 both signatures, the ordering service will reject the transaction for failing to
 fulfill the policy.
 
+差不多大功告成了！
+
+我们现在有一个protobuf二进制 -- ``org3_update_in_envelope.pb`` -- 在我们的CLI容器内。但是，在
+配置写入到账本前，我们需要必要的Admin用户的签名。我们通道应用组的修改策略(mod_policy)设置
+为默认值"MAJORITY"，因此意味着我们需要大多数已经存在的组织管理员去签名这个更
+新。因为我们只有两个组织 -- Org1和Org2 -- 也即两个的大多数也还是两个，我们需要它们都签
+名。没有这两个签名，排序服务会以不满足策略为由拒绝这个交易。
+
 First, let's sign this update proto as the Org1 Admin. Remember that the CLI container
 is bootstrapped with the Org1 MSP material, so we simply need to issue the
 ``peer channel signconfigtx`` command:
+
+首先，让我们以Org1管理员升级来签名这个更新proto。因为CLI容器是以Org1 MSP材料启动
+的，我们只需要简单执行 ``peer channel signconfigtx`` 命令:
 
 .. code:: bash
 
@@ -601,13 +612,22 @@ is bootstrapped with the Org1 MSP material, so we simply need to issue the
 The final step is to switch the CLI container's identity to reflect the Org2 Admin
 user. We do this by exporting four environment variables specific to the Org2 MSP.
 
+最后一步，我们将CLI容器的身份切换为Org2管理员。为此，我们通过export和Org2 MSP相关的
+四个环境变量。
+
 .. note:: Switching between organizations to sign a config transaction (or to do anything
           else) is not reflective of a real-world Fabric operation. A single container
           would never be mounted with an entire network's crypto material. Rather, the
           config update would need to be securely passed out-of-band to an Org2
           Admin for inspection and approval.
 
+          切换不同的组织身份为配置交易签名（或者其他事情）不能反映真实世界里Fabric的操作。一
+          个单一容器不可能挂载了整个网络的加密材料。相反地，配置更新需要在网络外安全地递交
+          给Org2管理员来审查和批准。
+
 Export the Org2 environment variables:
+
+Export Org2的环境变量：
 
 .. code:: bash
 
@@ -625,12 +645,22 @@ Lastly, we will issue the ``peer channel update`` command. The Org2 Admin signat
 will be attached to this call so there is no need to manually sign the protobuf a
 second time:
 
+最后，我们执行 ``peer channel update`` 命令。Org2 管理员在这个命令中会附带签名，因此就没有
+必要对protobuf进行两次签名。
+
 .. note:: The upcoming update call to the ordering service will undergo a series
           of systematic signature and policy checks. As such you may find it
           useful to stream and inspect the ordering node's logs. From another shell,
           issue a ``docker logs -f orderer.example.com`` command to display them.
 
+          将要做的对排序服务的更新调用，会经历一系列的系统级签名和策略检查。你会发现通过检视
+          排序节点的日志流会非常有用。在另外一个shell，执行 ``docker logs -f orderer.example.com``
+          命令就能展示它们了。
+
+
 Send the update call:
+
+发起更新调用：
 
 .. code:: bash
 
@@ -639,11 +669,15 @@ Send the update call:
 You should see a message digest indication similar to the following if your
 update has been submitted successfully:
 
+如果你的更新提交成功，将会看到一个类似如下的摘要提示信息：
+
 .. code:: bash
 
   2018-02-24 18:56:33.499 UTC [msp/identity] Sign -> DEBU 00f Sign: digest: 3207B24E40DE2FAB87A2E42BC004FEAA1E6FDCA42977CB78C64F05A88E556ABA
 
 You will also see the submission of our configuration transaction:
+
+你也会看到我们的配置交易的提交：
 
 .. code:: bash
 
@@ -655,7 +689,13 @@ configurations while blocks 3 and 4 are the instantiation and invocation of
 the ``mycc`` chaincode. As such, block 5 serves as the most recent channel
 configuration with Org3 now defined on the channel.
 
+成功的通道更新调用返回一个新的区块 --  区块5 -- 给所有在这个通道上的peers节点。如果你还记
+得，区块0-2是初始的通道配置，而区块3和4是链码 ``mycc`` 的实例化和调用。至此，区块5就是带
+有Org3定义的最新的通道配置。
+
 Inspect the logs for ``peer0.org1.example.com``:
+
+查看 ``peer0.org1.example.com`` 的日志：
 
 .. code:: bash
 
@@ -663,6 +703,8 @@ Inspect the logs for ``peer0.org1.example.com``:
 
 Follow the demonstrated process to fetch and decode the new config block if you wish to inspect
 its contents.
+
+如果你想查看新的配置区块的内容，可以跟着示范的过程获取和解码配置区块。
 
 Configuring Leader Election
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
