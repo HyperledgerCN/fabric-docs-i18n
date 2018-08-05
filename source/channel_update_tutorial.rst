@@ -879,8 +879,8 @@ and reissue the ``peer channel join command``:
 
   peer channel join -b mychannel.block
 
-Upgrade and Invoke Chaincode
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pgrade and Invoke Chaincode -- 升级和调用链码
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The final piece of the puzzle is to increment the chaincode version and update
 the endorsement policy to include Org3. Since we know that an upgrade is coming,
@@ -888,7 +888,13 @@ we can forgo the futile exercise of installing version 1 of the chaincode. We
 are solely concerned with the new version where Org3 will be part of the
 endorsement policy, therefore we'll jump directly to version 2 of the chaincode.
 
+这个智力游戏的最后一部分是升级链码的版本，并升级背书策略以加入Org3。因为我们知道马上
+要做的是升级，将无关紧要的安装第一个版本链码的过程抛诸脑后吧。我们只关心Org3会是背书
+策略一部分的新的版本，因此我们直接跳到链码的第二个版本。
+
 From the Org3 CLI:
+
+从Org3 CLI执行：
 
 .. code:: bash
 
@@ -901,15 +907,24 @@ endorsers or otherwise interface with the ledger (i.e. query only). Peers will
 still run the validation logic and serve as committers without a running chaincode
 container.
 
+如果你要在Org3的第二个peer节点上安装链码，请相应地修改环境变量并再次执行命令。注意第
+二次安装并不是强制的，因为你只需要在背书节点或者和账本有交互行为(如，只做查询)节点上
+安装链码。即使没有运行链码容器，Peer节点仍然会运行检验逻辑，作为commiter角色工作。
+
 Now jump back to the **original** CLI container and install the new version on the
 Org1 and Org2 peers. We submitted the channel update call with the Org2 admin
 identity, so the container is still acting on behalf of ``peer0.org2``:
+
+现在跳回 **original** CLI容器，在Org1和Org2 peer节点上安装新版本链码。我们使用Org2管理员身
+份提交通道更新请求，所以容器仍然是代表"peer0.Org2":
 
 .. code:: bash
 
   peer chaincode install -n mycc -v 2.0 -p github.com/chaincode/chaincode_example02/go/
 
 Flip to the ``peer0.org1`` identity:
+
+切回 ``peer0.org1`` 身份：
 
 .. code:: bash
 
@@ -923,6 +938,8 @@ Flip to the ``peer0.org1`` identity:
 
 And install again:
 
+然后再次安装：
+
 .. code:: bash
 
   peer chaincode install -n mycc -v 2.0 -p github.com/chaincode/chaincode_example02/go/
@@ -931,10 +948,17 @@ Now we're ready to upgrade the chaincode. There have been no modifications to
 the underlying source code, we are simply adding Org3 to the endorsement policy for
 a chaincode -- ``mycc`` -- on ``mychannel``.
 
+现在我们已经准备好升级链码。底层的源代码没有任何变化，我们只是简单为在 ``mychannel`` 通道上的 ``mycc``
+链码的背书策略添加Org3组织。
+
 .. note:: Any identity satisfying the chaincode's instantiation policy can issue
           the upgrade call. By default, these identities are the channel Admins.
 
+          任何满足链码实例化策略的身份都可以执行升级调用。这些身份默认就是通道的管理者。
+
 Send the call:
+
+发送调用：
 
 .. code:: bash
 
@@ -946,9 +970,15 @@ of the ``v`` flag. You can also see that the endorsement policy has been modifie
 addition of Org3 to the policy. The final area of interest is our constructor
 request (specified with the ``c`` flag).
 
+你可以看到上面的命令，我们用 ``v`` 标志指定了我们的新的版本号。你也能看到背书策略修改为 ``-P "OR ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')"``
+，说明Org3要被添加到策略中。最后一部分注意的是我们的构造请求(用 ``c`` 标志指定)。
+
 As with an instantiate call, a chaincode upgrade requires usage of the ``init``
 method. **If** your chaincode requires arguments be passed to the ``init`` method,
 then you will need to do so here.
+
+链码升级和实例化一样需要用到 ``init`` 方法。 **如果** 你的链码需要传递参数给 ``init`` 方法，那你
+需要在这里添加。
 
 The upgrade call adds a new block -- block 6 -- to the channel's ledger and allows
 for the Org3 peers to execute transactions during the endorsement phase. Hop
@@ -956,13 +986,21 @@ back to the Org3 CLI container and issue a query for the value of ``a``. This wi
 take a bit of time because a chaincode image needs to be built for the targeted peer,
 and the container needs to start:
 
+升级调用对于通道的账本添加一个新的区块 -- 允许Org3的peer节点在背书阶段执行交易。跳回到
+Org3 CLI容器，并执行对 ``a`` 值得查询。这需要花费一点时间，因为需要为目标peer构建链码镜
+像，链码容器需要运行。
+
 .. code:: bash
 
     peer chaincode query -C $CHANNEL_NAME -n mycc -c '{"Args":["query","a"]}'
 
 We should see a response of ``Query Result: 90``.
 
+我们能看到 ``Query Result：90`` 的响应。
+
 Now issue an invocation to move ``10`` from ``a`` to ``b``:
+
+现在执行调用，从 ``a`` 转移 ``10`` 到 ``b``：
 
 .. code:: bash
 
@@ -976,6 +1014,8 @@ Query one final time:
 
 We should see a response of ``Query Result: 80``, accurately reflecting the
 update of this chaincode's world state.
+
+我们能看到 ``Query Result: 80`` 的响应，准确反映了链码的世界状态的更新。
 
 Conclusion
 ~~~~~~~~~~
