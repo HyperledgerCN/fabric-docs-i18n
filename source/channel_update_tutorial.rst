@@ -706,14 +706,18 @@ its contents.
 
 如果你想查看新的配置区块的内容，可以跟着示范的过程获取和解码配置区块。
 
-Configuring Leader Election
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Configuring Leader Election -- 配置领导选举
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. note:: This section is included as a general reference for understanding
           the leader election settings when adding organizations to a network
           after the initial channel configuration has completed. This sample
           defaults to dynamic leader election, which is set for all peers in the
           network in `peer-base.yaml`.
+
+          这个章节之所以引入，是用于理解在网络通道配置初始化之后，网络中加入组织时，领导选举
+          设置的作用。这个例子中，默认设置为动态领导选举，在 ``peer-base.yaml`` 文件中为所有的
+          peers节点进行了设置。
 
 Newly joining peers are bootstrapped with the genesis block, which does not
 contain information about the organization that is being added in the channel
@@ -723,8 +727,16 @@ until they get the configuration transaction which added the organization to the
 channel. Newly added peers must therefore have one of the following
 configurations so that they receive blocks from the ordering service:
 
+新加入的peer节点是根据初始区块启动，初始区块是不包含通道配置更新中新加入的组织信息
+的。因此新的peer节点就无法利用gossip协议，因为它们无法验证从自己组织里其他peer节点发
+送过来的区块，直到它们接收到加入组织到通道的那个配置交易。因此新加入的节点必须有以下
+的一个配置来保证能从排序服务接收区块：
+
+
 1. To utilize static leader mode, configure the peer to be an organization
 leader:
+
+1. 采用静态领导者模式，将peer节点配置为组织的领导者。
 
 ::
 
@@ -733,10 +745,15 @@ leader:
 
 
 .. note:: This configuration must be the same for all new peers added to the
-channel.
+          channel.
+
+          这个配置对于新加入到通道中的所有peer节点必须一致。
+
 
 2. To utilize dynamic leader election, configure the peer to use leader
 election:
+
+2. 采用动态领导者选举，配置peer节点采用领导选举：
 
 ::
 
@@ -752,6 +769,11 @@ election:
           only one active leader for the organization. Therefore, it is
           recommended to leverage this option if you eventually want the
           organization's peers to utilize leader election.
+
+          因为新加入组织的peer节点，无法生成成员关系视图，这个配置和静态配置类似，每个节点启
+          动时宣称自己是领导者。但是，一旦它们更新到了将组织加入到通道的配置交易，组织中将
+          只会有一个激活状态的领导者。因此，如果你想最终组织的节点采用领导选举，建议你采用
+          这个配置。
 
 
 Join Org3 to the Channel
