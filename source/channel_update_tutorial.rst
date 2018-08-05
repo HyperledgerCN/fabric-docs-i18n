@@ -312,8 +312,8 @@ Now we're ready to update the channel configuration...
 
 现在我们准备开始升级通道配置。
 
-Prepare the CLI Environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Prepare the CLI Environment 准备CLI环境
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The update process makes use of the configuration translator tool -- ``configtxlator``.
 This tool provides a stateless REST API independent of the SDK. Additionally it
@@ -323,11 +323,19 @@ for the easy conversion between different equivalent data representations/format
 configuration update transaction based on the differences between two channel
 configurations.
 
+更新的步骤需要用到配置转化工具 -- ``configtxlator``，这个工具提供了和SDK无关的无状态REST API。
+它还额外提供了CLI，用于简化Fabric网络中的配置任务。这个工具提供不同的数据表示/格
+式间进行转化的便利功能（在这个例子中就是protobufs和JSON格式的互转）。另外，这个工具
+能基于两个不同的通道配置计算出配置更新交易。
+
 First, exec into the CLI container. Recall that this container has been
 mounted with the BYFN ``crypto-config`` library, giving us access to the MSP material
 for the two original peer organizations and the Orderer Org. The bootstrapped
 identity is the Org1 admin user, meaning that any steps where we want to act as
 Org2 will require the export of MSP-specific environment variables.
+
+首先，进入到CLI容器。这个容器挂载了BYFN ``crypto-config`` 库，允许我们访问两个原始的peer节点组织和
+Orderer排序组织。默认的身份是Org1的管理员用户，所以如果我们想作为Org2进行任何操作，需要设置和MSP相关的环境变量。
 
 .. code:: bash
 
@@ -336,17 +344,23 @@ Org2 will require the export of MSP-specific environment variables.
 Now install the ``jq`` tool into the container. This tool allows script interactions
 with JSON files returned by the ``configtxlator`` tool:
 
+现在在容器里安装 ``jq`` 工具。这个工具可以解析 ``configtxlator`` 工具返回的JSON文件。
+
 .. code:: bash
 
   apt update && apt install -y jq
 
 Export the ``ORDERER_CA`` and ``CHANNEL_NAME`` variables:
 
+Export ``ORDERER_CA`` 和 ``CHANNEL_NAME`` 变量。
+
 .. code:: bash
 
   export ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  && export CHANNEL_NAME=mychannel
 
 Check to make sure the variables have been properly set:
+
+检查并确保环境变量已合理设置：
 
 .. code:: bash
 
@@ -355,6 +369,9 @@ Check to make sure the variables have been properly set:
 .. note:: If for any reason you need to restart the CLI container, you will also need to
           re-export the two environment variables -- ``ORDERER_CA`` and ``CHANNEL_NAME``.
           The jq installation will persist. You need not install it a second time.
+
+          如果因为什么原因需要重启CLI容器，你会需要重新设置 ``ORDERER_CA`` 和 ``CHANNEL_NAME`` 这两个
+          环境变量。jq安装会持久化，你不需要再次安装它。
 
 Fetch the Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~
