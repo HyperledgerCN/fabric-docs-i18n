@@ -101,10 +101,12 @@ each step).
 我们也提供同样过程的手动版本，演示并说明每一个步骤的作用（因为我们刚演示了在继续手动
 操作前如何移除你的网络，你可以先运行那个脚本，然后再来看每个步骤）。
 
-Bring Org3 into the Channel with the Script
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Bring Org3 into the Channel with the Script - 使用脚本向通道加入Org3
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You should be in ``first-network``. To use the script, simply issue the following:
+
+在 ``first-network`` 目录下，简单地执行以下命令来使用脚本：
 
 .. code:: bash
 
@@ -114,7 +116,12 @@ The output here is well worth reading. You'll see the Org3 crypto material being
 added, the config update being created and signed, and then chaincode being installed
 to allow Org3 to execute ledger queries.
 
+此处的脚本输出值得一读。你可以看到添加了Org3的加密材料，配置更新被创建、签名，之后链
+码被安装，Org3也被允许执行账本查询。
+
 If everything goes well, you'll get this message:
+
+如果诸事顺利，你会看到以下信息：
 
 .. code:: bash
 
@@ -123,11 +130,18 @@ If everything goes well, you'll get this message:
 ``eyfn.sh`` can be used with the same Node.js chaincode and database options
 as ``byfn.sh`` by issuing the following (instead of ``./byfn.sh -m -up``):
 
+
+``eyfn.sh`` 可以使用和 ``byfn.sh`` 一样的Node.js链码和数据库选项，如下所示（替代 ``./byfn.sh -m
+-up``）：
+
+
 .. code:: bash
 
   ./byfn.sh up -c testchannel -s couchdb -l node
 
 And then:
+
+然后：
 
 .. code:: bash
 
@@ -135,6 +149,9 @@ And then:
 
 For those who want to take a closer look at this process, the rest of the doc will
 show you each command for making a channel update and what it does.
+
+对于想要详细了解该过程的人，文档的剩余部分会为你展示通道升级的每个命令，以及命令的作
+用。
 
 Bring Org3 into the Channel Manually
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
