@@ -30,31 +30,30 @@ HTML文件发布在 http://hyperledger-fabric.readthedocs.io上。该站点使�
 
 根据以下步骤，你可以很容易的建立起自己的暂存库：
 
-1. 创建 [github 上的 fabirc](https://github.com/hyperledger/fabric) 分支
+1. 创建 [github 上的 fabric-docs-i18n](https://github.com/HyperledgerCN/fabric-docs-i18n) 分支
 1. 在你自己分支上，在屏幕右上角进入 `settings`
 1. 点击 `Integration & services`
 1. 点击 `Add service` 下拉菜单,
 1. 向下滚动至 ReadTheDocs
 1. 然后，前往 http://readthedocs.org 注册一个账号。首批提示中有一个会提供与 github 的链接。选择这一项
 1. 点击导入一个项目
-1. 在选项中导航至你的分支（例如 yourgithubid/fabric）
+1. 在选项中导航至你的分支（例如 yourgithubid/fabric-docs-i18n）
 1. 系统会询问你这个项目的名字。可凭自己的直觉想一个。这个名字会出现在 URL 的开头，所以你可能会需要在该名字后增加 `-fabric` 以便于和你给其他项目创建的文档进行区分，例如： `yourgithubid-fabric.readthedocs.io/en/latest` 
 
 现在，只要当你在自己的分支上修改或增加文档内容，这个 URL 就会将这些内容自动更新！
 
 ### 在本机构建文档
 
-以下是从 fabric 主目录开始、不依赖于 ReadTheDocs、在本机上构建文档的简单步骤。
+以下是从 fabric-docs-i18n 主目录开始、不依赖于 ReadTheDocs、在本机上构建文档的简单步骤。
 注意：你可能需要根据你的操作系统进行一些调整。
 
 ```
 sudo pip install Sphinx
 sudo pip install sphinx_rtd_theme
-cd fabric/docs # Be in this directory. Makefile sits there.
 make html
 ```
 
-以上步骤会在 `docs/build/html` 目录下生成所有的html文件。你可以用浏览器在本地浏览。
+以上步骤会在 `build/html` 目录下生成所有的html文件。你可以用浏览器在本地浏览。
 当然，每次修改文档后你都需要重新执行 `make
 html` 。
 
