@@ -7,8 +7,9 @@
           from a v1.0.x binary to a v1.1 binary). The term “update,” on the other
           hand, refers not to versions but to configuration changes, such as
           updating a channel configuration or a deployment script.
+          updating a channel configuration or a deployment script
 
-.. 注意:: 当我们在本文档中使用术语“升级”时，我们主要是指更改组件的版本（例如，从v1.0.x二进制文件转换为v1.1二进制文件）。另一方面，术语“更新”不是指版本，而是指配置更改，例如更新信道配置或部署脚本。 
+注意：当我们在本文档中使用术语“升级”时，我们主要是指更改组件的版本（例如，从v1.0.x二进制文件转换为v1.1二进制文件）。另一方面，术语“更新”不是指版本，而是指配置更改，例如更新信道配置或部署脚本。 
 
 Overview
 --------
@@ -781,7 +782,6 @@ Orderer Group
 ~~~~~~~~~~~~~
 背书节点组
 ~~~~~~~~~~~~~
-
 Get the channel config:
 
 获得信道配置：
