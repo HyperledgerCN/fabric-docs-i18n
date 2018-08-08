@@ -1114,10 +1114,9 @@ Fabric CA Container
 ~~~~~~~~~~~~~~~~~~~
  Fabric CA 容器
 ~~~~~~~~~~~~~~~~~~~
-
 To learn how to upgrade your Fabric CA server, click over to the `CA documentation. <http://hyperledger-fabric-ca.readthedocs.io/en/latest/users-guide.html#upgrading-the-server>`_
 
-要了解如何升级Fabric CA服务器，请单击 `CA文档. <http://hyperledger-fabric-ca.readthedocs.io/en/latest/users-guide.html#upgrading-the-server>`_。
+了解如何升级Fabric CA服务器，请单击 `CA文档. <http://hyperledger-fabric-ca.readthedocs.io/en/latest/users-guide.html#upgrading-the-server>`_。
 
 Upgrade Node SDK Clients
 ~~~~~~~~~~~~~~~~~~~~~~~~
