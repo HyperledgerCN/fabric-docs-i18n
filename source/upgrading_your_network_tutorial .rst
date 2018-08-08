@@ -6,10 +6,9 @@
           referring to changing the version of a component (for example, going
           from a v1.0.x binary to a v1.1 binary). The term “update,” on the other
           hand, refers not to versions but to configuration changes, such as
-          updating a channel configuration or a deployment script.
           updating a channel configuration or a deployment script
 
-注意：当我们在本文档中使用术语“升级”时，我们主要是指更改组件的版本（例如，从v1.0.x二进制文件转换为v1.1二进制文件）。另一方面，术语“更新”不是指版本，而是指配置更改，例如更新信道配置或部署脚本。 
+.. 注意::当我们在本文档中使用术语“升级”时，我们主要是指更改组件的版本（例如，从v1.0.x二进制文件转换为v1.1二进制文件）。另一方面，术语“更新”不是指版本，而是指配置更改，例如更新信道配置或部署脚本。 
 
 Overview
 --------
@@ -62,7 +61,7 @@ At a high level, our upgrade tutorial will perform the following steps:
           upgraded when capabilities have been enabled, a catastrophic state fork
           can be created).
 
-注意： 在生产环境中，背书节点和节点可以同时滚动升级（换句话说，在升级节点之前，您无需升级背书节点）。必须特别注意的是启用功能。必须在该步骤之前升级所有背书节点和节点（如果在启用功能时仅升级了一些背书节点，则可以创建灾难性的状态分支）。
+.. 注意:: 在生产环境中，背书节点和节点可以同时滚动升级（换句话说，在升级节点之前，您无需升级背书节点）。必须特别注意的是启用功能。必须在该步骤之前升级所有背书节点和节点（如果在启用功能时仅升级了一些背书节点，则可以创建灾难性的状态分支）。
 
 This tutorial will demonstrate how to perform each of these steps individually
 with CLI commands.
@@ -131,7 +130,7 @@ With a clean environment, launch our v1.0.6 BYFN network using these four comman
           If you get errors, consider cleaning up v1.0.6 images and running the example
           again. This will download 1.0.6 images from docker hub.
 
-注意： 如果您已经本地构建v1.0.6映像，则示例将使用它们。如果出现错误，请考虑清理v1.0.6映像并再次运行该示例。 这将从docker hub下载1.0.6图像。
+.. 注意:: 如果您已经本地构建v1.0.6映像，则示例将使用它们。如果出现错误，请考虑清理v1.0.6映像并再次运行该示例。 这将从docker hub下载1.0.6图像。
 
 If BYFN has launched properly, you will see:
 
@@ -154,7 +153,7 @@ Get the newest samples
           '1.1.x' with the version identifier of the published release that
           you are testing. e.g. replace 'v1.1.x' with 'v1.1.0'.
 
-注意： 以下说明适用于最新发布的v1.1.x版本，从1.1.0-rc1开始。请将“1.1.x”替换为您正测试的已发布版本的版本标识符。例如将'v1.1.x'替换为'v1.1.0'。
+.. 注意:: 以下说明适用于最新发布的v1.1.x版本，从1.1.0-rc1开始。请将“1.1.x”替换为您正测试的已发布版本的版本标识符。例如将'v1.1.x'替换为'v1.1.0'。
 
 Before completing the rest of the tutorial, it's important to get the v1.1.x
 version of the samples, you can do this by:
@@ -208,7 +207,7 @@ Then proceed to the next section.
 .. note:: Many of the commands you'll run in this section will not result in any
           output. In general, assume no output is good output.
 
-注意： 您将在本节中运行的许多命令不会产生任何输出。 通常，假设没有输出就是好的输出。
+.. 注意:: 您将在本节中运行的许多命令不会产生任何输出。 通常，假设没有输出就是好的输出。
 
 Upgrade the Orderer Containers
 ------------------------------
@@ -220,7 +219,7 @@ Upgrade the Orderer Containers
           others -- a state fork could be created (meaning, ledgers would no
           longer be consistent). This MUST be avoided.
 
-注意： 请 **密切** 关注您的背书节点升级。 如果它们没有正确完成 - 特别是，如果只升级了一些背书节点而其他背书节点没有升级 - 可以创建一个状态分支（  意味着，分类账将不再一致）。 这必须是被避免的。
+.. 注意:: 请 **密切** 关注您的背书节点升级。 如果它们没有正确完成 - 特别是，如果只升级了一些背书节点而其他背书节点没有升级 - 可以创建一个状态分支（  意味着，分类账将不再一致）。 这必须是被避免的。
  
 Orderer containers should be upgraded in a rolling fashion (one at a time). At a
 high level, the orderer upgrade process goes as follows:
@@ -254,7 +253,7 @@ have to be performed for each orderer.
           for this variable is still present in the ``orderer.yaml`` file, the
           new ``orderer`` binary will fail to start.
 
-注意： 本教程使用docker部署。对于本机部署，请将文件 ``orderer`` 替换为发布工件中的。备份 ``orderer.yaml`` 并将其替换为发布工件``orderer.yaml`` 文件。然后将备份的``orderer.yaml`` 中的任何已经修改的变量移植到新的变量。 使用像 ``diff`` 这样的实用程序可能会有所帮助。 为了减少混淆，变量``General.TLS.ClientAuthEnabled`` 已重命名为 ``General.TLS.ClientAuthRequired``（就像在节点配置中指定的那样）。 如果 ``orderer.yaml`` 文件中仍存在此变量的旧名称，则新的 ``orderer`` 将无法启动。 
+.. 注意:: 本教程使用docker部署。对于本机部署，请将文件 ``orderer`` 替换为发布工件中的。备份 ``orderer.yaml`` 并将其替换为发布工件``orderer.yaml`` 文件。然后将备份的``orderer.yaml`` 中的任何已经修改的变量移植到新的变量。 使用像 ``diff`` 这样的实用程序可能会有所帮助。 为了减少混淆，变量``General.TLS.ClientAuthEnabled`` 已重命名为 ``General.TLS.ClientAuthRequired``（就像在节点配置中指定的那样）。 如果 ``orderer.yaml`` 文件中仍存在此变量的旧名称，则新的 ``orderer`` 将无法启动。 
 
 Let’s begin the upgrade process by **bringing down the orderer**:
 
@@ -335,7 +334,7 @@ We have four peers running in our network. We will perform this process once for
           ``core.yaml`` to the new one. Utilizing a utility like ``diff`` may be
           helpful.
 
-注意： 同样，本教程使用了docker部署。对于 **本机** 部署，请将 ``peer`` 文件替换为发布工件中的文件。备份您的 ``core.yaml`` 并将其替换为发布工件  中的那个。 将备份的``core.yaml`` 中的任何已修改变量移植到新的变量。使用像 ``diff`` 这样的实用程序可能会有所帮助。 
+.. 注意:: 同样，本教程使用了docker部署。对于 **本机** 部署，请将 ``peer`` 文件替换为发布工件中的文件。备份您的 ``core.yaml`` 并将其替换为发布工件  中的那个。 将备份的``core.yaml`` 中的任何已修改变量移植到新的变量。使用像 ``diff`` 这样的实用程序可能会有所帮助。 
 
 Let’s **bring down the first peer** with the following command:
 
@@ -388,7 +387,7 @@ Now we'll re-launch the peer using the v1.1 image tag:
           follow the instructions in the **Upgrading CouchDB** section below at
           this time and then issue this command instead of the one above:
 
-注意： 尽管BYFN支持使用CouchDB，但我们在本教程中选择了更简单的实现。但是，如果您使用的是CouchDB，请按照下面的 **“升级CouchDB”** 部分中的说明进          行操作，然后发出此命令而不是上面的命令： 
+.. 注意:: 尽管BYFN支持使用CouchDB，但我们在本教程中选择了更简单的实现。但是，如果您使用的是CouchDB，请按照下面的 **“升级CouchDB”** 部分中的说明进          行操作，然后发出此命令而不是上面的命令： 
 
 .. code:: bash
 
@@ -442,7 +441,7 @@ After verifying the peer was upgraded correctly, make sure to issue an ``exit`` 
 
 .. note:: All peers must be upgraded BEFORE enabling capabilities.
 
-注意： 在启用功能之前，必须升级所有节点。 
+.. 注意:: 在启用功能之前，必须升级所有节点。 
 
 Enable Capabilities for the Channels
 ------------------------------------
@@ -464,7 +463,7 @@ In order to minimize the chance of a fork, attempts to enable the application or
 .. note:: Once a capability has been enabled, disabling it is not recommended or
           supported.
 
-注意： 一但功能被启用，是不建议或不支持禁用它的。
+.. 注意:: 一但功能被启用，是不建议或不支持禁用它的。
 
 Once a capability has been enabled, it becomes part of the permanent record for that channel. This means that even after disabling the capability, old binaries will not be able to participate in the channel because they cannot process beyond the block which enabled the capability to get to the block which disables it.
 
@@ -518,7 +517,7 @@ We will enable capabilities in the following order:
           the orderer system capability first and then enable individual channel
           capabilities.
 
-注意： 为了最大限度地减少分叉的可能性，最佳做法是首先启用背书节点系统功能，然后启用个          人信道功能。
+.. 注意:: 为了最大限度地减少分叉的可能性，最佳做法是首先启用背书节点系统功能，然后启用个          人信道功能。
 
 For each group, we will enable the capabilities in the following order:
 
@@ -538,7 +537,7 @@ For each group, we will enable the capabilities in the following order:
           for each channel. Because BYFN all exists on a single machine, it is
           possible for us to update each of these channels.
 
-注意： 此过程将通过一系列配置更新事务完成，每个信道组一个。 在现实生产网络中，这些信道配置更新将由每个信道的管理员处理。 由于BYFN都存在于一台机器 上，因此更新每个通道是有可能的。
+.. 注意:: 此过程将通过一系列配置更新事务完成，每个信道组一个。 在现实生产网络中，这些信道配置更新将由每个信道的管理员处理。 由于BYFN都存在于一台机器 上，因此更新每个通道是有可能的。
 
 For more information on updating channel configs, click on :doc:`channel_update_tutorial` or the doc on :doc:`config_update`.
 
@@ -608,7 +607,7 @@ block:
 
 .. note:: We require configtxlator v1.0.0 or higher for this next step.
 
-注意： 我们需要configtxlator v1.0.0或更高版本才能完成下一步。 
+.. 注意:: 我们需要configtxlator v1.0.0或更高版本才能完成下一步。 
 
 To make our config easy to edit, let’s convert the config block to JSON using
 configtxlator:
@@ -676,7 +675,7 @@ Submit the config update transaction:
 .. note:: The command below both signs and submits the transaction to the ordering
           service.
 
-注意： 下面的命令都是用来签署并将交易提交给背书服务的。
+.. 注意:: 下面的命令都是用来签署并将交易提交给背书服务的。
 
 .. code:: bash
 
@@ -705,7 +704,7 @@ The first step, as before, is to get the latest channel configuration.
 .. note:: This set of commands is exactly the same as the steps from the orderer
           group.
 
-注意： 这组命令与背书节点组中的步骤完全相同。 
+.. 注意:: 这组命令与背书节点组中的步骤完全相同。 
 
 .. code:: bash
 
@@ -735,7 +734,7 @@ Create the config update transaction:
 .. note:: This set of commands is exactly the same as the third step from the
           orderer group.
 
-注意： 这组命令与背书节点组的第三步完全相同。
+.. 注意:: 这组命令与背书节点组的第三步完全相同。
   
 .. code:: bash
 
@@ -850,7 +849,7 @@ Channel Group
           process on different groups. In a production network, as we've said,
           this process would likely be split up among the various channel admins.
 
-注意： 虽然这看似重复，但请记住，我们在不同的组上执行相同的过程。 在生产网络中，正如我们所说，这个过程可能会在各个信道管理员之间分开。 
+.. 注意:: 虽然这看似重复，但请记住，我们在不同的组上执行相同的过程。 在生产网络中，正如我们所说，这个过程可能会在各个信道管理员之间分开。 
 
 Fetch, decode, and scope the config:
 
@@ -1097,7 +1096,7 @@ In which case we have successfully added capabilities to all of our channels.
           This crashing behavior is deliberate because it indicates a
           misconfiguration which might result in a state fork.
 
-注意： 虽然网络中的所有节点二进制文件都应该在此之前进行升级，但是在一个v1.0.0节点加入的信道上启用功能的要求将导致节点崩溃。这种崩溃行为是故意的，因为它表明可能导致状态分叉的配置错误。
+.. 注意:: 虽然网络中的所有节点二进制文件都应该在此之前进行升级，但是在一个v1.0.0节点加入的信道上启用功能的要求将导致节点崩溃。这种崩溃行为是故意的，因为它表明可能导致状态分叉的配置错误。
 
 Upgrading Components BYFN Does Not Support
 ------------------------------------------
@@ -1124,7 +1123,7 @@ Upgrade Node SDK Clients
 ~~~~~~~~~~~~~~~~~~~~~~~~
 .. note:: Upgrade Fabric CA before upgrading Node SDK Clients.
 
-注意： 升级Node SDK客户端之前升级Fabric CA.
+.. 注意:: 升级Node SDK客户端之前升级Fabric CA.
 
 Use NPM to upgrade any ``Node.js`` client by executing these commands in the
 root directory of your application:
@@ -1186,7 +1185,7 @@ sample Kafka docker images containing Kafka version v1.0.0.
           maximum compatibility and update the setting afterwards when you have
           determined your Kafka cluster version.
 
-注意： 您必须配置背书节点使用的Kafka协议版本以匹配您的Kafka集群版本，即使之前未设置它。例如，如果您使用Fabric v1.0.x提供的示例Kafka映像，请将``ORDERER_KAFKA_VERSION`` 环境变量或 ``orderer.yaml`` 中的 ``Kafka.Version`` 键设置为 ``0.9.0.1``。如果您不确定Kafka集群版本，可以将背书节点的Kafka协议版本配置为 ``0.9.0.1``以获得最大兼容性 ，并在确定Kafka集群版本后更新设置。
+.. 注意:: 您必须配置背书节点使用的Kafka协议版本以匹配您的Kafka集群版本，即使之前未设置它。例如，如果您使用Fabric v1.0.x提供的示例Kafka映像，请将``ORDERER_KAFKA_VERSION`` 环境变量或 ``orderer.yaml`` 中的 ``Kafka.Version`` 键设置为 ``0.9.0.1``。如果您不确定Kafka集群版本，可以将背书节点的Kafka协议版本配置为 ``0.9.0.1``以获得最大兼容性 ，并在确定Kafka集群版本后更新设置。
 
 Upgrading Zookeeper
 ^^^^^^^^^^^^^^^^^^^
