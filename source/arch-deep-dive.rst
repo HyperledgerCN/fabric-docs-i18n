@@ -856,15 +856,25 @@ When an event ``deliver(seqno, prevhash, blob)`` occurs and a peer has
 applied all state updates for blobs with sequence number lower than
 ``seqno``, a peer does the following:
 
+当peer节点接收到一个 ``deliver(seqno, prevhash, blob)`` 事件，并且已经把 ``seqno`` 之前的
+所有状态持久化，它会做如下处理：
+
 -  It checks that the ``blob.endorsement`` is valid according to the
    policy of the chaincode (``blob.tran-proposal.chaincodeID``) to which
    it refers.
+
+-  它根据 ``blob.tran-proposal.chaincodeID`` 指定的链码的策略，检查 ``blob.endorsement`` 是否有
+   效。
 
 -  In a typical case, it also verifies that the dependencies
    (``blob.endorsement.tran-proposal.readset``) have not been violated
    meanwhile. In more complex use cases, ``tran-proposal`` fields in
    endorsement may differ and in this case endorsement policy (Section
    3) specifies how the state evolves.
+
+-  一个经典的场景，它还校验依赖（ ``blob.endorsement.tran-proposal.readset`` ）没有被违反。
+   更复杂的应用场景，背书中的 ``tran-proposal`` 属性可能不同，背书策略（章节3）指定了状态
+   如何演进。
 
 Verification of dependencies can be implemented in different ways,
 according to a consistency property or "isolation guarantee" that is
@@ -875,6 +885,10 @@ with *every* key in the ``readset`` to be equal to that key's version in
 the state, and rejecting transactions that do not satisfy this
 requirement.
 
+根据一致性特性或者"隔离保证"，依赖校验可以通过不同的方式来实现。除非链码背书策略指定
+了其他保证，否则 **串行化** 是一个默认的隔离保证。串行化会保证 ``读集`` 中的每个key的版本和状
+态中的key版本相等，并且拒绝不满足这个条件的交易。
+
 -  If all these checks pass, the transaction is deemed *valid* or
    *committed*. In this case, the peer marks the transaction with 1 in
    the bitmask of the ``PeerLedger``, applies
@@ -882,10 +896,17 @@ requirement.
    ``tran-proposals`` are the same, otherwise endorsement policy logic
    defines the function that takes ``blob.endorsement``).
 
+-  如果通过所有的检查，交易就是一定 *有效* 或者一定 *被提交* 。这种情况下，peer节点会在 ``PeerLedger``
+   的bitmask上为这个交易标注为1，将 ``blob.endorsement.tran-proposal.writeset`` 写入区块状态（
+   如果 ``tran-proposals`` 是一样的，否则背书策略逻辑定义函数来处理 ``blob.endorsement`` ）。
+
 -  If the endorsement policy verification of ``blob.endorsement`` fails,
    the transaction is invalid and the peer marks the transaction with 0
    in the bitmask of the ``PeerLedger``. It is important to note that
    invalid transactions do not change the state.
+
+-  如果 ``blob.endorsement`` 背书策略校验失败了，peer节点会在 ``PeerLedger``
+   的bitmask上为这个交易标注为0。需要着重注意的是无效的交易不会改变状态。
 
 Note that this is sufficient to have all (correct) peers have the same
 state after processing a deliver event (block) with a given sequence
@@ -897,6 +918,12 @@ are deterministic, all correct peers will also come to the same
 conclusion whether a transaction contained in a blob is valid. Hence,
 all peers commit and apply the same sequence of transactions and update
 their state in the same way.
+
+注意，以上就是peer在处理带有序号的传递的事件（区块）后，所有peer节点都有相同的状态的
+充分条件。通过排序服务的担保，所有正确的peer节点互收到一致的
+``deliver(seqno, prevhash, blob)`` 事件序列。因为背书策略的评估和 ``读集`` 版本依赖的评估都是
+确定的，所有peer节点都会达成blob中的交易是否有效的共识。因此，所有的peer节点提交和应
+用相同的交易顺序，用同样的方式更新它们的状态。
 
 .. image:: images/flow-4.png
    :alt: Illustration of the transaction flow (common-case path).
