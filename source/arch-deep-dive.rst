@@ -1022,23 +1022,39 @@ The predicate may contain logical expressions and evaluates to TRUE or
 FALSE. Typically the condition will use digital signatures on the
 transaction invocation issued by endorsing peers for the chaincode.
 
+述词可能包含逻辑描述，并评估为TURE或者FALSE。通常情况下，条件会使用这个链码的背书节
+点为这个交易调用做的数字签名。
+
 Suppose the chaincode specifies the endorser set
 ``E = {Alice, Bob, Charlie, Dave, Eve, Frank, George}``. Some example
 policies:
 
+假设链码指定背书节点集 ``E = {Alice, Bob, Charlie, Dave, Eve, Frank, George}``。样例策略：
+
 -  A valid signature from on the same ``tran-proposal`` from all members
    of E.
 
+-  Ede所有成员节点对同一个 ``tran-proposal`` 的有效签名。
+
 -  A valid signature from any single member of E.
+
+-  E的任意一个成员的有效签名。
 
 -  Valid signatures on the same ``tran-proposal`` from endorsing peers
    according to the condition
    ``(Alice OR Bob) AND (any two of: Charlie, Dave, Eve, Frank, George)``.
 
+-  背书节点根据条件对同一个 ``tran-proposal`` 的有效签名。
+   ``(Alice OR Bob) AND (any two of: Charlie, Dave, Eve, Frank, George)``。
+
 -  Valid signatures on the same ``tran-proposal`` by any 5 out of the 7
    endorsers. (More generally, for chaincode with ``n > 3f`` endorsers,
    valid signatures by any ``2f+1`` out of the ``n`` endorsers, or by
    any group of *more* than ``(n+f)/2`` endorsers.)
+
+-  7个背书节点中5个对同一个 ``tran-proposal`` 的有效签名。（更通用的，对于有 ``n > 3f`` 背书
+   节点的链码，需要 ``n`` 个背书节点中任意 ``2f+1`` 个提供签名，或者多于任意 ``(n+f)/2`` 个背书
+   节点的签名。）
 
 -  Suppose there is an assignment of "stake" or "weights" to the
    endorsers, like
@@ -1049,23 +1065,32 @@ policies:
    any ``X`` different from George, or
    ``{everyone together except Alice}``. And so on.
 
+-  假设对背书节点分配"股份"或者"权重"，像 ``{Alice=49, Bob=15, Charlie=15, Dave=10, Eve=7, Frank=3, George=1}`` ，总的股份是100：这个
+   策略需要集合中大部分股份的签名（比如总和股份超过50），比如 ``{Alice, X}`` ，其中 ``X``
+   和George不同。
+
 -  The assignment of stake in the previous example condition could be
    static (fixed in the metadata of the chaincode) or dynamic (e.g.,
    dependent on the state of the chaincode and be modified during the
    execution).
 
+-  之前样例条件中，股份的分配是静态的（在链码的metadata中是固定的）或者动态依赖于链
+   码的状态并在执行过程中可以被修改。
+
 -  Valid signatures from (Alice OR Bob) on ``tran-proposal1`` and valid
    signatures from ``(any two of: Charlie, Dave, Eve, Frank, George)``
-   on ``tran-proposal2``, where ``tran-proposal1`` and
+   on ``tran-proposal2`` , where ``tran-proposal1`` and
    ``tran-proposal2`` differ only in their endorsing peers and state
    updates.
+
+-  从(Alice OR Bob)对 ``tran-proposal1`` 的有效签名，和从 ``(any two of: Charlie, Dave, Eve, Frank, George)`` ，对 ``tran-proposal2`` 的有效签名，
+   ``tran-proposal1`` 和 ``tran-proposal2`` 的区别只在于他们的背书节点和状态更新。
 
 How useful these policies are will depend on the application, on the
 desired resilience of the solution against failures or misbehavior of
 endorsers, and on various other properties.
 
-4 (post-v1). Validated ledger and ``PeerLedger`` checkpointing (pruning)
-------------------------------------------------------------------------
+这些策略的作用依赖你对于应用的系统弹性需求，如解决背书节点失效或者恶意行为，和其他多样的特性。
 
 4.1. Validated ledger (VLedger)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
