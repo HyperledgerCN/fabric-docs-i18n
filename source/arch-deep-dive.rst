@@ -1,7 +1,9 @@
-Architecture Explained
-======================
+Architecture Explained -- 架构解读
+====================================
 
 The Hyperledger Fabric architecture delivers the following advantages:
+
+Hyperledger Fabric架构提供了以下优点：
 
 -  **Chaincode trust flexibility.** The architecture separates *trust
    assumptions* for chaincodes (blockchain applications) from trust
@@ -9,6 +11,11 @@ The Hyperledger Fabric architecture delivers the following advantages:
    provided by one set of nodes (orderers) and tolerate some of them to
    fail or misbehave, and the endorsers may be different for each
    chaincode.
+
+
+- **链码信任灵活性。** 该架构将对链码（区块链应用）的 *信任设想* 同对排序服务的信任设想分离
+  开来。换言之，排序服务是由node集合组成，并容忍其中一些失效或者恶意节点，而对每个
+  链码的背书节点可以不同。
 
 -  **Scalability.** As the endorser nodes responsible for particular
    chaincode are orthogonal to the orderers, the system may *scale*
@@ -19,26 +26,47 @@ The Hyperledger Fabric architecture delivers the following advantages:
    Besides, chaincode execution, which can potentially be costly, is
    removed from the critical path of the ordering service.
 
+- **水平扩展性。** 由于特定链码的背书节点和排序节点是正交的，相比于这些功能在同一个节点
+  上，系统可以更好地伸缩。尤其是当不同的链码指定不同的背书节点时，相当于引入了背书
+  节点间链码的分区，从而允许链码并行地执行（背书）。另外，链码的执行可能非常耗时，
+  将其从排序服务这种关键路径上移除。
+
 -  **Confidentiality.** The architecture facilitates deployment of
    chaincodes that have *confidentiality* requirements with respect to
    the content and state updates of its transactions.
 
+-  **保密性。** 考虑交易的内容、状态更新的保密性，该框架便于部署满足这种保密需求的链码。
+
 -  **Consensus modularity.** The architecture is *modular* and allows
    pluggable consensus (i.e., ordering service) implementations.
 
+-  **一致性算法模块化** 该框架是 *模块化* 的，允许插件化一致性算法的实现 (比如，排序服务) 。
+
+
 **Part I: Elements of the architecture relevant to Hyperledger Fabric
 v1**
+
+**章节 I: 该框架中与 Hyperledger Fabric v1 相关的基础**
 
 1. System architecture
 2. Basic workflow of transaction endorsement
 3. Endorsement policies
 
-   **Part II: Post-v1 elements of the architecture**
+1. 系统架构
+2. 交易背书的基本流程
+3. 背书策略
+
+**Part II: Post-v1 elements of the architecture**
+
+**章节 II: v1版本后新增的框架基础**
 
 4. Ledger checkpointing (pruning)
 
-1. System architecture
-----------------------
+4. 账本检查点 (裁剪)
+
+
+1. System architecture -- 系统框架
+---------------------------------------------------------------------------------
 
 The blockchain is a distributed system consisting of many nodes that
 communicate with each other. The blockchain runs programs called
