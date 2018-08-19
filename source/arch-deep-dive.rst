@@ -930,11 +930,12 @@ their state in the same way.
 
 *Figure 1. Illustration of one possible transaction flow (common-case path).*
 
-3. Endorsement policies
------------------------
 
-3.1. Endorsement policy specification
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3. Endorsement policies -- 背书策略
+---------------------------------------------------------------------------------
+
+3.1. Endorsement policy specification -- 背书策略详述
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 An **endorsement policy**, is a condition on what *endorses* a
 transaction. Blockchain peers have a pre-specified set of endorsement
@@ -942,10 +943,17 @@ policies, which are referenced by a ``deploy`` transaction that installs
 specific chaincode. Endorsement policies can be parametrized, and these
 parameters can be specified by a ``deploy`` transaction.
 
+一个 **背书策略** 是一个谁来 *背书* 交易的条件。区块peer节点有一个预先指定的背书策略集合，
+当通过部署交易来安装指定链码时就会指定。背书策略可以用参数表示，而这些参数可以通过部署
+交易来指定。
+
 To guarantee blockchain and security properties, the set of endorsement
 policies **should be a set of proven policies** with limited set of
 functions in order to ensure bounded execution time (termination),
 determinism, performance and security guarantees.
+
+为了保证区块链安全特性，背书策略 **应该是被证明的策略集合** ，有限的几个功能用来确保有限执
+行时间（终止），确定性，性能和安全保障。
 
 Dynamic addition of endorsement policies (e.g., by ``deploy``
 transaction on chaincode deploy time) is very sensitive in terms of
@@ -953,8 +961,11 @@ bounded policy evaluation time (termination), determinism, performance
 and security guarantees. Therefore, dynamic addition of endorsement
 policies is not allowed, but can be supported in future.
 
-3.2. Transaction evaluation against endorsement policy
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+动态添加背书策略（如通过 ``部署`` 交易控制链码部署时间）在约束策略执行时间（终止），确定性，
+性能和安全保障上非常敏感。因此，动态添加背书策略是不允许的，但未来可能支持。
+
+3.2. Transaction evaluation against endorsement policy -- 针对背书策略评估交易
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A transaction is declared valid only if it has been endorsed according
 to the policy. An invoke transaction for a chaincode will first have to
