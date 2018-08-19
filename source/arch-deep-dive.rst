@@ -551,18 +551,22 @@ To summarize, the ordering service ensures the following properties:
 -  *活性*。当一个客户端正确地调用事件 ``broadcast(blob)`` ，每个正确的peer节点"最终"接受到事件 ``deliver(*, *, blob)`` ， ``*``
    表示任意值。
 
-2. Basic workflow of transaction endorsement
---------------------------------------------
+2. Basic workflow of transaction endorsement - 交易背书基本流程
+---------------------------------------------------------------------------------
 
 In the following we outline the high-level request flow for a
 transaction.
+
+接下来我们会从比较高层次大致演示一个交易的基本流程。
 
 **Remark:** *Notice that the following protocol *does not* assume that
 all transactions are deterministic, i.e., it allows for
 non-deterministic transactions.*
 
-2.1. The client creates a transaction and sends it to endorsing peers of its choice
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**备注：** *注意接下来的协议不假设所有的交易都是确定性的，它允许不确定性的交易*
+
+2.1. The client creates a transaction and sends it to endorsing peers of its choice -- 客户端创建交易并发送到所选的背书节点
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To invoke a transaction, the client sends a ``PROPOSE`` message to a set
 of endorsing peers of its choice (possibly not at the same time - see
