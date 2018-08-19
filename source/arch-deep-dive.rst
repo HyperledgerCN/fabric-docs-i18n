@@ -1092,14 +1092,22 @@ endorsers, and on various other properties.
 
 这些策略的作用依赖你对于应用的系统弹性需求，如解决背书节点失效或者恶意行为，和其他多样的特性。
 
-4.1. Validated ledger (VLedger)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4 (post-v1). Validated ledger and ``PeerLedger`` checkpointing (pruning) -- （v1后版本）。有效账本和 ``PeerLedger`` 检查点（裁剪）
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4.1. Validated ledger (VLedger) -- 有效账本（VLedger）
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 To maintain the abstraction of a ledger that contains only valid and
 committed transactions (that appears in Bitcoin, for example), peers
 may, in addition to state and Ledger, maintain the *Validated Ledger (or
 VLedger)*. This is a hash chain derived from the ledger by filtering out
 invalid transactions.
+
+为了维护账本中提交的且有效的交易（比如，在Bitcoin中）的摘要，peer节点可能会额外记账，
+维护 *有效账本（或VLedger）* 。这是一个继承自来账本过滤掉无效交易的哈希链。
 
 The construction of the VLedger blocks (called here *vBlocks*) proceeds
 as follows. As the ``PeerLedger`` blocks may contain invalid
@@ -1112,13 +1120,22 @@ transactions, that have been filtered out. Such vBlocks are inherently
 dynamic in size and may be empty. An illustration of vBlock construction
 is given in the figure below.
 
-.. image:: images/blocks-3.png
-   :alt: Illustration of vBlock formation
+构建VLedger区块（这里称为 *vBlocks* ）的过程如下。由于 ``PeerLedger`` 区块可能包含无效的交易
+（比如，无效背书的交易或者无效版本依赖的交易），peer节点会在交易从区块调到到vBlock
+前，将这些交易过滤掉。每个节点都会自行处理（比如，通过使用和 ``PeerLedger`` 关联的
+bitmask）。vBlock就是过滤掉掉无效交易的区块。因此vBlocks在大小上是内在动态变化的，并
+且有可能是空的。下图给出了vBlock的结构说明。
 
-*Figure 2. Illustration of validated ledger block (vBlock) formation from ledger (PeerLedger) blocks.*
+.. image:: images/blocks-3.png
+   :alt: Illustration of vBlock formation -- vBlock格式说明
+
+*Figure 2. Illustration of validated ledger block (vBlock) formation from ledger (PeerLedger) blocks. --
+从PeerLedger区块构建的有效账本区块（vBlock）的说明*
 
 vBlocks are chained together to a hash chain by every peer. More
 specifically, every block of a validated ledger contains:
+
+每个peer节点将vBlock链接成一个哈希链。更确切的说，每个包含有效账本的区块包含：
 
 -  The hash of the previous vBlock.
 
@@ -1131,11 +1148,21 @@ specifically, every block of a validated ledger contains:
 -  The hash of the corresponding block (in ``PeerLedger``) from which
    the current vBlock is derived.
 
+-  前一个vBlock的哈希值。
+
+-  vBlock号
+
+-  在上一个vBlock计算之后，所有提交的有效的交易的排序列表（比如，在对应区块里的有效交易列表）。
+
+-  当前vBlock继承的对应的区块（在 ``PeerLedger`` 中）的哈希值。
+
 All this information is concatenated and hashed by a peer, producing the
 hash of the vBlock in the validated ledger.
 
-4.2. ``PeerLedger`` Checkpointing
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+所有这些信息都由peer节点进行连接和哈希计算，算出有效账本中vBlock的哈希值。
+
+4.2. ``PeerLedger`` Checkpointing -- ``PeerLedger`` 检查点
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ledger contains invalid transactions, which may not necessarily be
 recorded forever. However, peers cannot simply discard ``PeerLedger``
