@@ -973,13 +973,21 @@ obtain an *endorsement* that satisfies the chaincode's policy or it will
 not be committed. This takes place through the interaction between the
 submitting client and endorsing peers as explained in Section 2.
 
+一个交易只有按照策略来背书才会被声明为有效。一个链码的调用交易首先会获取满足链码策略
+的 *背书* ，否则它不会被提交。如章节2所述，这个步骤发生在客户端和背书节点之间。
+
 Formally the endorsement policy is a predicate on the endorsement, and
 potentially further state that evaluates to TRUE or FALSE. For deploy
 transactions the endorsement is obtained according to a system-wide
 policy (for example, from the system chaincode).
 
+背书策略正式上说是对背书的述词，更进一步描述为对背书评估为TRUE或者FALSE。对于部署交易，
+背书是从系统层面的策略获取的（比如，从系统链码）。
+
 An endorsement policy predicate refers to certain variables. Potentially
 it may refer to:
+
+一个背书策略述词可能引用特定的变量。它可能引用：
 
 1. keys or identities relating to the chaincode (found in the metadata
    of the chaincode), for example, a set of endorsers;
@@ -987,17 +995,28 @@ it may refer to:
 3. elements of the ``endorsement`` and ``endorsement.tran-proposal``;
 4. and potentially more.
 
+1. keys或者和链码相关的身份（从链码的metadata中获取），比如背书节点集合。
+2. 链码的其他metadata数据。
+3. ``endorsement`` 和 ``endorsement.tran-proposal`` 子元素
+4. 其他。
+
 The above list is ordered by increasing expressiveness and complexity,
 that is, it will be relatively simple to support policies that only
 refer to keys and identities of nodes.
+
+上面的列表是以表达能力和复杂度排序的，意味着，仅仅依赖节点的keys和身份的策略会相对容
+易地支持。
 
 **The evaluation of an endorsement policy predicate must be
 deterministic.** An endorsement shall be evaluated locally by every peer
 such that a peer does *not* need to interact with other peers, yet all
 correct peers evaluate the endorsement policy in the same way.
 
-3.3. Example endorsement policies
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**背书策略的述词评估必须是确定的。** 每次背书都是由每个peer节点本地执行的，因此peer节点 *不*
+需要和其他peer节点交互，所有正确的节点用相同的方式评估背书策略。
+
+3.3. Example endorsement policies -- 背书策略例子
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The predicate may contain logical expressions and evaluates to TRUE or
 FALSE. Typically the condition will use digital signatures on the
