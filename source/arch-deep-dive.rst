@@ -120,8 +120,12 @@ support for cross-chaincode transactions (post-v1 feature).*
 **备注:**  *这个文档一般假定一个交易都是从一个已经部署的链码上创建新的链码或者进行调用操作。该文档也不讨论
 ：a）一个查询（只读）交易的优化（包含版本v1），b）支持跨链交易（v1之后版本特性)*
 
-1.2.1. State
-^^^^^^^^^^^^
+
+1.2. Blockchain datastructures -- 区块链数据结构
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1.2.1. State -- 状态
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The latest state of the blockchain (or, simply, *state*) is modeled as a
 versioned key/value store (KVS), where keys are names and values are
@@ -132,6 +136,11 @@ state are logged. Notice that versioned KVS is adopted as state model,
 an implementation may use actual KVSs, but also RDBMSs or any other
 solution.
 
+区块链的最新状态(或简称为状态)建模为版本化的key/value存储（KVS），key是名字而values是
+任意的文本。这些记录通过运行区块链上的 ``put`` 和 ``get`` 的kvs操作来改变。这些状态被持久化
+存储，更新操作记录于日志。注意版本化的KVS只是状态模型，而实际的实现可能是KVS存储，也
+可能是RDBMSs，或者其他解决方案。
+
 More formally, state ``s`` is modeled as an element of a mapping
 ``K -> (V X N)``, where:
 
@@ -141,13 +150,24 @@ More formally, state ``s`` is modeled as an element of a mapping
    function ``next: N -> N`` takes an element of ``N`` and returns the
    next version number.
 
+正式地表达，状态 ``s`` 被建模为一个字典的元素 ``K -> (V X N)`` ：
+
+- ``K`` 是keys的集合
+- ``V`` 是values的集合
+- ``N`` 是排序的版本号的无限集合。单映射函数 ``next: N -> N`` ，根据元素 ``N`` 返回下一个版本号。
+
 Both ``V`` and ``N`` contain a special element |falsum| (empty type), which is
 in case of ``N`` the lowest element. Initially all keys are mapped to 
 (|falsum|, |falsum|). For ``s(k)=(v,ver)`` we denote ``v`` by ``s(k).value``,
 and ``ver`` by ``s(k).version``.
 
+
+``V`` 和 ``N`` 都包含了特殊的元素 |falsum| (空类型)，这个元素是N最小的那个元素。初始化时所有的keys
+都映射到(|falsum|, |falsum|)。对于 ``s(k)=(v,ver)`` ，我们能推导出 ``v=s(k).value`` ，而 ``ver=s(k).version`` 。
+
 .. |falsum| unicode:: U+22A5
 .. |in| unicode:: U+2208
+
 
 KVS operations are modeled as follows:
 
@@ -157,7 +177,16 @@ KVS operations are modeled as follows:
    ``k'!=k``.
 -  ``get(k)`` returns ``s(k)``.
 
+KVS的操作如下建模：
+
+-  ``put(k,v)`` 对于 ``k`` |in| ``K`` 和 ``v`` |in| ``V``，将blockchain的状态 ``s`` 改变为
+   ``s'`` ，``s'(k)=(v,next(s(k).version))`` ，而对于其他 ``k'!=k`` 有 ``s'(k')=s(k')`` 。
+-  ``get(k)`` 返回 ``s(k)``.
+
+
 State is maintained by peers, but not by orderers and clients.
+
+状态由peer维护，排序节点和客户端不维护。
 
 **State partitioning.** Keys in the KVS can be recognized from their
 name to belong to a particular chaincode, in the sense that only
@@ -166,19 +195,30 @@ chaincode. In principle, any chaincode can read the keys belonging to
 other chaincodes. *Support for cross-chaincode transactions, that modify
 the state belonging to two or more chaincodes is a post-v1 feature.*
 
-1.2.2 Ledger
-^^^^^^^^^^^^
+**状态分区。** KVS中的keys通过所属链码的名称来识别，也意味着只有特定链码的交易能修改属于
+这个链码的keys。原则上，任何链码都能读取属于其他链码的keys。*在v1版本之后的特性中，支
+持跨链交易，即修改属于两个以上链码的状态*
+
+1.2.2 Ledger -- 账本
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Ledger provides a verifiable history of all successful state changes (we
 talk about *valid* transactions) and unsuccessful attempts to change
 state (we talk about *invalid* transactions), occurring during the
 operation of the system.
 
+账本提供了在系统操作过程中，所有成功的状态变化(我们讨论的是 *有效* 交易)和未成功的状态改
+变尝试（我们讨论的是 *无效* 交易）可验证的历史记录。
+
 Ledger is constructed by the ordering service (see Sec 1.3.3) as a
 totally ordered hashchain of *blocks* of (valid or invalid)
 transactions. The hashchain imposes the total order of blocks in a
 ledger and each block contains an array of totally ordered transactions.
 This imposes total order across all transactions.
+
+账本作为一个完全排序好的包含交易（有效或者无效）信息的哈希链 *区块* ，是由排序服务构建
+的（参考章节1.3.3）。这个哈希链强制账本中的区块是完全有序的，区块中包含的交易列表也是
+完全有序的。这使得所有的交易都是排序好的。
 
 Ledger is kept at all peers and, optionally, at a subset of orderers. In
 the context of an orderer we refer to the Ledger as to
@@ -188,18 +228,29 @@ ledger as to ``PeerLedger``. ``PeerLedger`` differs from the
 apart valid transactions from invalid ones (see Section XX for more
 details).
 
+账本保存在所有的peer节点上，以及一部分排序节点上。在order节点上，我们将账本称为
+``OrdererLedger``，在peer节点上我们称为 ``PeerLedger`` 。 ``PeerLedger`` 和 ``OrdererLedger`` 的区别
+在于peer本地维护了一个bitmask来区分有效交易和无效交易（详情参看章节XX）。
+
 Peers may prune ``PeerLedger`` as described in Section XX (post-v1
 feature). Orderers maintain ``OrdererLedger`` for fault-tolerance and
 availability (of the ``PeerLedger``) and may decide to prune it at
 anytime, provided that properties of the ordering service (see Sec.
 1.3.3) are maintained.
 
+Peer可能如章节XX(V1后特性)所说，会裁剪 ``PeerLedger`` 。``OrdererLedger`` 提供了排序服务需要
+维护的一些特性(参考章节1.3.3)，排序节点为了容错和可用性而维护 ``OrdererLedger``
+，但也可能随时裁剪它。
+
 The ledger allows peers to replay the history of all transactions and to
 reconstruct the state. Therefore, state as described in Sec 1.2.1 is an
 optional datastructure.
 
-1.3. Nodes
-~~~~~~~~~~
+账本允许节点重放所有交易的历史记录来构建状态。因此，章节1.2.1描述的状态是一个可选的数
+据结构。
+
+1.3. Nodes -- 节点
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Nodes are the communication entities of the blockchain. A "node" is only
 a logical function in the sense that multiple nodes of different types
