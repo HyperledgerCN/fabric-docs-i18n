@@ -711,14 +711,24 @@ version numbers (i.e., ``readset`` as defined below) of corresponding
 keys in its local KVS match those version numbers specified by
 ``anchor``.
 
+从客户端接受到一个 ``<PROPOSE,tx,[anchor]>`` 消息，背书节点 ``epID`` 首先验证客户端的签名
+``clientSig`` ，然后模拟交易。如果客户端指定了 ``anchor`` ，背书节点只需要通过读 ``anchor`` 的
+keys的版本号是否和本地的KVS的版本号匹配，
+
 Simulating a transaction involves endorsing peer tentatively *executing*
 a transaction (``txPayload``), by invoking the chaincode to which the
 transaction refers (``chaincodeID``) and the copy of the state that the
 endorsing peer locally holds.
 
+通过调用交易中指定的 ``链码Id`` ，引用背书节点本地的状态拷贝，可以实验性地在背书节点上
+*执行* 交易（ ``txPayload`` ），
+
 As a result of the execution, the endorsing peer computes *read version
 dependencies* (``readset``) and *state updates* (``writeset``), also
 called *MVCC+postimage info* in DB language.
+
+执行的结果是背书节点计算出 *读版本依赖* （ ``读集`` ）和 *状态更新* （ ``写集`` ），在db语言中也称为
+*MVCC+psotimage info*。
 
 Recall that the state consists of key/value (k/v) pairs. All k/v entries
 are versioned, that is, every entry contains ordered version
@@ -727,17 +737,28 @@ a key is updated. The peer that interprets the transaction records all
 k/v pairs accessed by the chaincode, either for reading or for writing,
 but the peer does not yet update its state. More specifically:
 
+曾提过状态包括key/value（k/v）对。所有的k/v对都是版本化的，即每个记录都是包含有序的版
+本信息的，每次key对应存储的value值更新，都会递增key的版本号。无论是读还是写，peer节
+点把交易的条目都翻译成链码能访问的k/v对，但是没有更新peer的状态。更具体的：
+
 -  Given state ``s`` before an endorsing peer executes a transaction,
    for every key ``k`` read by the transaction, pair
    ``(k,s(k).version)`` is added to ``readset``.
+-  给定背书节点执行交易前的状态 ``s`` ，对于每个交易中读取的key ``k`` ，``(k,s(k).version)`` 会
+   添加到 ``读集`` 中。
 -  Additionally, for every key ``k`` modified by the transaction to the
    new value ``v'``, pair ``(k,v')`` is added to ``writeset``.
    Alternatively, ``v'`` could be the delta of the new value to previous
    value (``s(k).value``).
+-  另外，对于交易中每个key ``k`` 修改成新的值 ``v'`` , ``(k,v')`` 对添加到 ``写集``。或者，``v'`` 可以
+   是原来value ( ``s(k).value`` )的差异值。
 
 If a client specifies ``anchor`` in the ``PROPOSE`` message then client
 specified ``anchor`` must equal ``readset`` produced by endorsing peer
 when simulating the transaction.
+
+如果一个客户端在 ``提案`` 消息中指定了 ``anchor`` ，name客户端指定的 ``anchor`` 必须和背书节点模
+拟交易中产生的 ``读集`` 相等。
 
 Then, the peer forwards internally ``tran-proposal`` (and possibly
 ``tx``) to the part of its (peer's) logic that endorses a transaction,
@@ -748,28 +769,45 @@ functionality, to, e.g., interact with legacy systems with
 ``tran-proposal`` and ``tx`` as inputs to reach the decision whether to
 endorse a transaction or not.
 
+然后，peer节点转发内部的 ``交易提案`` （也叫 ``tx`` ）到节点的其他逻辑去背书交易，称为 **背书逻
+辑** 。默认情况下，peer节点的背书逻辑接受 ``交易提案`` 然后简单签了名。然而，背书逻辑可能执
+行任意功能，比如把 ``交易提案`` （ ``tx`` ）作为输入和账本系统进行交互，决定是否背书这个交易
+等。
+
 If endorsing logic decides to endorse a transaction, it sends
 ``<TRANSACTION-ENDORSED, tid, tran-proposal,epSig>`` message to the
 submitting client(\ ``tx.clientID``), where:
+
+如果背书逻辑决定背书这个交易，会发送 ``<TRANSACTION-ENDORSED, tid, tran-proposal,epSig>`` 消
+息到提交客户端（ ``tx.clientID`` ），其中：
 
 -  ``tran-proposal := (epID,tid,chaincodeID,txContentBlob,readset,writeset)``,
 
    where ``txContentBlob`` is chaincode/transaction specific
    information. The intention is to have ``txContentBlob`` used as some
    representation of ``tx`` (e.g., ``txContentBlob=tx.txPayload``).
-
+-  ``tran-proposal := (epID,tid,chaincodeID,txContentBlob,readset,writeset)`` ,
+   其中 ``txContentBlob`` 是链码/交易特有的信息。它的目的是用来表示 ``tx`` （比如
+   ``xContentBlob=tx.txPayload`` ）。
 -  ``epSig`` is the endorsing peer's signature on ``tran-proposal``
+-  ``epSig`` 是背书节点对 ``tran-proposal`` 的签名。
+
 
 Else, in case the endorsing logic refuses to endorse the transaction, an
 endorser *may* send a message ``(TRANSACTION-INVALID, tid, REJECTED)``
 to the submitting client.
 
+否则，如果背书逻辑拒绝背书这个交易，背书节点 *也许* 会发送一个
+``(TRANSACTION-INVALID, tid, REJECTED)`` 消息到提交客户端。
+
 Notice that an endorser does not change its state in this step, the
 updates produced by transaction simulation in the context of endorsement
 do not affect the state!
 
-2.3. The submitting client collects an endorsement for a transaction and broadcasts it through ordering service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+注意背书节点在这个步骤不会修改它的状态，背书节点中的模拟交易更新不会影响状态。
+
+2.3. The submitting client collects an endorsement for a transaction and broadcasts it through ordering service --提交客户端收集交易背书并广播给排序服务
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The submitting client waits until it receives "enough" messages and
 signatures on ``(TRANSACTION-ENDORSED, tid, *, *)`` statements to
