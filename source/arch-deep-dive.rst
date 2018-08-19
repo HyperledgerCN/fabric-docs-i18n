@@ -579,16 +579,27 @@ others may object and choose not to endorse the transaction. The
 submitting client tries to satisfy the policy expression with the
 endorsers available.
 
+为了调用交易接口，客户端发送一个 ``提案`` 消息到它选择的背书节点集（也许不是同时进行，参
+考章节2.1.2和2.1.3）。peer节点通过背书策略（参考章节3）知道背书节点集合，客户端通过连
+接peer来获取特定 ``链码ID`` 的背书节点集。比如，给定 ``链码ID`` 的交易可以发送到 *所有的* 背书节
+点。有些背书节点离线，另外一些可能拒绝或者不对交易进行背书。提交客户端通过那些可用的
+背书节点尝试去满足策略描述的规则。
+
 In the following, we first detail ``PROPOSE`` message format and then
 discuss possible patterns of interaction between submitting client and
 endorsers.
 
-2.1.1. ``PROPOSE`` message format
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+接下来，我们首先介绍下 ``提案`` 的格式和详情，然后讨论提交客户端和背书节点间可能的交互模式。
+
+2.1.1. ``PROPOSE`` message format -- ``提案`` 消息格式
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The format of a ``PROPOSE`` message is ``<PROPOSE,tx,[anchor]>``, where
 ``tx`` is a mandatory and ``anchor`` optional argument explained in the
 following.
+
+``提案`` 消息的格式是：``<PROPOSE,tx,[anchor]>``，``tx`` 是必须有的，``anchor`` 是一个可选参数，
+解释如下。
 
 -  ``tx=<clientID,chaincodeID,txPayload,timestamp,clientSig>``, where
 
@@ -601,10 +612,19 @@ following.
       transaction) integer maintained by the client,
    -  ``clientSig`` is signature of a client on other fields of ``tx``.
 
+   -  ``clientID`` 是提交客户端的ID，
+   -  ``chaincodeID`` 指向交易所属的链码，
+   -  ``txPayload`` 负载包含了提交的交易内容本身，
+   -  ``timestamp`` 由客户端维护的一个单调递增（对每个交易）的整数，
+   -  ``clientSig`` 是客户端对 ``tx`` 之外的其他属性的签名。
+
    The details of ``txPayload`` will differ between invoke transactions
    and deploy transactions (i.e., invoke transactions referring to a
    deploy-specific system chaincode). For an **invoke transaction**,
    ``txPayload`` would consist of two fields
+
+   ``txPayload`` 的详情根据是调用交易还是部署交易有所不同（比如调用交易指向一个部署类型的系统链码）。
+   对于 **调用交易** ，``txPayload`` 会包含以下两个属性：
 
    -  ``txPayload = <operation, metadata>``, where
 
@@ -612,8 +632,15 @@ following.
          arguments,
       -  ``metadata`` denotes attributes related to the invocation.
 
+   -  ``txPayload = <operation, metadata>`` , 其中
+
+      -  ``operation`` 表示链码的操作（函数）和参数。
+      -  ``metadata`` 表示和调用相关的属性。
+
    For a **deploy transaction**, ``txPayload`` would consist of three
    fields
+
+   对于 **部署交易** ，``txPayload`` 会包含以下三个属性
 
    -  ``txPayload = <source, metadata, policies>``, where
 
@@ -627,6 +654,14 @@ following.
          ``txPayload`` of a ``deploy`` contains endorsement policy ID and
          its parameters (see Section 3).
 
+   -  ``txPayload = <source, metadata, policies>``, 其中
+
+      -  ``source`` 表示链码的源码位置，
+      -  ``metadata`` 表示和链码和应用相关的属性，
+      -  ``policies`` 包含和链码相关的策略，对所有peer节点可见，比如背书策略。注意在部署
+         交易中背书策略不包含 ``txPayload`` ，但是 ``deploy`` 的 ``txPayload`` 包含背书策略ID和他
+         的参数（参考章节3）。
+
 -  ``anchor`` contains *read version dependencies*, or more
    specifically, key-version pairs (i.e., ``anchor`` is a subset of
    ``KxN``), that binds or "anchors" the ``PROPOSE`` request to
@@ -635,12 +670,19 @@ following.
    only upon *read* version numbers of corresponding keys in its local
    KVS match ``anchor`` (see Section 2.2. for more details).
 
+- ``anchor`` 包含 *读版本依赖* ，或者准确地说，key-version对(比如，``anchor`` 是 ``KxN`` 的子集)。
+  这样就绑定或者锚定了 ``提案`` 请求和KVS中特定版本的keys（参考章节1.2）。如果客户端指定
+  了 ``anchor`` 参数，背书节点只有在锚的 *读* 版本号和本地的KVS匹配上时，才会背书一个交易。
+
 Cryptographic hash of ``tx`` is used by all nodes as a unique
 transaction identifier ``tid`` (i.e., ``tid=HASH(tx)``). The client
 stores ``tid`` in memory and waits for responses from endorsing peers.
 
-2.1.2. Message patterns
-^^^^^^^^^^^^^^^^^^^^^^^
+``tx`` 的哈希值被所用节点用作交易的身份表示 ``tid`` （比如 ``tid=HASH(tx)``）。客户端在内存中存
+储了 ``tid`` ，并且等待背书节点的响应。
+
+2.1.2. Message patterns -- 消息模式
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The client decides on the sequence of interaction with endorsers. For
 example, a client would typically send ``<PROPOSE, tx>`` (i.e., without
@@ -652,8 +694,14 @@ example, the client could directly send ``<PROPOSE, tx>`` (without
 communication are possible and client is free to decide on those (see
 also Section 2.3.).
 
-2.2. The endorsing peer simulates a transaction and produces an endorsement signature
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+客户端决定和背书节点进行一系列的交互。比如，典型地一个客户端发送
+``<PROPOSE, tx>`` （比如没有带 ``anchor`` 参数）给一个单独的背书节点，然后会产生版本依赖
+（ ``anchor`` ），客户端之后用来添加到 ``提案`` 消息中，然后发送给其他的背书节点。另外一种例
+子，背书节点直接发送 ``<PROPOSE, tx>`` （不带有 ``anchor`` ）给所有其他它选择的节点。不同的通
+信模式都是许可的，客户端可以自行决定（参考章节2.3）。
+
+2.2. The endorsing peer simulates a transaction and produces an endorsement signature -- 背书节点模拟交易并添加背书签名
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 On reception of a ``<PROPOSE,tx,[anchor]>`` message from a client, the
 endorsing peer ``epID`` first verifies the client's signature
