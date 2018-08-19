@@ -97,9 +97,19 @@ Transactions may be of two types:
    chaincode executes the specified function - which may involve
    modifying the corresponding state, and returning an output.
 
+交易通常有两个类型：
+
+- *部署交易* 把一个程序作为参数创建新的链码。当部署交易成功执行，业务链码也就在
+  区块链上安装完成。
+- *调用交易* 在上面部署的链码环境中执行操作。一个调用交易需要指向一个链码和它提供的函
+  数。如果成功调用，链码会执行指定的函数，可能修改对应的状态，并返回一个结果。
+
 As described later, deploy transactions are special cases of invoke
 transactions, where a deploy transaction that creates new chaincode,
 corresponds to an invoke transaction on a system chaincode.
+
+正如讨论的，部署交易是调用交易的一个特例，当一个部署交易创建新的链码，对应的是系统链
+码的一次调用交易。
 
 **Remark:** *This document currently assumes that a transaction either
 creates new chaincode or invokes an operation provided by *one* already
@@ -107,8 +117,8 @@ deployed chaincode. This document does not yet describe: a)
 optimizations for query (read-only) transactions (included in v1), b)
 support for cross-chaincode transactions (post-v1 feature).*
 
-1.2. Blockchain datastructures
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**备注:**  *这个文档一般假定一个交易都是从一个已经部署的链码上创建新的链码或者进行调用操作。该文档也不讨论
+：a）一个查询（只读）交易的优化（包含版本v1），b）支持跨链交易（v1之后版本特性)*
 
 1.2.1. State
 ^^^^^^^^^^^^
