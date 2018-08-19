@@ -815,6 +815,9 @@ conclude that the transaction proposal is endorsed. As discussed in
 Section 2.1.2., this may involve one or more round-trips of interaction
 with endorsers.
 
+提交客户端会等待收集到足够多的消息，然后在 ``(TRANSACTION-ENDORSED, tid, *, *)`` 签名来决
+断交易提案已经被背书了。在章节2.1.2中讨论过，这里可能会和背书节点有多个来回的调用。
+
 The exact number of "enough" depend on the chaincode endorsement policy
 (see also Section 3). If the endorsement policy is satisfied, the
 transaction has been *endorsed*; note that it is not yet committed. The
@@ -822,9 +825,15 @@ collection of signed ``TRANSACTION-ENDORSED`` messages from endorsing
 peers which establish that a transaction is endorsed is called an
 *endorsement* and denoted by ``endorsement``.
 
+"足够"多的具体数目依赖链码的背书策略（参考章节3）。如果背书策略被满足，那么交易完成 *背
+书* ；注意此时还未提交。由背书节点签名的 ``TRANSACTION-ENDORSED`` 消息集合共同建立交易被签
+名的事实，称之为 *endorsement* 。
+
 If the submitting client does not manage to collect an endorsement for a
 transaction proposal, it abandons this transaction with an option to
 retry later.
+
+如果提交客户端没有为一个交易提案达成收集背书，它会放弃这次交易并根据配置再重试。
 
 For transaction with a valid endorsement, we now start using the
 ordering service. The submitting client invokes ordering service using
@@ -835,8 +844,13 @@ trusted by the client not to remove any message from the ``endorsement``
 or otherwise the transaction may be deemed invalid. Notice that,
 however, a proxy peer may not fabricate a valid ``endorsement``.
 
-2.4. The ordering service delivers a transactions to the peers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+对于有有效背书的交易，我们开始使用排序服务。提交客户端使用 ``broadcast(blob)`` 接口调用排
+序服务，其中 ``blob=endorsement`` 。如果客户端没法直接调用排序服务，它可以选择一些peer节
+点作为代理来广播。这样一个peer节点必须被客户端信任不会去移除 ``endorsement`` 中的任何信
+息，否则交易会被认作无效。注意，无论如何代理节点是无法伪造一个有效的 ``endorsement`` 。
+
+2.4. The ordering service delivers a transactions to the peers -- 排序服务递送交易到peer节点
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When an event ``deliver(seqno, prevhash, blob)`` occurs and a peer has
 applied all state updates for blobs with sequence number lower than
