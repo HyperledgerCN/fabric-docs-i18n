@@ -258,38 +258,62 @@ can run on the same physical server. What counts is how nodes are
 grouped in "trust domains" and associated to logical entities that
 control them.
 
+节点是区块链中的通信实体。一个节点只是一个逻辑函数概念，实际上不同类型多种节点可以运
+行在同一个物理服务器上。重要的是节点是如何在"信任域"内分组以及如何和控制他们的逻辑实
+体关联的。
+
 There are three types of nodes:
+
+有三种类型的节点：
 
 1. **Client** or **submitting-client**: a client that submits an actual
    transaction-invocation to the endorsers, and broadcasts
    transaction-proposals to the ordering service.
 
+1. **Client** 或者 **submitting-client** ：客户端实际提交交易调用给背书节点，然后广播交易提案给
+   排序服务。
+
 2. **Peer**: a node that commits transactions and maintains the state
    and a copy of the ledger (see Sec, 1.2). Besides, peers can have a
    special **endorser** role.
+
+2. **Peer**: 负责提交交易、通过账本拷贝来维护状态的节点。另外peer有一种特殊的 *背书节点* 的角色。
 
 3. **Ordering-service-node** or **orderer**: a node running the
    communication service that implements a delivery guarantee, such as
    atomic or total order broadcast.
 
+3. **Ordering-service-node** 或者 **orderer**: 通信系统中运行的实现了某种传递保证的节点，比如实
+   现原子或者完全有序的广播。
+
 The types of nodes are explained next in more detail.
 
-1.3.1. Client
-^^^^^^^^^^^^^
+接下来将详细介绍各个类型的节点。
+
+
+1.3.1. Client -- 客户端
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The client represents the entity that acts on behalf of an end-user. It
 must connect to a peer for communicating with the blockchain. The client
 may connect to any peer of its choice. Clients create and thereby invoke
 transactions.
 
+客户端是代表了终端用户的实体。它必须通过连接一个peer来和区块链通信。客户端可以选择连
+接任意peer。客户端创建交易请求，之后再通过链码调用。
+
 As detailed in Section 2, clients communicate with both peers and the
 ordering service.
 
-1.3.2. Peer
-^^^^^^^^^^^
+如在章节2中详细描述，客户端同时会和peer节点及排序服务通信。
+
+1.3.2. Peer -- Peer节点
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A peer receives ordered state updates in the form of *blocks* from the
 ordering service and maintain the state and the ledger.
+
+一个peer节点从排序服务接收到 *区块* ，写入到账本，更新并维护状态。
 
 Peers can additionally take up a special role of an **endorsing peer**,
 or an **endorser**. The special function of an *endorsing peer* occurs
@@ -302,14 +326,23 @@ described later in Sections 2 and 3. In the special case of deploy
 transactions that install new chaincode the (deployment) endorsement
 policy is specified as an endorsement policy of the system chaincode.
 
-1.3.3. Ordering service nodes (Orderers)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Peer节点另外承担了 **endorsing peer** 或者 **endorser** 的角色。在一个交易被提交前，*endorsing peer*
+的特殊功能对特定的链码就能派上用场。每个链码都会指定一个 *背书策略* ，指向一系列的
+背书节点。这个策略定义了一个有效背书（通常是一系列背书者的签名）的必要充足条件，将在
+后续章节2和3详细讨论。一个特殊的例子是安装新的链码的部署交易，它的背书策略是系统链码
+的背书策略。
+
+1.3.3. Ordering service nodes (Orderers) -- 排序服务节点（Orderers）
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The *orderers* form the *ordering service*, i.e., a communication fabric
 that provides delivery guarantees. The ordering service can be
 implemented in different ways: ranging from a centralized service (used
 e.g., in development and testing) to distributed protocols that target
 different network and node fault models.
+
+*ordering service* 简称 *orderers* ，一个提供传递保证的通信实体。排序服务可以通过不同的方式实
+现：从集中式服务（用在开发和测试）到用在不同网络和节点故障模型中的分布式协议。
 
 Ordering service provides a shared *communication channel* to clients
 and peers, offering a broadcast service for messages containing
@@ -324,6 +357,12 @@ broadcast*, *atomic broadcast*, or *consensus* in the context of
 distributed systems. The communicated messages are the candidate
 transactions for inclusion in the blockchain state.
 
+排序服务为peer节点和客户端提供了一个共享的 *通信通道* ，用来广播包含交易的信息。客户端连
+接到通道并在通道中广播消息，之后这些消息会传递给所有的peer节点。这个通道支持消息的 *原子*
+传递，也即消息的传递是完全有序、可靠的（特殊实现）。换言之，通道对于所有的连接节点
+输出相同逻辑顺序、完全相同的消息。这个原子通信保障也成为 *完全有序广播* ， *原子广播* ，或
+者分布式系统中的 *一致性* 。这个通信消息是将包含在区块状态的候选交易。
+
 **Partitioning (ordering service channels).** Ordering service may
 support multiple *channels* similar to the *topics* of a
 publish/subscribe (pub/sub) messaging system. Clients can connect to a
@@ -335,18 +374,33 @@ implementations included with Hyperledger Fabric support multiple
 channels, for simplicity of presentation, in the rest of this
 document, we assume ordering service consists of a single channel/topic.
 
+**分区(排序服务通道)。** 排序服务支持多 *通道* ，就像发布/订阅系统中的 *主题* 一样。客户端连接到
+给定的通道上，然后发送消息，接受到达的消息。通道可以想象为一个分区，客户端可以连接到
+一个通道上而不感知其他通道的存在，当然客户端也可以连接到多个通道上。Hyperledger
+Fabric的有些排序服务实现支持多通道，但是为了简单演示，我们在接下来部分假设排序服务只
+包含一个通道/主题。
+
 **Ordering service API.** Peers connect to the channel provided by the
 ordering service, via the interface provided by the ordering service.
 The ordering service API consists of two basic operations (more
 generally *asynchronous events*):
 
+**排序服务API。** peer通过排序服务提供的接口连接到排序服务提供的通道上。排序服务API包含以
+下两个基本操作（更一般称为 *异步事件* ）
+
 **TODO** add the part of the API for fetching particular blocks under
 client/peer specified sequence numbers.
+
+**TODO** 增加用client/peer获取特定序号区块的部分API。
 
 -  ``broadcast(blob)``: a client calls this to broadcast an arbitrary
    message ``blob`` for dissemination over the channel. This is also
    called ``request(blob)`` in the BFT context, when sending a request
    to a service.
+
+
+-  ``broadcast(blob)``：一个客户端调用该接口在通道内去广播任意消息 ``blob`` 。
+   当想一个服务发送一个请求时，在BFT里我们又称之为 ``request(blob)`` 。
 
 -  ``deliver(seqno, prevhash, blob)``: the ordering service calls this
    on the peer to deliver the message ``blob`` with the specified
@@ -356,10 +410,18 @@ client/peer specified sequence numbers.
    sometimes called ``notify()`` in pub-sub systems or ``commit()`` in
    BFT systems.
 
+-  ``deliver(seqno, prevhash, blob)`` : 排序服务指定一个非负序列号（ ``seqno`` ）和最近传递的
+   blob（ ``prevhash`` 和本次传递的消息 ``blob`` 来调用该接口。换言之，这个排序服务的输出事件
+   。 ``deliver()`` 有时在发布/订阅系统中也称为 ``notify()`` ，在BFD系统中也称为 ``commit()`` 。
+
+
 **Ledger and block formation.** The ledger (see also Sec. 1.2.2)
 contains all data output by the ordering service. In a nutshell, it is a
 sequence of ``deliver(seqno, prevhash, blob)`` events, which form a hash
 chain according to the computation of ``prevhash`` described before.
+
+**账本和区块格式。** 账本（参考章节1.2.2）包含了排序服务的所有输出。概况地说，它是一系列
+``deliver(seqno, prevhash, blob)`` 事件，依据计算之前讨论的 ``prevhash`` 构建哈希链。
 
 Most of the time, for efficiency reasons, instead of outputting
 individual transactions (blobs), the ordering service will group (batch)
@@ -367,6 +429,10 @@ the blobs and output *blocks* within a single ``deliver`` event. In this
 case, the ordering service must impose and convey a deterministic
 ordering of the blobs within each block. The number of blobs in a block
 may be chosen dynamically by an ordering service implementation.
+
+大部分情况下，考虑到效率，排序服务会给blobs打包然后输出 *区块* 到一个 ``deliver`` 事件中，
+而不是输出一个个的交易（blobs）。这种情况下，排序服务必须强制每个区块中的blobs是确定有
+序的。区块中blob的数量根据不同的排序服务的实现而动态选择。
 
 In the following, for ease of presentation, we define ordering service
 properties (rest of this subsection) and explain the workflow of
@@ -376,11 +442,19 @@ event for a block corresponds to a sequence of individual ``deliver``
 events for each blob within a block, according to the above mentioned
 deterministic ordering of blobs within a blocs.
 
-**Ordering service properties**
+接下来为了便于演示，我们定义排序服务特性(文章的剩余章节)并且解释交易背书的流程(假设一个blob一
+次 ``deliver`` 事件)。这些可以简单的扩展到区块，根据上述的区块中每个blobs确定规则
+的前提，假设区块响应的一次 ``deliver`` 事件对应一系列的区块中每一个blob的单独 ``deliver`` 事
+件。
+
+**Ordering service properties** -- **排序服务特性**
 
 The guarantees of the ordering service (or atomic-broadcast channel)
 stipulate what happens to a broadcasted message and what relations exist
 among delivered messages. These guarantees are as follows:
+
+排序服务保证（通道内原子广播）规定了如何广播消息，以及传递的消息之间的关联性。有如下
+保证：
 
 1. **Safety (consistency guarantees)**: As long as peers are connected
    for sufficiently long periods of time to the channel (they can
@@ -409,6 +483,19 @@ among delivered messages. These guarantees are as follows:
    discussed in Sections 4 and 5 later. In the special case of the first
    ``deliver()`` event, ``prevhash`` has a default value.
 
+1. **安全性（一致性保证）**: 只要peer节点和通道保持足够长的连接（它们可以断连或者奔溃，但
+   是能够重启和重连），它们最终看到一系列 *一致* 的传递的 ``(seqno, prevhash, blob)`` 消息。
+   这意味着在所有peer上的输出（``deliver()`` 事件）是一样的顺序和序列号，同时内容也是完全
+   一致的。注意这里只是 *逻辑顺序* ，在真实时间线上，peer节点上的 ``deliver(seqno, prevhash, blob)``
+   消息并不需要和其他节点接受到的顺序完全相同。换句话
+   说，给定一个 ``seqno`` ， *没有* 两个正确的节点会传递 *不同* 的 ``prevhash`` 或者 ``blob`` 值。没有一个值 ``blob`` 会被传递，
+   除非被一些客户端（peer）调用了 ``broadcast(blob)`` ，每个广播的blob最好只传递 *一次* 。
+
+   更进一步， ``deliver()`` 事件包含之前 ``deliver()`` 事件的哈希值。 ``prevhash`` 的值是序列号为
+   ``seqno-1`` 的 ``deliver()`` 事件的哈希值，这是排序服务实现原子广播的保证。这可以在不同的
+   ``deliver()`` 事件中建立一个链，哈希值可以用来验证排序服务输出的完整性，在之后章节4和
+   5中将详细讨论。特殊情况是第一个 ``deliver()`` 事件，它的 ``prevhash`` 有一个默认值。
+
 2. **Liveness (delivery guarantee)**: Liveness guarantees of the
    ordering service are specified by a ordering service implementation.
    The exact guarantees may depend on the network and node fault model.
@@ -417,32 +504,52 @@ among delivered messages. These guarantees are as follows:
    service should guarantee that every correct peer that connects to the
    ordering service eventually delivers every submitted transaction.
 
+2. **活性（传递保证）**：排序服务的活性保证根据排序服务的实现而不同。准确的保证和网络及节
+   点故障模型相关。
+
+   原则上，如果客户端提交不失败，排序服务应该保证每个连接到排序服务的peer节点最终都能
+   收到每个提交的交易。
+
 To summarize, the ordering service ensures the following properties:
+
+总而言之，排序服务确保了以下的特性：
 
 -  *Agreement.* For any two events at correct peers
    ``deliver(seqno, prevhash0, blob0)`` and
    ``deliver(seqno, prevhash1, blob1)`` with the same ``seqno``,
    ``prevhash0==prevhash1`` and ``blob0==blob1``;
+-  *一致性。* 对于正确peer的两个事件， ``deliver(seqno, prevhash0, blob0)`` 和 ``deliver(seqno, prevhash1, blob1)`` ，
+   具有相同的序列号，有 ``prevhash0==prevhash1`` 且 ``blob0==blob1`` 。
 -  *Hashchain integrity.* For any two events at correct peers
    ``deliver(seqno-1, prevhash0, blob0)`` and
    ``deliver(seqno, prevhash, blob)``,
    ``prevhash = HASH(seqno-1||prevhash0||blob0)``.
+-  *哈希链完整性。* 对于两个peer节点的任意两个事件 ``deliver(seqno-1, prevhash0, blob0)`` 和 ``deliver(seqno, prevhash, blob)``
+   有 ``prevhash = HASH(seqno-1||prevhash0||blob0)`` 。
 -  *No skipping*. If an ordering service outputs
    ``deliver(seqno, prevhash, blob)`` at a correct peer *p*, such that
    ``seqno>0``, then *p* already delivered an event
    ``deliver(seqno-1, prevhash0, blob0)``.
+-  *无跳跃* 。 如果排序服务给正确的peer *p* 节点输出 ``deliver(seqno, prevhash, blob)`` ，其中 ``seqno>0`` ，那么 *p*
+   节点已经接收到事件 ``deliver(seqno-1, prevhash0, blob0)``。
 -  *No creation*. Any event ``deliver(seqno, prevhash, blob)`` at a
    correct peer must be preceded by a ``broadcast(blob)`` event at some
    (possibly distinct) peer;
+-  *无创建* 。peer节点上的任何事件 ``deliver(seqno, prevhash, blob)`` 必须是同一个（可能其他）peer ``broadcast(blob)`` 的结果。
 -  *No duplication (optional, yet desirable)*. For any two events
    ``broadcast(blob)`` and ``broadcast(blob')``, when two events
    ``deliver(seqno0, prevhash0, blob)`` and
    ``deliver(seqno1, prevhash1, blob')`` occur at correct peers and
    ``blob == blob'``, then ``seqno0==seqno1`` and
    ``prevhash0==prevhash1``.
+-  *不重复性（可选，但是希望有）* 。对于任意两个事件 ``broadcast(blob)`` 和 ``broadcast(blob')`` ，正确peer
+   节点上的 ``deliver(seqno0, prevhash0, blob)`` 和 ``deliver(seqno1, prevhash1, blob')`` ，有 ``blob == blob'``，
+   ``seqno0==seqno1`` 和 ``prevhash0==prevhash1``。
 -  *Liveness*. If a correct client invokes an event ``broadcast(blob)``
    then every correct peer "eventually" issues an event
    ``deliver(*, *, blob)``, where ``*`` denotes an arbitrary value.
+-  *活性*。当一个客户端正确地调用事件 ``broadcast(blob)`` ，每个正确的peer节点"最终"接受到事件 ``deliver(*, *, blob)`` ， ``*``
+   表示任意值。
 
 2. Basic workflow of transaction endorsement
 --------------------------------------------
