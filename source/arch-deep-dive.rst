@@ -77,8 +77,13 @@ transactions may be committed and have an effect on the state. There may
 exist one or more special chaincodes for management functions and
 parameters, collectively called *system chaincodes*.
 
-1.1. Transactions
-~~~~~~~~~~~~~~~~~
+区块链是一个有许多相互通信的节点组成的分布式系统。区块链通过运行链码程序，进行交易，
+持有状态和账本数据。由于交易操作都是通过操作链码实现，链码是最中心的元素。交易必须
+被背书，也只有背书过的交易才能被提交从而影响状态。为了实现管理面功能，有一个或多个特殊
+的链码，统称为 *系统链码* 。
+
+1.1. Transactions -- 交易
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Transactions may be of two types:
 
