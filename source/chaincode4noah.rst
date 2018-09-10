@@ -57,7 +57,7 @@ been successfully installed and instantiated, the chaincode is active (running)
 and can process transactions via the ``invoke`` transaction. A chaincode may be
 upgraded any time after it has been installed.
 
-我们提供四个命令来管理链码的生命周期：``package``, ``install``, ``instantiate``，和 ``upgrade``。在未来的发行版中，我们正在考虑添加 ``stop`` 和``start`` 命令来禁用和重新启用链码的事务，而不必实际卸载它。在成功安装和实例化链码之后，链码是活动的(正在运行)，可以通过``invoke`` 交易。链码可在安装后随时升级。
+我们提供四个命令来管理链码的生命周期：``package``, ``install``, ``instantiate``，和 ``upgrade``。在未来的发行版中，我们正在考虑添加 ``stop`` 和 ``start`` 命令来禁用和重新启用链码的事务，而不必实际卸载它。在成功安装和实例化链码之后，链码是活动的(正在运行)，可以通过 ``invoke`` 交易。链码可在安装后随时升级。
 
 .. _Package:
 
@@ -80,7 +80,7 @@ The chaincode package consists of 3 parts:
     by the same policy used for endorsement and described in
     :doc:`endorsement-policies`, and
 
-  - 一种可选的实例化策略，该策略可以由用于背书的相同策略进行语法描述，并在:doc:`endorsement-policies`中进行描述
+  - 一种可选的实例化策略，该策略可以由用于背书的相同策略进行语法描述，并在 :doc:`endorsement-policies` 中进行描述
 
   - a set of signatures by the entities that “own” the chaincode.
 
@@ -130,7 +130,7 @@ We will address the more complex case first. However, you may skip ahead to the
 :ref:`Install` section below if you do not need to worry about multiple owners
 just yet.
 
-我们将首先处理更复杂的案件。但是，如果您不需要担心多个所有者问题，可以跳到下面的：ref：`Install`部分。
+我们将首先处理更复杂的案件。但是，如果您不需要担心多个所有者问题，可以跳到下面的 ：ref：`Install` 部分。
 
 To create a signed chaincode package, use the following command:
 
@@ -186,7 +186,7 @@ may be optionally be signed by the collective owners to create a
 `SignedChaincodeDeploymentSpec <https://github.com/hyperledger/fabric/blob/master/protos/peer/signed_cc_dep_spec.proto#L26>`_
 (or SignedCDS). The SignedCDS contains 3 elements:
 
-`ChaincodeDeploymentSpec <https://github.com/hyperledger/fabric/blob/master/protos/peer/chaincode.proto#L78>`_ 可以选择由集体所有者签名从而来创建`SignedChaincodeDeploymentSpec <https://github.com/hyperledger/fabric/blob/master/protos/peer/signed_cc_dep_spec.proto#L26>`_ （或SignedCDS）。 SignedCDS包含3个元素：
+`ChaincodeDeploymentSpec <https://github.com/hyperledger/fabric/blob/master/protos/peer/chaincode.proto#L78>`_ 可以选择由集体所有者签名从而来创建 `SignedChaincodeDeploymentSpec <https://github.com/hyperledger/fabric/blob/master/protos/peer/signed_cc_dep_spec.proto#L26>`_ （或SignedCDS）。 SignedCDS包含3个元素：
 
   1. The CDS contains the source code, the name, and version of the chaincode.
 
@@ -199,7 +199,7 @@ may be optionally be signed by the collective owners to create a
   3. The list of chaincode owners, defined by means of
      `Endorsement <https://github.com/hyperledger/fabric/blob/master/protos/peer/proposal_response.proto#L111>`_.
 
-  3. 通过`背书 <https://github.com/hyperledger/fabric/blob/master/protos/peer/proposal_response.proto#L111>`_ 定义的链码所有者列表
+  3. 通过 `背书 <https://github.com/hyperledger/fabric/blob/master/protos/peer/proposal_response.proto#L111>`_ 定义的链码所有者列表
 
 .. note:: Note that this endorsement policy is determined out-of-band to
           provide proper MSP principals when the chaincode is instantiated
@@ -207,7 +207,7 @@ may be optionally be signed by the collective owners to create a
           the default policy is any MSP administrator of the channel.
 
 
-.. note:: 请注意，此绑定策略是在带外确定的，以便在某些通道上实例化链代码时提供适当的MSP主体。 如果未指定实例化策略，则默认策略是该通道的任何MSP管理员。
+.. 注意:: 请注意，此绑定策略是在带外确定的，以便在某些通道上实例化链代码时提供适当的MSP主体。 如果未指定实例化策略，则默认策略是该通道的任何MSP管理员。
 
 Each owner endorses the ChaincodeDeploymentSpec by combining it
 with that owner's identity (e.g. certificate) and signing the combined
@@ -228,7 +228,7 @@ Where ``ccpack.out`` and ``signedccpack.out`` are the input and output
 packages, respectively. ``signedccpack.out`` contains an additional
 signature over the package signed using the Local MSP.
 
-其中``ccpack.out`` 和``signedccpack.out`` 分别是输入和输出包。 ``signedccpack.out`` 包含使用本地MSP签名的程序包的附加签名。
+其中 ``ccpack.out`` 和 ``signedccpack.out`` 分别是输入和输出包。 ``signedccpack.out`` 包含使用本地MSP签名的程序包的附加签名。
 
 .. _Install:
 
@@ -241,7 +241,7 @@ The ``install`` transaction packages a chaincode's source code into a prescribed
 format called a ``ChaincodeDeploymentSpec`` (or CDS) and installs it on a
 peer node that will run that chaincode.
 
-``install`` 事务将链代码的源代码打包成称为``ChaincodeDeploymentSpec`` （或CDS）的规定格式，并将其安装在将运行该链代码的节点上。
+``install`` 事务将链代码的源代码打包成称为 ``ChaincodeDeploymentSpec`` （或CDS）的规定格式，并将其安装在将运行该链代码的节点上。
 
 .. note:: You must install the chaincode on **each** endorsing peer node
           of a channel that will run your chaincode.
@@ -251,7 +251,7 @@ peer node that will run that chaincode.
 When the ``install`` API is given simply a ``ChaincodeDeploymentSpec``,
 it will default the instantiation policy and include an empty owner list.
 
-如果只为 ``ChaincodeDeploymentSpec`` 提供 ``install`` API，它将默认实例化策略并包含一个空的所有者列表。
+如果只为 ``ChaincodeDeploymentSpec`` 提供 ``install``API，它将默认实例化策略并包含一个空的所有者列表。
 
 .. note:: Chaincode should only be installed on endorsing peer nodes of the
           owning members of the chaincode to protect the confidentiality of 
@@ -270,7 +270,7 @@ in section :ref:`simple asset chaincode`
 using the CLI, the command would look like the following:
 
 要安装链代码，请将 `SignedProposal
-<https://github.com/hyperledger/fabric/blob/master/protos/peer/proposal.proto#L104>`_ 发送到 `System Chaincode` 中描述的 ``lifecycle system chaincode (LSCC)``。 例如，要使用CLI安装 ref：`simple asset chaincode`中描述的 **sacc** 示例链代码，命令将如下所示：
+<https://github.com/hyperledger/fabric/blob/master/protos/peer/proposal.proto#L104>`_ 发送到 `System Chaincode` 中描述的 ``lifecycle system chaincode (LSCC)``。 例如，要使用CLI安装 ref：`simple asset chaincode` 中描述的 **sacc** 示例链代码，命令将如下所示：
 
 .. code:: bash
 
@@ -305,7 +305,7 @@ words, regardless of how many other channels on which a chaincode might be
 installed and instantiated, state is kept isolated to the channel to which
 a transaction is submitted.
 
-``instantiate`` 事务调用 ``lifecycle System Chaincode``（LSCC）来创建和初始化通道上的链代码。 这是一个链码通道绑定过程：链码可以绑定到任意数量的通道，并且可以独立地在每个通道上运行。 换句话说，无论一个链代码在多少其他通道上安装和实例化，状态都与提交事务的通道保持隔离。
+``instantiate`` 事务调用 ``lifecycle System Chaincode`` （LSCC）来创建和初始化通道上的链代码。 这是一个链码通道绑定过程：链码可以绑定到任意数量的通道，并且可以独立地在每个通道上运行。 换句话说，无论一个链代码在多少其他通道上安装和实例化，状态都与提交事务的通道保持隔离。
 
 The creator of an ``instantiate`` transaction must satisfy the instantiation
 policy of the chaincode included in SignedCDS and must also be a writer on the
@@ -413,7 +413,7 @@ is done by deleting the chaincode's container on each of the hosts or virtual
 machines on which the endorsing peer nodes are running, and then deleting
 the SignedCDS from each of the endorsing peer nodes:
 
-请注意，尚未实现 ``stop`` 和 ``start`` 生命周期事务。 但是，您可以通过从每个背书中删除链代码容器和SignedCDS包来手动停止链代码。 这是通过删除每个主机或虚拟机上的链码容器来完成的，这些主机或虚拟机上正在运行背书节点，然后从每个背书节点中删除签名dCDS：
+请注意，尚未实现 ``stop`` 和 ``start`` 生命周期事务。 但是，您可以通过从每个背书中删除链代码容器和SignedCDS包来手动停止链代码。 这是通过删除每个主机或虚拟机上的链码容器来完成的，这些主机或虚拟机上正在运行背书节点，然后从每个背书节点中删除签名dCDS：
 
 .. note:: TODO - in order to delete the CDS from the peer node, you would need
           to enter the peer node's container, first. We really need to provide
