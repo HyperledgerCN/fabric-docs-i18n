@@ -14,7 +14,7 @@ prescribed interface. Chaincode runs in a secured Docker container isolated from
 the endorsing peer process. Chaincode initializes and manages ledger state
 through transactions submitted by applications.
 
-链码是一个程序，用`Go <https://golang.org>`_语言写的，并最终在其他编程语言(如Java)中实现指定的接口。Chaincode运行在一个受保护的Docker容器中，该容器与代理对等进程隔离。Chaincode通过应用程序所提交的事务来初始化和管理分类帐的状态。
+链码是一个程序，用 `Go <https://golang.org>` 语言写的，并最终在其他编程语言(如Java)中实现指定的接口。Chaincode运行在一个受保护的Docker容器中，该容器与代理对等进程隔离。Chaincode通过应用程序所提交的事务来初始化和管理分类帐的状态。
 
 A chaincode typically handles business logic agreed to by members of the
 network, so it may be considered as a "smart contract". State created by a
@@ -130,7 +130,7 @@ We will address the more complex case first. However, you may skip ahead to the
 :ref:`Install` section below if you do not need to worry about multiple owners
 just yet.
 
-我们将首先处理更复杂的案件。但是，如果您不需要担心多个所有者问题，可以跳到下面的 ：ref：`Install` 部分。
+我们将首先处理更复杂的案件。但是，如果您不需要担心多个所有者问题，可以跳到下面的 :ref:`Install` 部分。
 
 To create a signed chaincode package, use the following command:
 
@@ -207,7 +207,7 @@ may be optionally be signed by the collective owners to create a
           the default policy is any MSP administrator of the channel.
 
 
-.. 注意:: 请注意，此绑定策略是在带外确定的，以便在某些通道上实例化链代码时提供适当的MSP主体。 如果未指定实例化策略，则默认策略是该通道的任何MSP管理员。
+.. note:: 请注意，此绑定策略是在带外确定的，以便在某些通道上实例化链代码时提供适当的MSP主体。 如果未指定实例化策略，则默认策略是该通道的任何MSP管理员。
 
 Each owner endorses the ChaincodeDeploymentSpec by combining it
 with that owner's identity (e.g. certificate) and signing the combined
@@ -270,7 +270,7 @@ in section :ref:`simple asset chaincode`
 using the CLI, the command would look like the following:
 
 要安装链代码，请将 `SignedProposal
-<https://github.com/hyperledger/fabric/blob/master/protos/peer/proposal.proto#L104>`_ 发送到 `System Chaincode` 中描述的 ``lifecycle system chaincode (LSCC)``。 例如，要使用CLI安装 ref：`simple asset chaincode` 中描述的 **sacc** 示例链代码，命令将如下所示：
+<https://github.com/hyperledger/fabric/blob/master/protos/peer/proposal.proto#L104>`_ 发送到 `System Chaincode` 中描述的 ``lifecycle system chaincode (LSCC)``。 例如，要使用CLI安装 :ref:`simple asset chaincode` 中描述的 **sacc** 示例链代码，命令将如下所示：
 
 .. code:: bash
 
