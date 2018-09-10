@@ -14,7 +14,7 @@ prescribed interface. Chaincode runs in a secured Docker container isolated from
 the endorsing peer process. Chaincode initializes and manages ledger state
 through transactions submitted by applications.
 
-链码是一个程序，用 `Go <https://golang.org>` 语言写的，并最终在其他编程语言(如Java)中实现指定的接口。Chaincode运行在一个受保护的Docker容器中，该容器与代理对等进程隔离。Chaincode通过应用程序所提交的事务来初始化和管理分类帐的状态。
+链码是用 `Go <https://golang.org>`_ 语言写的，并最终在其他编程语言(如Java)中实现指定的接口的一个程序。Chaincode运行在一个受保护的Docker容器中，该容器与代理对等进程隔离。Chaincode通过应用程序所提交的事务来初始化和管理分类帐的状态。
 
 A chaincode typically handles business logic agreed to by members of the
 network, so it may be considered as a "smart contract". State created by a
