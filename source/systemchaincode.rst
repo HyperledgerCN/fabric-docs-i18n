@@ -12,7 +12,7 @@ for endorsing proposals, QSCC (Query System Chaincode) for ledger and other
 fabric related queries and VSCC (Validation System Chaincode) for validating
 a transaction at commit time respectively.
 
-系统链码是作为节点进程的一部分运行的专用链码，而不是在单独的码头容器中运行的用户链码。因此，它们可以更多地访问节点程序中的资源，并可用于实现难以或不可能通过用户链码实现的功能。系统链码的例子有：ESCC(Proendorser System Chaincode)用于支持提议，QSCC(QuerySystem Chaincode)用于分类账和其他与fabric相关的查询，VSCC(ValidationSystem Chaincode)用于提交时间验证事务。
+系统链码是作为节点进程的一部分运行的专用链码，而不是在单独的在docker容器中运行的用户链码。因此，它们可以更多地访问节点程序中的资源，并可用于实现难以或不可能通过用户链码实现的功能。系统链码的例子有：ESCC(Proendorser System Chaincode)用于支持提议，QSCC(QuerySystem Chaincode)用于分类账和其他与fabric相关的查询，VSCC(ValidationSystem Chaincode)用于提交时间验证事务。
 
 Unlike a user chaincode, a system chaincode is not installed and instantiated
 using proposals from SDKs or CLI. It is registered and deployed by the peer at start-up.
