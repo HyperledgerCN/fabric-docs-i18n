@@ -51,7 +51,7 @@ chaincode may perform any necessary initialization, including initialization of
 application state. The ``Invoke`` method is called in response to receiving an
 ``invoke`` transaction to process transaction proposals.
 
-调用上述中的方法以响应收到的事务。 特别是当链码接收 ``实例化`` 或 ``升级`` 事务，为了方便链码可以执行任何必要的初始化，包括应用程序状态的初始化，调用 ``Init`` 方法时。调用 ``IInvoke`` 方法以响应接收 ``invoke`` 事务以处理事务提议。
+调用上述中的方法以响应收到的事务。 特别是当链码接收 ``实例化`` 或 ``升级`` 事务，为了方便链码可以执行任何必要的初始化，包括应用程序状态的初始化，调用 ``Init`` 方法时。调用 ``Invoke`` 方法以响应接收 ``invoke`` 事务以处理事务提议。
 
 The other interface in the chaincode "shim" APIs is the ``ChaincodeStubInterface``:
 
@@ -685,7 +685,7 @@ to include those packages with your chaincode.  There are `many tools available 
 for managing (or "vendoring") these dependencies.  The following demonstrates how to use
 ``govendor``:
 
-如果您的链码需要Go标准库未提供的包，则需要将这些包与您的链码一起包含在内。 有 `许多工具可用<https://github.com/golang/go/wiki/PackageManagementTools>`__ 可用于管理（或“销售”）这些依赖项。 以下演示了如何使用 ``govendor`` ：
+如果您的链码需要Go标准库未提供的包，则需要将这些包与您的链码一起包含在内。 有 `许多工具<https://github.com/golang/go/wiki/PackageManagementTools>`__ 可用于管理（或“销售”）这些依赖项。 以下演示了如何使用 ``govendor`` ：
 
 .. code:: bash
 
