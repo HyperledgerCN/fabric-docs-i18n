@@ -38,9 +38,11 @@ and walk through the purpose of each method in the Chaincode Shim API.
 我们将会介绍一个简单的链码例子，并逐一解释链码Shim API中的每个方法。
 
 Chaincode API
+链码API
 -------------
 
 Every chaincode program must implement the ``Chaincode interface``:
+每个链码程序都必须实现“链码接口”：
 
   - `Go <http://godoc.org/github.com/hyperledger/fabric/core/chaincode/shim#Chaincode>`_
   - `node.js <https://fabric-shim.github.io/ChaincodeInterface.html>`_
