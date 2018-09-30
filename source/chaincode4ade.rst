@@ -38,9 +38,11 @@ and walk through the purpose of each method in the Chaincode Shim API.
 我们将会介绍一个简单的链码例子，并逐一解释链码Shim API中的每个方法。
 
 Chaincode API
+链码API
 -------------
 
 Every chaincode program must implement the ``Chaincode interface``:
+每个链码程序都必须实现“链码接口”：
 
   - `Go <http://godoc.org/github.com/hyperledger/fabric/core/chaincode/shim#Chaincode>`_
   - `node.js <https://fabric-shim.github.io/ChaincodeInterface.html>`_
@@ -51,47 +53,59 @@ chaincode receives an ``instantiate`` or ``upgrade`` transaction so that the
 chaincode may perform any necessary initialization, including initialization of
 application state. The ``Invoke`` method is called in response to receiving an
 ``invoke`` transaction to process transaction proposals.
+它的方法被调用来响应接收的事务。特别是当链码接收到“实例化”或“升级”事务时，“Init”方法被调用，这样链码就可以执行任何必要的初始化，包括应用程序状态的初始化。“Invoke”方法是响应接收“调用”交易来处理交易建议的。
 
 The other interface in the chaincode "shim" APIs is the ``ChaincodeStubInterface``:
+链码“shim”API的另一个接口是“链码存根接口”：
 
   - `Go <http://godoc.org/github.com/hyperledger/fabric/core/chaincode/shim#ChaincodeStub>`_
   - `node.js <https://fabric-shim.github.io/ChaincodeStub.html>`_
 
 which is used to access and modify the ledger, and to make invocations between
 chaincodes.
+它用于访问和修改分类帐，并在链码之间进行调用。
 
 In this tutorial, we will demonstrate the use of these APIs by implementing a
 simple chaincode application that manages simple "assets".
+在本教程中，我们将通过实现一个简单的链码应用程序来演示这些API的使用，该应用程序管理简单的“资产”。
 
 .. _Simple Asset Chaincode:
-
+    
 Simple Asset Chaincode
+链码简单的资产
 ----------------------
 Our application is a basic sample chaincode to create assets
 (key-value pairs) on the ledger.
+我们的应用程序是在分类帐上创建资产（键值对）的基本示例链代码。
 
 Choosing a Location for the Code
+为代码选择一个位置
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you haven't been doing programming in Go, you may want to make sure that
 you have :ref:`Golang` installed and your system properly configured.
+如果您还没有在Go中进行编程，您可能需要确保安装了：ref：`Golang`并正确配置了系统。
 
 Now, you will want to create a directory for your chaincode application as a
 child directory of ``$GOPATH/src/``.
+现在，您将希望为您的链码应用程序创建一个目录，作为“$gopath/src/”的子目录。
 
 To keep things simple, let's use the following command:
+为了保持简单，让我们使用以下命令：
 
 .. code:: bash
 
   mkdir -p $GOPATH/src/sacc && cd $GOPATH/src/sacc
 
 Now, let's create the source file that we'll fill in with code:
+现在，让我们创建我们将用代码填充的源文件：
 
 .. code:: bash
 
   touch sacc.go
 
 Housekeeping
+内部工作事物
 ^^^^^^^^^^^^
 
 First, let's start with some housekeeping. As with every chaincode, it implements the
@@ -101,6 +115,13 @@ statements for the necessary dependencies for our chaincode. We'll import the
 chaincode shim package and the
 `peer protobuf package <http://godoc.org/github.com/hyperledger/fabric/protos/peer>`_.
 Next, let's add a struct ``SimpleAsset`` as a receiver for Chaincode shim functions.
+首先，让我们从一些家务开始。 与每个链码一样，它实现了
+`链码接口<http://godoc.org/github.com/hyperledger/fabric/core/chaincode/shim#Chaincode>`_
+特别是``Init``和``Invoke``函数。 所以，让我们添加go导入
+我们的链码的必要依赖关系的语句。 我们将导入
+链码垫片包和
+`peer protobuf package <http://godoc.org/github.com/hyperledger/fabric/protos/peer>`_。
+接下来，让我们添加一个结构``SimpleAsset``作为链码填充函数的接收器。
 
 .. code:: go
 
@@ -118,9 +139,11 @@ Next, let's add a struct ``SimpleAsset`` as a receiver for Chaincode shim functi
     }
 
 Initializing the Chaincode
+初始化链码
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Next, we'll implement the ``Init`` function.
+接下来，我们将实现“Init”功能。
 
 .. code:: go
 
@@ -133,11 +156,14 @@ Next, we'll implement the ``Init`` function.
           chaincode that will upgrade an existing one, make sure to modify the ``Init``
           function appropriately. In particular, provide an empty "Init" method if there's
           no "migration" or nothing to be initialized as part of the upgrade.
+          注意，链码升级也调用这个函数。在编写将升级现有版本的链码时，请确保适当地修改“Init”功能。特别是，如果没有“迁移”或者没有什么东西可以作为升级的一部分进行初始化，那么就提供一个空的“Init”方法。
 
 Next, we'll retrieve the arguments to the ``Init`` call using the
 `ChaincodeStubInterface.GetStringArgs <http://godoc.org/github.com/hyperledger/fabric/core/chaincode/shim#ChaincodeStub.GetStringArgs>`_
 function and check for validity. In our case, we are expecting a key-value pair.
-
+接下来，我们将使用“chaincodestubinterface”来检索“Init”呼叫的参数。得到字符串参数<http://godoc.org/github.com/hyperledger/fabric/core/chaincode/shim ChaincodeStub.GetStringArgs>`_
+功能和检查有效性。在我们的例子中，我们期待一个键值对。
+ 
   .. code:: go
 
     // Init is called during chaincode instantiation to initialize any
